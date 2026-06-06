@@ -36,10 +36,14 @@ var _sprite:         ColorRect = null
 var _exclamation:    Label = null
 var _defeat_key:     String = ""
 
+# Bounds do mapa (tiles 0..10 × tiles 0..48, cell=64px, com margem)
+const MAP_MIN := Vector2(64.0, 128.0)
+const MAP_MAX := Vector2(576.0, 2944.0)
+
 func _ready() -> void:
 	add_to_group("enemy")
 	set_collision_layer_value(4, true)
-	set_collision_mask_value(1, true)   # world
+	set_collision_mask_value(1, true)
 
 	_create_visuals()
 	_player = get_tree().get_first_node_in_group("player")
@@ -49,17 +53,35 @@ func _ready() -> void:
 		_set_defeated()
 		return
 
-	# Se não há waypoints, adiciona dois pontos em torno da posição inicial
+	# Waypoints em torno da posição inicial, respeitando bounds
 	if patrol_waypoints.is_empty():
-		patrol_waypoints.append(position + Vector2(96, 0))
-		patrol_waypoints.append(position + Vector2(-96, 0))
+		var left  := _clamp_pos(position + Vector2(-96, 0))
+		var right := _clamp_pos(position + Vector2( 96, 0))
+		patrol_waypoints.append(right)
+		patrol_waypoints.append(left)
+	# Clampar waypoints existentes
+	for i in range(patrol_waypoints.size()):
+		patrol_waypoints[i] = _clamp_pos(patrol_waypoints[i])
+
+func _clamp_pos(p: Vector2) -> Vector2:
+	return Vector2(clampf(p.x, MAP_MIN.x, MAP_MAX.x), clampf(p.y, MAP_MIN.y, MAP_MAX.y))
 
 func _create_visuals() -> void:
-	_sprite = ColorRect.new()
-	_sprite.size = Vector2(44, 44)
-	_sprite.position = Vector2(-22, -38)
-	_sprite.color = sprite_color
-	add_child(_sprite)
+	# Tentar carregar sprite PNG de fiscal
+	var sprite_path := "res://assets/sprites/fiscal_enemy.png"
+	var img := Image.load_from_file(sprite_path)
+	if img:
+		var spr := Sprite2D.new()
+		spr.texture = ImageTexture.create_from_image(img)
+		spr.scale   = Vector2(2.0, 2.0)
+		spr.position = Vector2(0, -20)
+		add_child(spr)
+	else:
+		_sprite = ColorRect.new()
+		_sprite.size = Vector2(44, 44)
+		_sprite.position = Vector2(-22, -38)
+		_sprite.color = sprite_color
+		add_child(_sprite)
 
 	var name_lbl := Label.new()
 	name_lbl.text = enemy_data.get("name", "Fiscal")
@@ -106,6 +128,8 @@ func _process_patrol(delta: float) -> void:
 		velocity = diff.normalized() * PATROL_SPEED
 
 	move_and_slide()
+	# Manter dentro dos bounds
+	position = _clamp_pos(position)
 
 func _check_vision() -> void:
 	if not is_instance_valid(_player):
@@ -141,6 +165,7 @@ func _process_chase(delta: float) -> void:
 
 	velocity = (_player.position - position).normalized() * CHASE_SPEED
 	move_and_slide()
+	position = _clamp_pos(position)
 
 # ─── BATALHA ─────────────────────────────────────────────────────────────────
 

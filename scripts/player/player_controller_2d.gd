@@ -42,13 +42,25 @@ func _ready() -> void:
 		_create_placeholder_sprite()
 
 func _create_placeholder_sprite() -> void:
-	var s := ColorRect.new()
-	s.name = "Sprite"
-	s.size = Vector2(48, 48)
-	s.position = Vector2(-24, -40)
-	s.color = Color(0.969, 0.576, 0.102)   # amarelo Bitcoin
-	add_child(s)
-	_sprite = s
+	# Tenta carregar sprite PNG gerado; fallback para ColorRect
+	var sprite_path := "res://assets/sprites/player.png"
+	var img := Image.load_from_file(sprite_path)
+	if img:
+		var spr := Sprite2D.new()
+		spr.name = "Sprite"
+		spr.texture = ImageTexture.create_from_image(img)
+		spr.scale   = Vector2(2.2, 2.2)
+		spr.position = Vector2(0, -20)
+		add_child(spr)
+		# _sprite é ColorRect mas só usamos para compatibilidade — não faremos cast
+	else:
+		var s := ColorRect.new()
+		s.name = "Sprite"
+		s.size = Vector2(48, 48)
+		s.position = Vector2(-24, -40)
+		s.color = Color(0.969, 0.576, 0.102)
+		add_child(s)
+		_sprite = s
 
 # ─── Input do D-Pad (chamado pelo TouchDPad) ──────────────────────────────────
 func set_move_direction(dir: Vector2) -> void:

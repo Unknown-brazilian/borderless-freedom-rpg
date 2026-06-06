@@ -20,14 +20,32 @@ func _ready() -> void:
 	set_collision_mask_value(0, false)
 	_create_sprite()
 
+@export var sprite_texture_path: String = ""   # path para PNG, ex: "res://assets/sprites/npc_ally.png"
+
 func _create_sprite() -> void:
+	# Tenta PNG custom; fallback para ColorRect colorido
+	if not sprite_texture_path.is_empty():
+		var img := Image.load_from_file(sprite_texture_path)
+		if img:
+			var spr := Sprite2D.new()
+			spr.texture = ImageTexture.create_from_image(img)
+			spr.scale   = Vector2(2.0, 2.0)
+			spr.position = Vector2(0, -20)
+			add_child(spr)
+			_sprite = null   # sem ColorRect
+			var lbl := Label.new()
+			lbl.text = npc_name
+			lbl.position = Vector2(-40, -52)
+			lbl.add_theme_font_size_override("font_size", 18)
+			lbl.add_theme_color_override("font_color", Color.WHITE)
+			add_child(lbl)
+			return
+	# Fallback
 	_sprite = ColorRect.new()
 	_sprite.size = Vector2(48, 48)
 	_sprite.position = Vector2(-24, -40)
 	_sprite.color = sprite_color
 	add_child(_sprite)
-
-	# Label de nome sobre o sprite
 	var lbl := Label.new()
 	lbl.text = npc_name
 	lbl.position = Vector2(-40, -70)
