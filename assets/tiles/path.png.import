@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rpg_a0000012"
-path="res://.godot/imported/path-a0000013.ctex"
+uid="uid://duw76y3p8hsnw"
+path="res://.godot/imported/path.png-6f73e10cb1d3923479667bb1c8a23203.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,13 +11,14 @@ metadata={
 [deps]
 
 source_file="res://assets/tiles/path.png"
-dest_files=["res://.godot/imported/path-a0000013.ctex"]
+dest_files=["res://.godot/imported/path.png-6f73e10cb1d3923479667bb1c8a23203.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
+compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
@@ -31,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
