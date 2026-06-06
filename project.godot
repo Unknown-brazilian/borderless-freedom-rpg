@@ -1,0 +1,51 @@
+; Borderless Freedom RPG — A Dissident Adventure
+; Godot 4 — Android — estilo Game Boy / Pokémon top-down
+
+config_version=5
+
+[application]
+config/name="Borderless Freedom RPG"
+config/version="0.1.0"
+config/description="A Dissident Adventure — RPG Edition"
+run/main_scene="res://scenes/ui/main_menu.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/show_image=false
+boot_splash/bg_color=Color(0.05, 0.05, 0.07, 1)
+
+[autoload]
+SatEconomy="*res://scripts/systems/sat_economy.gd"
+RandomEventsSystem="*res://scripts/systems/random_events_system.gd"
+WorldManager="*res://scripts/systems/world_manager.gd"
+BattleManager="*res://scripts/systems/battle_manager.gd"
+DialogueManager="*res://scripts/systems/dialogue_manager.gd"
+GameStats="*res://scripts/systems/game_stats.gd"
+SaveSystem="*res://scripts/systems/save_system.gd"
+AutonomyBar="*res://scripts/systems/autonomy_bar.gd"
+PlayerStats="*res://scripts/player/player_stats.gd"
+PlayerInventory="*res://scripts/systems/player_inventory.gd"
+PlayerCustomization="*res://scripts/player/player_customization.gd"
+SeedPhraseSystem="*res://scripts/systems/seed_phrase_system.gd"
+SceneTransition="*res://scripts/systems/scene_transition.gd"
+AudioManager="*res://scripts/systems/audio_manager.gd"
+
+[display]
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/size/resizable=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+
+[input_devices]
+pointing/emulate_touch_from_mouse=true
+
+[layer_names]
+2d_physics/layer_1="world"
+2d_physics/layer_2="player"
+2d_physics/layer_3="npc"
+2d_physics/layer_4="enemy"
+2d_physics/layer_5="trigger"

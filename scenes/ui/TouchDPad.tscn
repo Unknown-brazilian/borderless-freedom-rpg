@@ -1,0 +1,90 @@
+[gd_scene load_steps=2 format=3 uid="uid://touch_dpad_rpg"]
+
+[ext_resource type="Script" path="res://scripts/ui/touch_dpad.gd" id="1"]
+
+[node name="TouchDPad" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1")
+
+[node name="BG" type="ColorRect" parent="."]
+anchor_left   = 0.0
+anchor_top    = 0.67
+anchor_right  = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.04, 0.06, 0.85)
+
+[node name="DPad" type="Control" parent="."]
+anchor_left   = 0.0
+anchor_top    = 0.68
+anchor_right  = 0.5
+anchor_bottom = 1.0
+
+[node name="BtnUp" type="Button" parent="DPad"]
+anchor_left   = 0.3
+anchor_right  = 0.7
+anchor_top    = 0.0
+anchor_bottom = 0.35
+text = "▲"
+theme_override_font_sizes/font_size = 42
+flat = true
+
+[node name="BtnDown" type="Button" parent="DPad"]
+anchor_left   = 0.3
+anchor_right  = 0.7
+anchor_top    = 0.65
+anchor_bottom = 1.0
+text = "▼"
+theme_override_font_sizes/font_size = 42
+flat = true
+
+[node name="BtnLeft" type="Button" parent="DPad"]
+anchor_left   = 0.0
+anchor_right  = 0.35
+anchor_top    = 0.33
+anchor_bottom = 0.67
+text = "◀"
+theme_override_font_sizes/font_size = 42
+flat = true
+
+[node name="BtnRight" type="Button" parent="DPad"]
+anchor_left   = 0.65
+anchor_right  = 1.0
+anchor_top    = 0.33
+anchor_bottom = 0.67
+text = "▶"
+theme_override_font_sizes/font_size = 42
+flat = true
+
+[node name="ActionButtons" type="Control" parent="."]
+anchor_left   = 0.5
+anchor_top    = 0.68
+anchor_right  = 1.0
+anchor_bottom = 1.0
+
+[node name="BtnA" type="Button" parent="ActionButtons"]
+anchor_left   = 0.55
+anchor_right  = 1.0
+anchor_top    = 0.35
+anchor_bottom = 1.0
+text = "A"
+theme_override_font_sizes/font_size = 46
+theme_override_colors/font_color = Color(0.969, 0.576, 0.102, 1.0)
+flat = true
+
+[node name="BtnB" type="Button" parent="ActionButtons"]
+anchor_left   = 0.05
+anchor_right  = 0.5
+anchor_top    = 0.55
+anchor_bottom = 1.0
+text = "B"
+theme_override_font_sizes/font_size = 38
+flat = true
+
+[node name="BtnStart" type="Button" parent="ActionButtons"]
+anchor_left   = 0.05
+anchor_right  = 0.5
+anchor_top    = 0.05
+anchor_bottom = 0.45
+text = "START"
+theme_override_font_sizes/font_size = 26
+flat = true

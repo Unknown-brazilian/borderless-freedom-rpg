@@ -1,0 +1,128 @@
+[gd_scene load_steps=4 format=3 uid="uid://glossary_ui_bf"]
+
+[ext_resource type="Script" path="res://scripts/ui/glossary_ui.gd" id="1_glossary_script"]
+
+; ── Estilos do botão Fechar ────────────────────────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_normal"]
+bg_color                    = Color(0.11, 0.11, 0.11, 1.0)
+border_width_left           = 2
+border_width_top            = 2
+border_width_right          = 2
+border_width_bottom         = 2
+border_color                = Color(0.969, 0.576, 0.102, 1.0)
+corner_radius_top_left      = 12
+corner_radius_top_right     = 12
+corner_radius_bottom_left   = 12
+corner_radius_bottom_right  = 12
+content_margin_left         = 20.0
+content_margin_right        = 20.0
+content_margin_top          = 18.0
+content_margin_bottom       = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_hover"]
+bg_color                    = Color(0.18, 0.18, 0.18, 1.0)
+border_width_left           = 2
+border_width_top            = 2
+border_width_right          = 2
+border_width_bottom         = 2
+border_color                = Color(0.969, 0.576, 0.102, 1.0)
+corner_radius_top_left      = 12
+corner_radius_top_right     = 12
+corner_radius_bottom_left   = 12
+corner_radius_bottom_right  = 12
+content_margin_left         = 20.0
+content_margin_right        = 20.0
+content_margin_top          = 18.0
+content_margin_bottom       = 18.0
+
+; ── Layout — 1080 × 1920 portrait ─────────────────────────────────────────────
+;
+;  GlossaryUI (CanvasLayer, layer=30)
+;  ├── Background (ColorRect) — overlay escuro semi-transparente
+;  └── Panel (VBoxContainer) — coluna central 1040 px
+;      ├── LabelTitle        — "GLOSSÁRIO DO DISSIDENTE"
+;      ├── ItemList          — entradas desbloqueadas
+;      ├── PanelEntry (VBoxContainer) — painel de leitura da entrada
+;      │   ├── LabelEntryTitle
+;      │   └── LabelEntryText (RichTextLabel)
+;      ├── LabelLocked       — contagem de entradas bloqueadas
+;      └── ButtonClose       — "✕  FECHAR"
+
+[node name="GlossaryUI" type="CanvasLayer"]
+layer  = 30
+script = ExtResource("1_glossary_script")
+
+; ── Overlay escuro ────────────────────────────────────────────────────────────
+[node name="Background" type="ColorRect" parent="."]
+anchor_right  = 1.0
+anchor_bottom = 1.0
+color         = Color(0.0, 0.0, 0.0, 0.88)
+
+; ── Coluna central 1040 px ───────────────────────────────────────────────────
+[node name="Panel" type="VBoxContainer" parent="."]
+anchor_left   = 0.5
+anchor_right  = 0.5
+anchor_top    = 0.0
+anchor_bottom = 0.0
+offset_left   = -520.0
+offset_right  = 520.0
+offset_top    = 60.0
+offset_bottom = 1860.0
+theme_override_constants/separation = 20
+
+; ── Título ────────────────────────────────────────────────────────────────────
+[node name="LabelTitle" type="Label" parent="Panel"]
+layout_mode                         = 2
+text                                = "GLOSSÁRIO DO DISSIDENTE"
+horizontal_alignment                = 1
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color    = Color(0.969, 0.576, 0.102, 1.0)
+
+; ── Lista de entradas ─────────────────────────────────────────────────────────
+[node name="ItemList" type="ItemList" parent="Panel"]
+layout_mode                         = 2
+custom_minimum_size                 = Vector2(0, 420)
+size_flags_vertical                 = 3
+theme_override_font_sizes/font_size = 28
+
+; ── Painel de leitura ─────────────────────────────────────────────────────────
+[node name="PanelEntry" type="VBoxContainer" parent="Panel"]
+layout_mode                           = 2
+custom_minimum_size                   = Vector2(0, 480)
+size_flags_vertical                   = 3
+theme_override_constants/separation   = 16
+
+[node name="LabelEntryTitle" type="Label" parent="Panel/PanelEntry"]
+layout_mode                         = 2
+text                                = "Selecione uma entrada na lista."
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color    = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="LabelEntryText" type="RichTextLabel" parent="Panel/PanelEntry"]
+layout_mode                         = 2
+custom_minimum_size                 = Vector2(0, 340)
+size_flags_vertical                 = 3
+fit_content                         = false
+scroll_active                       = true
+theme_override_font_sizes/normal_font_size = 26
+
+; ── Contagem de bloqueados ────────────────────────────────────────────────────
+[node name="LabelLocked" type="Label" parent="Panel"]
+layout_mode                         = 2
+text                                = "Carregando..."
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color    = Color(0.533, 0.533, 0.533, 1.0)
+
+; ── Botão Fechar ──────────────────────────────────────────────────────────────
+[node name="ButtonClose" type="Button" parent="Panel"]
+layout_mode                         = 2
+custom_minimum_size                 = Vector2(0, 80)
+text                                = "✕  FECHAR"
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color    = Color(0.969, 0.576, 0.102, 1.0)
+theme_override_styles/normal        = SubResource("StyleBoxFlat_close_normal")
+theme_override_styles/hover         = SubResource("StyleBoxFlat_close_hover")
+theme_override_styles/pressed       = SubResource("StyleBoxFlat_close_normal")

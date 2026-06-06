@@ -1,0 +1,188 @@
+[gd_scene load_steps=2 format=3 uid="uid://credits_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/credits.gd" id="1"]
+
+[node name="Credits" type="Control"]
+script        = ExtResource("1")
+anchor_right  = 1.0
+anchor_bottom = 1.0
+
+[node name="BG" type="ColorRect" parent="."]
+anchor_right  = 1.0
+anchor_bottom = 1.0
+color         = Color(0.05, 0.05, 0.07, 1.0)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_right  = 1.0
+anchor_bottom = 1.0
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
+custom_minimum_size = Vector2(1080, 0)
+theme_override_constants/separation = 32
+offset_left   = 0.0
+offset_top    = 0.0
+offset_right  = 1080.0
+
+[node name="LabelTitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "BORDERLESS FREEDOM"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 56
+theme_override_colors/font_color = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="LabelSubtitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "A Dissident Adventure"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.788, 0.635, 0.153, 1.0)
+
+[node name="Sep1" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelDevTitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "DESENVOLVIMENTO"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1.0)
+
+[node name="LabelDev" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Arthur Leo Bertotto"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1.0)
+
+[node name="LabelDevRole" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Design, programação e narrativa"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1.0)
+
+[node name="Sep2" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelEngineTitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "ENGINE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1.0)
+
+[node name="LabelEngine" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Godot Engine 4\ngodotengine.org — MIT License"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.75, 0.85, 0.75, 1.0)
+
+[node name="Sep3" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelWordlistTitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "WORDLIST"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1.0)
+
+[node name="LabelWordlist" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "BIP39 English Wordlist\nBitcoin Improvement Proposal 39\nDomínio público"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1.0)
+
+[node name="Sep4" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelInspTitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "INSPIRAÇÃO"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1.0)
+
+[node name="LabelInsp" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Bitcoin\nThe Sovereign Individual — Davidson & Rees-Mogg\nSatoshi Nakamoto"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.85, 0.85, 0.65, 1.0)
+
+[node name="Sep5" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelAgradTitle" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "AGRADECIMENTOS"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1.0)
+
+[node name="LabelAgradDeus" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "A Deus, que me ajudou demais em toda essa jornada."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.95, 0.90, 0.70, 1.0)
+
+[node name="LabelAgradBTC" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "À toda a comunidade do Bitcoin Twitter —\npor acreditar, compartilhar e manter a chama acesa."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="LabelAgradPessoas" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Bekas  •  Ivan  •  Raicher  •  Dov\nProfessor Renato  •  Professor Alexandre Costa\nMano Leo (quase um anjo da guarda)  •  Bolão\nPequeninha  •  GustavoVZ  •  Byron  •  Raul\nTodo o pessoal da Gonzze"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.85, 0.85, 0.90, 1.0)
+
+[node name="LabelAgradCasas" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Às Casas do Migrante\nque me acolheram e ajudaram durante todo o caminho."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.75, 0.90, 0.80, 1.0)
+
+[node name="Sep5b" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelDisclaimer" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "⚠️  AVISO IMPORTANTE\n\nEste jogo contém seeds de 24 palavras com fins educativos.\nTODAS as seeds geradas são FICTÍCIAS.\nNunca digite sua seed real com saldo em nenhum aplicativo.\nSua seed = suas chaves = seu dinheiro. Guarde offline."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1.0, 0.75, 0.3, 1.0)
+
+[node name="Sep6" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="LabelVersion" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+text = "Versão 0.1.0 — 2026"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.35, 0.35, 0.35, 1.0)
+
+[node name="Spacer" type="Control" parent="ScrollContainer/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+
+[node name="BtnVoltar" type="Button" parent="ScrollContainer/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 88)
+text = "↩  VOLTAR"
+theme_override_font_sizes/font_size = 30

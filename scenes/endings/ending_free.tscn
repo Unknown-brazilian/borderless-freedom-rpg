@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://ending_free_scene"]
+
+[ext_resource type="Script" path="res://scripts/endings/ending_free.gd" id="1"]
+
+[node name="EndingFree" type="Control"]
+script = ExtResource("1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="BG" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.03, 0.05, 0.10, 1.0)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -440
+offset_top = -700
+offset_right = 440
+offset_bottom = 700
+theme_override_constants/separation = 28
+
+[node name="LabelTitle" type="Label" parent="VBox"]
+text = "🏆  LIBERDADE CONQUISTADA"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 44
+theme_override_colors/font_color = Color(0.93, 0.85, 0.0, 1.0)
+
+[node name="Sep1" type="HSeparator" parent="VBox"]
+
+[node name="LabelName" type="Label" parent="VBox"]
+text = "Dissidente,"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1.0)
+
+[node name="LabelNarrative" type="Label" parent="VBox"]
+text = "Você atravessou 9 fronteiras,\nenganou estados, sobreviveu a cartéis\ne chegou a Bélgique.\n\nNão existe passaporte para a liberdade —\nvocê a carregou consigo o tempo todo."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.80, 0.80, 0.85, 1.0)
+
+[node name="Sep2" type="HSeparator" parent="VBox"]
+
+[node name="LabelSats" type="Label" parent="VBox"]
+text = "0 sats conquistados"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.93, 0.85, 0.0, 1.0)
+
+[node name="LabelStats" type="Label" parent="VBox"]
+text = ""
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.65, 0.75, 0.65, 1.0)
+
+[node name="LabelSeedReminder" type="Label" parent="VBox"]
+text = "Sua seed é sua identidade.\nGuarde-a. Nunca a compartilhe.\n(Esta é uma seed de JOGO — jamais use seeds reais com saldo em aplicativos.)"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.6, 0.6, 0.7, 1.0)
+
+[node name="Spacer" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(0, 32)
+size_flags_vertical = 3
+
+[node name="BtnMenu" type="Button" parent="VBox"]
+text = "↩  MENU PRINCIPAL"
+custom_minimum_size = Vector2(0, 88)
+theme_override_font_sizes/font_size = 28

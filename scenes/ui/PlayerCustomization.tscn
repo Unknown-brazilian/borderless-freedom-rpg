@@ -1,0 +1,141 @@
+[gd_scene load_steps=2 format=3 uid="uid://playercustomization"]
+
+[ext_resource type="Script" path="res://scripts/ui/player_customization_ui.gd" id="1"]
+
+[node name="PlayerCustomization" type="CanvasLayer"]
+script = ExtResource("1")
+layer = 5
+
+[node name="BG" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.06, 0.08, 1.0)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 80.0
+offset_right = -48.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="Title" type="Label" parent="VBox"]
+text = "CUSTOMIZACAO DO JOGADOR"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(1.0, 0.82, 0.1, 1.0)
+
+[node name="SkinRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 90)
+theme_override_constants/separation = 16
+
+[node name="BtnSkinL" type="Button" parent="VBox/SkinRow"]
+text = "<"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="LabelSkin" type="Label" parent="VBox/SkinRow"]
+text = "Skin: Padrao"
+size_flags_horizontal = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+
+[node name="BtnSkinR" type="Button" parent="VBox/SkinRow"]
+text = ">"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="CapaceteRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 90)
+theme_override_constants/separation = 16
+
+[node name="BtnCapL" type="Button" parent="VBox/CapaceteRow"]
+text = "<"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="LabelCap" type="Label" parent="VBox/CapaceteRow"]
+text = "Capacete: Nenhum"
+size_flags_horizontal = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+
+[node name="BtnCapR" type="Button" parent="VBox/CapaceteRow"]
+text = ">"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="MochilaRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 90)
+theme_override_constants/separation = 16
+
+[node name="BtnMocL" type="Button" parent="VBox/MochilaRow"]
+text = "<"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="LabelMoc" type="Label" parent="VBox/MochilaRow"]
+text = "Mochila: Nenhuma"
+size_flags_horizontal = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+
+[node name="BtnMocR" type="Button" parent="VBox/MochilaRow"]
+text = ">"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="BikeRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 90)
+theme_override_constants/separation = 16
+
+[node name="BtnBikeL" type="Button" parent="VBox/BikeRow"]
+text = "<"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="LabelBike" type="Label" parent="VBox/BikeRow"]
+text = "Bike: Nenhuma"
+size_flags_horizontal = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+
+[node name="BtnBikeR" type="Button" parent="VBox/BikeRow"]
+text = ">"
+custom_minimum_size = Vector2(90, 90)
+theme_override_font_sizes/font_size = 40
+
+[node name="Spacer" type="Control" parent="VBox"]
+size_flags_vertical = 3
+
+[node name="BonusLabel" type="Label" parent="VBox"]
+text = "Bonus: nenhum"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.6, 1.0, 0.6, 1.0)
+
+[node name="BtnConfirmar" type="Button" parent="VBox"]
+text = "CONFIRMAR E JOGAR"
+custom_minimum_size = Vector2(0, 100)
+theme_override_font_sizes/font_size = 36
+
+[node name="BtnVoltar" type="Button" parent="VBox"]
+text = "< Voltar"
+custom_minimum_size = Vector2(0, 80)
+theme_override_font_sizes/font_size = 30

@@ -1,0 +1,148 @@
+[gd_scene load_steps=5 format=3 uid="uid://seed_phrase_screen_bf"]
+
+[ext_resource type="Script" path="res://scripts/ui/seed_phrase_screen.gd" id="1_seed_script"]
+
+; ── Estilos ───────────────────────────────────────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color                    = Color(0.11, 0.11, 0.11, 1.0)
+border_width_left           = 2
+border_width_top            = 2
+border_width_right          = 2
+border_width_bottom         = 2
+border_color                = Color(0.969, 0.576, 0.102, 1.0)
+corner_radius_top_left      = 12
+corner_radius_top_right     = 12
+corner_radius_bottom_left   = 12
+corner_radius_bottom_right  = 12
+content_margin_left         = 20.0
+content_margin_right        = 20.0
+content_margin_top          = 18.0
+content_margin_bottom       = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color                    = Color(0.18, 0.18, 0.18, 1.0)
+border_width_left           = 2
+border_width_top            = 2
+border_width_right          = 2
+border_width_bottom         = 2
+border_color                = Color(0.969, 0.576, 0.102, 1.0)
+corner_radius_top_left      = 12
+corner_radius_top_right     = 12
+corner_radius_bottom_left   = 12
+corner_radius_bottom_right  = 12
+content_margin_left         = 20.0
+content_margin_right        = 20.0
+content_margin_top          = 18.0
+content_margin_bottom       = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_warning_box"]
+bg_color                    = Color(0.4, 0.0, 0.0, 0.9)
+border_width_left           = 3
+border_width_top            = 3
+border_width_right          = 3
+border_width_bottom         = 3
+border_color                = Color(1.0, 0.2, 0.2, 1.0)
+corner_radius_top_left      = 10
+corner_radius_top_right     = 10
+corner_radius_bottom_left   = 10
+corner_radius_bottom_right  = 10
+content_margin_left         = 24.0
+content_margin_right        = 24.0
+content_margin_top          = 20.0
+content_margin_bottom       = 20.0
+
+; ── Hierarquia ────────────────────────────────────────────────────────────────
+;
+;  SeedPhraseScreen (Control, fullscreen)
+;  ├── Background (ColorRect) — #111111
+;  ├── CoverOnFocusLost (ColorRect) — preto, visível quando app perde foco
+;  └── MainVBox (VBoxContainer) — coluna central 1000 px
+;      ├── WarningBox (PanelContainer) — fundo vermelho com aviso
+;      │   └── LabelWarning (Label)
+;      ├── LabelExplain (Label)
+;      ├── ScrollContainer — altura 1020 px
+;      │   └── WordGrid (GridContainer, 2 colunas) — populado via script
+;      ├── LabelInstruction (Label)
+;      └── ButtonConfirm (Button)
+
+[node name="SeedPhraseScreen" type="Control"]
+script        = ExtResource("1_seed_script")
+anchor_right  = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right  = 1.0
+anchor_bottom = 1.0
+color         = Color(0.067, 0.067, 0.067, 1.0)
+
+; Overlay preto que cobre a tela quando app vai para background
+[node name="CoverOnFocusLost" type="ColorRect" parent="."]
+anchor_right  = 1.0
+anchor_bottom = 1.0
+color         = Color(0.0, 0.0, 0.0, 1.0)
+z_index       = 100
+
+[node name="MainVBox" type="VBoxContainer" parent="."]
+anchor_left   = 0.5
+anchor_right  = 0.5
+anchor_top    = 0.0
+anchor_bottom = 0.0
+offset_left   = -500.0
+offset_right  = 500.0
+offset_top    = 40.0
+offset_bottom = 1880.0
+theme_override_constants/separation = 24
+
+; ── Caixa de aviso ────────────────────────────────────────────────────────────
+[node name="WarningBox" type="PanelContainer" parent="MainVBox"]
+layout_mode                     = 2
+theme_override_styles/panel     = SubResource("StyleBoxFlat_warning_box")
+
+[node name="LabelWarning" type="Label" parent="MainVBox/WarningBox"]
+layout_mode                         = 2
+text                                = "⚠️  ATENÇÃO: ESTA É UMA SEED DO JOGO\n\nNUNCA DIGITE SEEDS REAIS COM SALDO EM APLICATIVOS.\nNUNCA TIRE PRINT DA SUA SEED REAL.\nNUNCA COMPARTILHE COM NINGUÉM.\n\nEsta seed é fictícia — serve apenas para aprender como\nseeds Bitcoin funcionam dentro do jogo."
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color    = Color(1.0, 0.8, 0.8, 1.0)
+
+; ── Instrução ─────────────────────────────────────────────────────────────────
+[node name="LabelExplain" type="Label" parent="MainVBox"]
+layout_mode                         = 2
+text                                = "🔑  Sua Seed do Jogo — 24 palavras\n\nAnote em papel agora. Você precisará delas nos chefes\ne na fase de deportação para receber bônus."
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color    = Color(0.969, 0.576, 0.102, 1.0)
+
+; ── Grid de palavras — populado pelo script ────────────────────────────────────
+[node name="ScrollContainer" type="ScrollContainer" parent="MainVBox"]
+layout_mode                     = 2
+custom_minimum_size             = Vector2(0, 1020)
+size_flags_vertical             = 3
+
+[node name="WordGrid" type="GridContainer" parent="MainVBox/ScrollContainer"]
+layout_mode                           = 2
+columns                               = 2
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 12
+
+; ── Aviso inferior ────────────────────────────────────────────────────────────
+[node name="LabelInstruction" type="Label" parent="MainVBox"]
+layout_mode                         = 2
+text                                = "📝  Anotou em papel? Só então confirme."
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color    = Color(0.733, 0.733, 0.733, 1.0)
+
+; ── Botão de confirmação ──────────────────────────────────────────────────────
+[node name="ButtonConfirm" type="Button" parent="MainVBox"]
+layout_mode                         = 2
+custom_minimum_size                 = Vector2(0, 88)
+text                                = "✅  JÁ ANOTEI — INICIAR JORNADA"
+theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color    = Color(0.969, 0.576, 0.102, 1.0)
+theme_override_styles/normal        = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover         = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed       = SubResource("StyleBoxFlat_btn_normal")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://crypto_npc_scene"]
+
+[ext_resource type="Script" path="res://scripts/world/crypto_npc.gd" id="1_script"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 18.0
+height = 32.0
+
+[node name="CryptoNPC" type="CharacterBody2D"]
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("CapsuleShape2D_1")

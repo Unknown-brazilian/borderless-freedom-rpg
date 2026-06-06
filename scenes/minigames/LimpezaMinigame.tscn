@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://limpeza_minigame"]
+
+[ext_resource type="Script" path="res://scripts/minigames/limpeza_minigame.gd" id="1"]
+
+[node name="LimpezaMinigame" type="CanvasLayer"]
+script = ExtResource("1")

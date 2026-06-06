@@ -1,0 +1,138 @@
+[gd_scene load_steps=5 format=3 uid="uid://boss_word_challenge_bf"]
+
+[ext_resource type="Script" path="res://scripts/ui/boss_word_challenge.gd" id="1_challenge_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_warning"]
+bg_color                    = Color(0.45, 0.06, 0.06, 1.0)
+corner_radius_top_left      = 8
+corner_radius_top_right     = 8
+corner_radius_bottom_left   = 8
+corner_radius_bottom_right  = 8
+content_margin_left         = 16.0
+content_margin_right        = 16.0
+content_margin_top          = 10.0
+content_margin_bottom       = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color                    = Color(0.07, 0.07, 0.07, 0.97)
+border_width_left           = 2
+border_width_top            = 2
+border_width_right          = 2
+border_width_bottom         = 2
+border_color                = Color(0.969, 0.576, 0.102, 1.0)
+corner_radius_top_left      = 16
+corner_radius_top_right     = 16
+corner_radius_bottom_left   = 16
+corner_radius_bottom_right  = 16
+content_margin_left         = 36.0
+content_margin_right        = 36.0
+content_margin_top          = 28.0
+content_margin_bottom       = 28.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color                    = Color(0.11, 0.11, 0.11, 1.0)
+border_width_left           = 2
+border_width_top            = 2
+border_width_right          = 2
+border_width_bottom         = 2
+border_color                = Color(0.969, 0.576, 0.102, 1.0)
+corner_radius_top_left      = 10
+corner_radius_top_right     = 10
+corner_radius_bottom_left   = 10
+corner_radius_bottom_right  = 10
+content_margin_left         = 16.0
+content_margin_right        = 16.0
+content_margin_top          = 14.0
+content_margin_bottom       = 14.0
+
+; ── Hierarquia ────────────────────────────────────────────────────────────────
+;
+;  BossWordChallenge (CanvasLayer, layer=40, hidden)
+;  └── Panel (PanelContainer) — centrado, 960 × 1440
+;      └── VBox (VBoxContainer)
+;          ├── WarningBox / LabelWarning
+;          ├── LabelPrompt
+;          ├── LabelProgress   ("Rodada 1 de 4")
+;          ├── LabelWordPos    ("Palavra #12 da sua seed:")
+;          ├── WordGrid (GridContainer, 2 colunas — botões criados dinamicamente)
+;          ├── LabelResult     (hidden)
+;          └── ButtonSkip
+
+[node name="BossWordChallenge" type="CanvasLayer"]
+layer  = 40
+script = ExtResource("1_challenge_script")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left   = 0.5
+anchor_right  = 0.5
+anchor_top    = 0.5
+anchor_bottom = 0.5
+offset_left   = -480.0
+offset_right  = 480.0
+offset_top    = -720.0
+offset_bottom = 720.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode                         = 2
+theme_override_constants/separation = 22
+
+[node name="WarningBox" type="PanelContainer" parent="Panel/VBox"]
+layout_mode                 = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_warning")
+
+[node name="LabelWarning" type="Label" parent="Panel/VBox/WarningBox"]
+layout_mode                         = 2
+text                                = "⚠️  SEED DO JOGO — NUNCA TOQUE SEEDS REAIS COM SALDO EM NENHUM APP."
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color    = Color(1.0, 0.85, 0.85, 1.0)
+
+[node name="LabelPrompt" type="Label" parent="Panel/VBox"]
+layout_mode                         = 2
+text                                = ""
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color    = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="LabelProgress" type="Label" parent="Panel/VBox"]
+layout_mode                         = 2
+text                                = "Rodada 1 de 4"
+horizontal_alignment                = 1
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color    = Color(0.6, 0.75, 1.0, 1.0)
+
+[node name="LabelWordPos" type="Label" parent="Panel/VBox"]
+layout_mode                         = 2
+text                                = ""
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color    = Color(1.0, 1.0, 0.6, 1.0)
+
+[node name="WordGrid" type="GridContainer" parent="Panel/VBox"]
+layout_mode                         = 2
+columns                             = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="LabelResult" type="Label" parent="Panel/VBox"]
+layout_mode                         = 2
+visible                             = false
+text                                = ""
+horizontal_alignment                = 1
+autowrap_mode                       = 3
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color    = Color(0.1, 0.9, 0.2, 1.0)
+
+[node name="ButtonSkip" type="Button" parent="Panel/VBox"]
+layout_mode                         = 2
+custom_minimum_size                 = Vector2(0, 72)
+text                                = "⏭  PULAR (sem bônus)"
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color    = Color(0.6, 0.6, 0.6, 1.0)
+theme_override_styles/normal        = SubResource("StyleBoxFlat_btn")
+theme_override_styles/hover         = SubResource("StyleBoxFlat_btn")
+theme_override_styles/pressed       = SubResource("StyleBoxFlat_btn")
