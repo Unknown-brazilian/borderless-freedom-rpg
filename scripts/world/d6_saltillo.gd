@@ -117,7 +117,7 @@ func _setup_npcs() -> void:
 			# Pagamento parcial e avança semana — evita softlock
 			var partial := int(SAT_PER_WEEK * float(_tasks_this_week) / float(_tasks_needed))
 			SatEconomy.add_sats(partial, "pagamento_parcial")
-			DialogueManager.start(["Don Rogelio: "Semana encerrada. %d sats parciais."" % partial])
+			DialogueManager.start(["Don Rogelio: \"Semana encerrada. %d sats parciais.\"" % partial])
 			await DialogueManager.dialogue_finished
 			_start_work_week()
 	)
