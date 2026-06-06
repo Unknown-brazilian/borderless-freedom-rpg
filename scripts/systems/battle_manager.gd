@@ -157,11 +157,13 @@ func _resolve_persuade() -> void:
 		await _resolve_escaped()
 	elif persuasao >= 1:
 		var dmg_reduction := 5
-		var enemy_atk := maxi(1, enemy_data.get("atk", 15) - dmg_reduction)
-		_log("🗣️  Persuasão parcial — dano reduzido.")
+		var original_atk: int = enemy_data.get("atk", 15) as int
+		enemy_data["atk"] = maxi(1, original_atk - dmg_reduction)
+		_log("🗣️  Persuasão parcial — dano reduzido em %d." % dmg_reduction)
 		emit_signal("action_resolved", _battle_log[-1])
 		await get_tree().create_timer(0.5).timeout
 		await _enemy_turn()
+		enemy_data["atk"] = original_atk   # restaura após o turno
 	else:
 		_log("🗣️  Sem persuasão suficiente!")
 		emit_signal("action_resolved", _battle_log[-1])

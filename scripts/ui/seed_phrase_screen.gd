@@ -62,3 +62,9 @@ func _on_focus_lost() -> void:
 
 func _on_focus_gained() -> void:
 	_cover.hide()
+
+func _exit_tree() -> void:
+	if get_viewport().focus_exited.is_connected(_on_focus_lost):
+		get_viewport().focus_exited.disconnect(_on_focus_lost)
+	if get_viewport().focus_entered.is_connected(_on_focus_gained):
+		get_viewport().focus_entered.disconnect(_on_focus_gained)

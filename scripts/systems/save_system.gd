@@ -48,10 +48,10 @@ func load_game() -> bool:
 	GameStats.load_from(data.get("game_stats", {}))
 	PlayerStats.load_from(data.get("player_stats", {}))
 	PlayerInventory.load_from(data.get("player_inventory", {}))
+	_store = data.get("store", {})   # restaurar antes de PlayerCustomization.load_customization()
 	PlayerCustomization.load_customization()
 	SeedPhraseSystem.load_from(data.get("seed_phrase", {}))
 	AutonomyBar.load_save_data(data.get("autonomy_bar", {}))
-	_store = data.get("store", {})
 	return true
 
 func delete_save() -> void:

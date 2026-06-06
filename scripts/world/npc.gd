@@ -54,7 +54,9 @@ func _create_sprite() -> void:
 	add_child(lbl)
 
 func on_interact(_player: Node) -> void:
-	if DialogueManager.is_active():
+	if DialogueManager.is_active() or _interacted_once:
+		if DialogueManager.is_active():
+			DialogueManager.advance()
 		return
 	_face_player(_player)
 	var dialogue_lines := _get_dialogue_lines()

@@ -109,6 +109,16 @@ func load_from(data: Dictionary) -> void:
 	sequence_index             = data.get("sequence_index",  0)
 	bosses_defeated_in_dungeon = data.get("bosses_in_dungeon", 0)
 	dungeon_flags              = data.get("flags", {})
+	# Validar bounds para compatibilidade entre versões
+	sequence_index = clampi(sequence_index, 0, SCENE_SEQUENCE.size() - 1)
+	# Se dungeon no save não bate com a sequência, resetar para início do dungeon
+	var saved_scene_dungeon: int = SCENE_SEQUENCE[sequence_index].get("dungeon", 1)
+	if saved_scene_dungeon != current_dungeon:
+		sequence_index = 0
+		for i in range(SCENE_SEQUENCE.size()):
+			if SCENE_SEQUENCE[i].get("dungeon", 1) == current_dungeon:
+				sequence_index = i
+				break
 
 # ─── Internas ─────────────────────────────────────────────────────────────────
 func _go_to_current_region() -> void:

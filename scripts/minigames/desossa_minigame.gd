@@ -116,6 +116,9 @@ func _on_zone_tapped(idx: int) -> void:
 	_next_zone()
 
 func _on_miss() -> void:
+	if not _running:
+		return
+	_running = false   # evita re-entrada antes do await
 	_zones_done[_current_zone] = true
 	_zone_btns[_current_zone].modulate = C_FAIL
 	_zone_btns[_current_zone].disabled = true

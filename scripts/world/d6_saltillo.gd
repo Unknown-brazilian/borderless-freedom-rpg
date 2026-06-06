@@ -58,7 +58,8 @@ func _start_work_week() -> void:
 	var week_total := (_month_current - 1) * WEEKS_PER_MONTH + _week_current
 	DialogueManager.start([
 		"📋  Semana %d — Escolha uma tarefa:" % week_total,
-		"Fale com os NPCs de trabalho para realizar uma tarefa.",
+		"Faça pelo menos %d tarefas para receber o pagamento." % _tasks_needed,
+		"Ou fale com Don Rogelio para encerrar a semana parcialmente.",
 	])
 	await DialogueManager.dialogue_finished
 
@@ -103,12 +104,22 @@ func _finish_4_months() -> void:
 
 func _setup_npcs() -> void:
 	# Don Rogelio — chefe
-	spawn_npc(Vector2i(5, 42), "Don Rogelio",
+	var don := spawn_npc(Vector2i(5, 42), "Don Rogelio",
 		["Bem-vindo, filho.",
 		 "Aqui não perguntamos de onde você vem.",
 		 "Só se você trabalha.",
-		 "E você vai trabalhar."],
+		 "E você vai trabalhar. Encerre a semana quando quiser."],
 		Color(0.75, 0.55, 0.3)
+	)
+	don.first_interact.connect(func(_n):
+		await DialogueManager.dialogue_finished
+		if _tasks_this_week < _tasks_needed and _tasks_this_week > 0:
+			# Pagamento parcial e avança semana — evita softlock
+			var partial := int(SAT_PER_WEEK * float(_tasks_this_week) / float(_tasks_needed))
+			SatEconomy.add_sats(partial, "pagamento_parcial")
+			DialogueManager.start(["Don Rogelio: "Semana encerrada. %d sats parciais."" % partial])
+			await DialogueManager.dialogue_finished
+			_start_work_week()
 	)
 
 	# Freddie — colega que dá carona (referência real)

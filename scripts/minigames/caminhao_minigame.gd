@@ -170,14 +170,16 @@ func _finish_success() -> void:
 	var reward := _delivered * SAT_PER_DEL + time_bonus
 	_status_lbl.text = "✅  Todas as entregas feitas!\n+%d sats (bônus de tempo: +%d)" % [reward, time_bonus]
 	await get_tree().create_timer(2.0, true).timeout
-	_finish(reward)
+	if is_instance_valid(self) and not is_queued_for_deletion():
+		_finish(reward)
 
 func _time_up() -> void:
 	_running = false
 	var reward := _delivered * SAT_PER_DEL
 	_status_lbl.text = "⏱  Tempo esgotado! %d/5 entregas — +%d sats" % [_delivered, reward]
 	await get_tree().create_timer(2.0, true).timeout
-	_finish(max(reward, 5))
+	if is_instance_valid(self) and not is_queued_for_deletion():
+		_finish(max(reward, 5))
 
 func _refresh_visuals() -> void:
 	for r in range(ROWS):

@@ -98,3 +98,11 @@ func make_dpad(parent: Control, on_dir: Callable) -> void:
 		var dir_val: Vector2 = d[2]
 		btn.pressed.connect(func(): on_dir.call(dir_val))
 		container.add_child(btn)
+
+func _exit_tree() -> void:
+	# Garante restauração de estado mesmo se a cena mudar enquanto mini-game roda
+	if BattleManager.locked:
+		BattleManager.locked = false
+	AutonomyBar.set_active(true)
+	if is_instance_valid(_player_ref) and _player_ref.has_method("set_can_move"):
+		_player_ref.set_can_move(true)

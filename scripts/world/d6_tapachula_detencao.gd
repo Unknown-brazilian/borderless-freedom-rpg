@@ -67,12 +67,12 @@ func _start_negotiation() -> void:
 		])
 
 	await DialogueManager.dialogue_finished
-	_map_complete = true
 	DialogueManager.start([
 		"🍽️  Você comemora com uma refeição em Tapachula.",
 		"Pequena vitória. Mas ainda faltam 3.000 km.",
 	])
 	await DialogueManager.dialogue_finished
+	_map_complete = true   # após último diálogo — evita transição mid-sentence
 
 func _setup_npcs() -> void:
 	spawn_npc(Vector2i(2, 40), "Detento Hondurenho",

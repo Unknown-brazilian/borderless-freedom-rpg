@@ -36,9 +36,9 @@ var _sprite:         ColorRect = null
 var _exclamation:    Label = null
 var _defeat_key:     String = ""
 
-# Bounds do mapa (tiles 0..10 × tiles 0..48, cell=64px, com margem)
-const MAP_MIN := Vector2(64.0, 128.0)
-const MAP_MAX := Vector2(576.0, 2944.0)
+# Bounds do mapa — override via spawn_patrol_enemy(patrol_spread, map_min, map_max)
+@export var map_min: Vector2 = Vector2(64.0, 128.0)
+@export var map_max: Vector2 = Vector2(576.0, 2944.0)
 
 func _ready() -> void:
 	add_to_group("enemy")
@@ -64,7 +64,7 @@ func _ready() -> void:
 		patrol_waypoints[i] = _clamp_pos(patrol_waypoints[i])
 
 func _clamp_pos(p: Vector2) -> Vector2:
-	return Vector2(clampf(p.x, MAP_MIN.x, MAP_MAX.x), clampf(p.y, MAP_MIN.y, MAP_MAX.y))
+	return Vector2(clampf(p.x, map_min.x, map_max.x), clampf(p.y, map_min.y, map_max.y))
 
 func _create_visuals() -> void:
 	# Tentar carregar sprite PNG de fiscal

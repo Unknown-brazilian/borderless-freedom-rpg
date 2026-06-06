@@ -106,3 +106,8 @@ func _on_refuse() -> void:
 	AutonomyBar.set_active(true)
 	emit_signal("offer_refused", _event_data.get("id", ""))
 	queue_free()
+
+func _exit_tree() -> void:
+	# Garantia: restaura estado mesmo se cena mudar com oferta aberta
+	Engine.time_scale = 1.0
+	AutonomyBar.set_active(true)

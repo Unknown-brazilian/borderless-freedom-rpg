@@ -174,9 +174,12 @@ func _try_push_pallet(pallet_pos: Vector2i, dir: Vector2i) -> void:
 			_pallet_pos[i] = behind
 			break
 
+	# Ajustar contador de paletes nos alvos
 	if on_target and old_type == Cell.PALLET:
 		_solved += 1
 		AudioManager.play_sfx("coin")
+	elif not on_target and old_type == Cell.PALLET_ON_TARGET:
+		_solved -= 1   # pallet saiu do alvo
 
 	_player_pos = pallet_pos
 	_check_win()

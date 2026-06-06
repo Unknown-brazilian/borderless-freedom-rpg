@@ -41,7 +41,9 @@ func _setup_npcs() -> void:
 	)
 	karel.first_interact.connect(func(_n):
 		await DialogueManager.dialogue_finished
-		_launch_obra()
+		# Verificar se é o diálogo do Karel que terminou (não outro NPC)
+		if not _map_complete:
+			_launch_obra()
 	)
 
 	spawn_npc(Vector2i(7, 28), "Colega Turco",
