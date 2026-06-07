@@ -69,7 +69,9 @@
       "tagline": "Aprenda a ter renda passiva com Bitcoin",
       "trigger_dungeon_min": 1,
       "trigger_dungeon_max": 9,
-      "trigger_dungeon_boost": [7],
+      "trigger_dungeon_boost": [
+        7
+      ],
       "boost_multiplier": 2.5,
       "base_probability": 0.15,
       "window_seconds": 8,
@@ -115,7 +117,15 @@
         "loss_percent": 99.9,
         "loss_cap_percent": 60,
         "animation": "depeg_spiral",
-        "depeg_steps": [1.00, 0.92, 0.75, 0.50, 0.20, 0.05, 0.001],
+        "depeg_steps": [
+          1.0,
+          0.92,
+          0.75,
+          0.5,
+          0.2,
+          0.05,
+          0.001
+        ],
         "news_headline": "UST_Bostil perde o peg — espiral da morte iniciada"
       },
       "ignore_outcome": {
@@ -133,7 +143,7 @@
       "tagline": "Endossado pelo homem mais rico do mundo",
       "trigger_dungeon_min": 1,
       "trigger_dungeon_max": 9,
-      "base_probability": 0.10,
+      "base_probability": 0.1,
       "window_seconds": 8,
       "default_action": "ignore",
       "actor_description": "Tweet gigante de bilionário excêntrico na tela",
@@ -163,9 +173,11 @@
       "tagline": "Arte digital exclusiva para os iluminados",
       "trigger_dungeon_min": 1,
       "trigger_dungeon_max": 9,
-      "trigger_dungeon_boost": [7],
+      "trigger_dungeon_boost": [
+        7
+      ],
       "boost_multiplier": 1.8,
-      "base_probability": 0.10,
+      "base_probability": 0.1,
       "window_seconds": 8,
       "default_action": "ignore",
       "actor_description": "Influencer com camiseta de grife, fone de ouvido pendurado",
@@ -287,7 +299,11 @@
       "tagline": "O Bitcoin verdadeiro — melhorado",
       "trigger_dungeon_min": 1,
       "trigger_dungeon_max": 9,
-      "trigger_dungeon_boost": [1, 7, 8],
+      "trigger_dungeon_boost": [
+        1,
+        7,
+        8
+      ],
       "boost_multiplier": 1.5,
       "base_probability": 0.09,
       "window_seconds": 8,
@@ -308,6 +324,90 @@
         "glossary_unlock": "forks_dont_copy_network",
         "message": "BST hoje vale menos de 1% do valor do Bitcoin original.\n'Craig Satoshi' perdeu todos os processos judiciais que moveu.\nVocê teria perdido: {lost_sats} sats em valor relativo ({lost_pct}% do seu stack).",
         "lesson": "Ninguém melhora o Bitcoin fazendo um fork. O efeito de rede não se copia."
+      }
+    },
+    {
+      "id": "EVT-011",
+      "name": "Fernando Ulrich",
+      "short_name": "Fernando Ulrich",
+      "reference": "Sátira: recomendar Tesouro Direto em vez de Bitcoin",
+      "trigger_dungeon_min": 1,
+      "trigger_dungeon_max": 2,
+      "base_probability": 0.0,
+      "window_seconds": 0,
+      "default_action": "ignore",
+      "actor_description": "Economista de terno, fala mansa, ar professoral",
+      "pitch": "Você recebeu R$100 mil de herança? Esquece esse Bitcoin volátil.\nBitcoin a R$88 mil vai despencar. Põe tudo no Tesouro Direto —\nrenda fixa, garantida pelo governo. Seguro é seguro, jovem.",
+      "accept_button": "COMPRAR TESOURO DIRETO",
+      "ignore_button": "Prefiro Bitcoin",
+      "accept_outcome": {
+        "delay_phases": 2,
+        "loss_percent": 60,
+        "loss_cap_percent": 40,
+        "news_headline": "Governo imprime dinheiro; inflação corrói o Tesouro Direto",
+        "news_headline_2": "Bitcoin dispara enquanto a renda fixa perde para a inflação"
+      },
+      "ignore_outcome": {
+        "sat_bonus_flat": 152866242,
+        "glossary_unlock": "fix_money",
+        "message": "Você ignorou o conselho e comprou Bitcoin na queda, a R$78.500.\nSeus R$120.000 viraram ₿1,53 — valem muito mais hoje.\nO Tesouro Direto? Corroído pela impressão de dinheiro do governo.",
+        "lesson": "Renda fixa é autorização pro governo imprimir. Bitcoin é escasso."
+      }
+    },
+    {
+      "id": "EVT-012",
+      "name": "Augusto Backes",
+      "short_name": "Augusto Backes",
+      "reference": "Sátira: influenciador de ações",
+      "trigger_dungeon_min": 1,
+      "trigger_dungeon_max": 2,
+      "base_probability": 0.0,
+      "window_seconds": 0,
+      "default_action": "ignore",
+      "actor_description": "Analista animado com gráficos na mão",
+      "pitch": "Bitcoin? Coisa de doido. Eu te mostro a small cap certa.\nEssa aqui vai 10x, confia no meu relatório. Compra agora\nantes que suba! Renda variável de verdade é na bolsa.",
+      "accept_button": "COMPRAR A AÇÃO",
+      "ignore_button": "Não, obrigado",
+      "accept_outcome": {
+        "delay_phases": 2,
+        "loss_percent": 70,
+        "loss_cap_percent": 40,
+        "news_headline": "Small cap recomendada despenca 80% após pump",
+        "news_headline_2": "Investidores presos no topo; analista já recomenda outra"
+      },
+      "ignore_outcome": {
+        "sat_bonus_percent": 5,
+        "glossary_unlock": "dyor",
+        "message": "A ação subiu 5% e despencou 80%. Quem entrou no topo ficou preso.\nVocê teria perdido: {lost_sats} sats ({lost_pct}% do stack).",
+        "lesson": "Stock picking é loteria. Bitcoin é poupança em dinheiro forte."
+      }
+    },
+    {
+      "id": "EVT-013",
+      "name": "Orlando (Empiricus)",
+      "short_name": "Empiricus",
+      "reference": "Sátira: propaganda 'Bettina, 1 milhão'",
+      "trigger_dungeon_min": 1,
+      "trigger_dungeon_max": 2,
+      "base_probability": 0.0,
+      "window_seconds": 0,
+      "default_action": "ignore",
+      "actor_description": "Vendedor entusiasmado com slide de 'casos de sucesso'",
+      "pitch": "Quer ser a próxima Bettina? De R$1.500 a R$1 milhão!\nAssina nossa série premium de ações e siga as recomendações.\nÉ só R$ por mês. Quem não arrisca não fica rico!",
+      "accept_button": "ASSINAR A SÉRIE",
+      "ignore_button": "Vou guardar meus sats",
+      "accept_outcome": {
+        "delay_phases": 1,
+        "loss_percent": 50,
+        "loss_cap_percent": 30,
+        "news_headline": "Assinatura renovada automaticamente; recomendações furadas",
+        "news_headline_2": "'Bettina' era propaganda; retorno real ficou muito abaixo"
+      },
+      "ignore_outcome": {
+        "sat_bonus_percent": 5,
+        "glossary_unlock": "marketing_vs_substancia",
+        "message": "A série custou caro e as dicas não bateram o CDI.\nVocê teria perdido: {lost_sats} sats ({lost_pct}% do stack).",
+        "lesson": "Se vendem o sonho com força, o produto costuma ser a propaganda."
       }
     }
   ],
