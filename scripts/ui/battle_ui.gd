@@ -184,6 +184,7 @@ func _impact(host: ColorRect, battler: TextureRect, delta: int) -> void:
 	Juice.float_text(self, center, "-%d" % absf(delta), Color(1, 0.85, 0.3))
 	Juice.burst(self, center, Color(1, 0.8, 0.2), 12)
 	Juice.hit_stop(0.06)
+	AudioManager.sfx("hit")
 
 ## Morte do inimigo: tomba (rotação) + cai + some, com poeira e shake.
 func _play_death(battler: TextureRect, host: ColorRect) -> void:
@@ -207,12 +208,15 @@ func _on_battle_ended(result: String) -> void:
 		"victory":
 			_lbl_log.text = "🏆  Vitória!"
 			_play_death(_enemy_tex, _rect_enemy)
+			AudioManager.sfx("victory")
 			await get_tree().create_timer(2.0).timeout
 		"defeat":
 			_lbl_log.text = "💀  Derrota..."
+			AudioManager.sfx("defeat")
 			await get_tree().create_timer(2.0).timeout
 		"escaped":
 			_lbl_log.text = "🏃  Fugiu!"
+			AudioManager.sfx("door")
 			await get_tree().create_timer(1.0).timeout
 	BattleManager.reset()
 	hide()
