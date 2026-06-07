@@ -23,7 +23,8 @@ func _setup_npcs() -> void:
 	# Binóculos escondidos num canto — sem eles os guardas ficam invisíveis.
 	spawn_pickup(Vector2i(20, 68), "item_binoculo", "🔭", "Binóculos! Agora você enxerga os guardas.")
 	spawn_pickup(Vector2i(3, 56), "", "💧", "Água! +50 hidratação", "water", 50.0)
-	# Acampamento (descansar + salvar) e obstáculos no caminho.
+	# Loja/casa (entrar e explorar) + acampamento + obstáculos.
+	spawn_building(Vector2i(8, 66), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
 	spawn_campsite(Vector2i(6, 52))
 	spawn_obstacle(Vector2i(5, 60))
 	spawn_obstacle(Vector2i(3, 46))

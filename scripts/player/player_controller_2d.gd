@@ -37,9 +37,9 @@ var _can_move:  bool    = true
 func _ready() -> void:
 	add_to_group("player")
 	set_collision_layer_value(2, true)
-	set_collision_mask_value(1, true)   # world
-	set_collision_mask_value(3, true)   # npc
-	set_collision_mask_value(4, true)   # enemy
+	set_collision_mask_value(1, true)    # world (obstáculos)
+	set_collision_mask_value(3, true)    # npc (bate pra interagir)
+	set_collision_mask_value(4, false)   # NÃO bloqueia em inimigos — batalha por proximidade
 
 	# Fallback: se a textura não veio da cena, carrega via ResourceLoader
 	# (funciona no editor E no APK; Image.load_from_file falha dentro do .pck).
