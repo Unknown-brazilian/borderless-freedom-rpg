@@ -17,7 +17,7 @@ var _interacted_once: bool = false
 func _ready() -> void:
 	add_to_group("npc")
 	set_collision_layer_value(3, true)
-	set_collision_mask_value(0, false)
+	collision_mask = 0   # NPC não colide com nada por máscara (apenas é detectado)
 	_create_sprite()
 
 @export var sprite_texture_path: String = ""   # path para PNG, ex: "res://assets/sprites/npc_ally.png"
@@ -40,18 +40,41 @@ func _create_sprite() -> void:
 			lbl.add_theme_color_override("font_color", Color.WHITE)
 			add_child(lbl)
 			return
-	# Fallback
-	_sprite = ColorRect.new()
-	_sprite.size = Vector2(48, 48)
-	_sprite.position = Vector2(-24, -40)
-	_sprite.color = sprite_color
-	add_child(_sprite)
+	# Fallback: sprite humanoide padrão tingido pela cor identificadora do NPC.
+	var label_y := -70.0
+	var img := Image.load_from_file("res://assets/sprites/npc_neutral.png")
+	if img:
+		var spr := Sprite2D.new()
+		spr.texture  = ImageTexture.create_from_image(img)
+		spr.scale    = Vector2(2.0, 2.0)
+		spr.position = Vector2(0, -22)
+		spr.modulate = sprite_color.lerp(Color.WHITE, 0.35)   # tinta suave
+		add_child(spr)
+		_add_shadow()
+		label_y = -52.0
+	else:
+		_sprite = ColorRect.new()
+		_sprite.size = Vector2(48, 48)
+		_sprite.position = Vector2(-24, -40)
+		_sprite.color = sprite_color
+		add_child(_sprite)
 	var lbl := Label.new()
 	lbl.text = npc_name
-	lbl.position = Vector2(-40, -70)
+	lbl.position = Vector2(-40, label_y)
 	lbl.add_theme_font_size_override("font_size", 18)
 	lbl.add_theme_color_override("font_color", Color.WHITE)
+	lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	lbl.add_theme_constant_override("outline_size", 5)
 	add_child(lbl)
+
+## Sombra elíptica simples sob o NPC.
+func _add_shadow() -> void:
+	var sh := ColorRect.new()
+	sh.size = Vector2(40, 12)
+	sh.position = Vector2(-20, 0)
+	sh.color = Color(0, 0, 0, 0.25)
+	sh.z_index = -1
+	add_child(sh)
 
 func on_interact(_player: Node) -> void:
 	if DialogueManager.is_active() or _interacted_once:

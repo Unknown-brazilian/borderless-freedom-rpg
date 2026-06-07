@@ -17,9 +17,19 @@ var _exit_tile:       Vector2i = Vector2i(4, 2)
 var _player_start:    Vector2i = Vector2i(4, 44)
 var _boss_trigger_dist: int = 3   # tiles de distância para triggar boss
 
+# ─── Terreno (preenchido em runtime a partir dos PNGs de tile) ────────────────
+## Dimensões do mapa em tiles. Subclasses podem sobrescrever em _ready antes de super().
+var _map_w: int = 23
+var _map_h: int = 47
+## Tema de chão: "grass" (default), "floor" (interior), "water" (margem).
+var _ground_key: String = "grass"
+var _tile_ids: Dictionary = {}
+
 func _ready() -> void:
 	AutonomyBar.refill_all()
 	AutonomyBar.set_active(true)
+
+	_paint_ground()
 
 	_player.position = Vector2(
 		_player_start.x * TILE_SIZE + TILE_SIZE / 2,
@@ -44,6 +54,63 @@ func _process(delta: float) -> void:
 	if is_instance_valid(_player):
 		_camera.position = _camera.position.lerp(_player.position, delta * 6.0)
 	_check_exit()
+
+# ─── Terreno ──────────────────────────────────────────────────────────────────
+
+## Constrói uma TileSet em runtime com uma fonte (atlas) por textura de tile.
+## As texturas são 32×32; a TileMap é escalada 2× para casar com o grid de 64px.
+func _build_tileset() -> TileSet:
+	var ts := TileSet.new()
+	ts.tile_size = Vector2i(32, 32)
+	_tile_ids.clear()
+	var defs := {
+		"grass": "res://assets/tiles/grass.png",
+		"path":  "res://assets/tiles/path.png",
+		"wall":  "res://assets/tiles/wall.png",
+		"water": "res://assets/tiles/water.png",
+		"floor": "res://assets/tiles/floor_indoor.png",
+	}
+	for key in defs:
+		var tex: Texture2D = load(defs[key])
+		if tex == null:
+			continue
+		var src := TileSetAtlasSource.new()
+		src.texture = tex
+		src.texture_region_size = Vector2i(32, 32)
+		src.create_tile(Vector2i(0, 0))
+		_tile_ids[key] = ts.add_source(src)
+	return ts
+
+## Pinta chão + caminho central + borda de parede em toda a área do mapa.
+func _paint_ground() -> void:
+	if not is_instance_valid(_tilemap):
+		return
+	_tilemap.tile_set = _build_tileset()
+	_tilemap.scale = Vector2(2, 2)
+	_tilemap.z_index = -10
+	_tilemap.clear()
+
+	var ground: String = _ground_key if _tile_ids.has(_ground_key) else "grass"
+	var path_min: int = maxi(1, _player_start.x - 1)
+	var path_max: int = mini(_map_w - 2, _player_start.x + 1)
+
+	for y in range(_map_h):
+		for x in range(_map_w):
+			var key := ground
+			if x == 0 or y == 0 or x == _map_w - 1 or y == _map_h - 1:
+				key = "wall"
+			elif x >= path_min and x <= path_max:
+				key = "path"
+			if not _tile_ids.has(key):
+				key = ground
+			_tilemap.set_cell(0, Vector2i(x, y), _tile_ids[key], Vector2i(0, 0))
+
+	# Trava a câmera nos limites do mapa para não exibir o vazio fora dele.
+	if is_instance_valid(_camera):
+		_camera.limit_left   = 0
+		_camera.limit_top    = 0
+		_camera.limit_right  = _map_w * TILE_SIZE
+		_camera.limit_bottom = _map_h * TILE_SIZE
 
 # ─── Overrides nos filhos ─────────────────────────────────────────────────────
 func _setup_npcs() -> void:   pass
@@ -145,10 +212,11 @@ func spawn_patrol_enemy(tile: Vector2i, name_str: String, hp: int, atk: int,
 	var world_pos := _tile_to_world(tile)
 	e.position = world_pos
 	var spread := patrol_spread * TILE_SIZE
-	e.patrol_waypoints = [
+	var wps: Array[Vector2] = [
 		world_pos + Vector2(spread, 0),
 		world_pos + Vector2(-spread, 0),
 	]
+	e.patrol_waypoints = wps
 	add_child(e)
 
 ## Spawn NPC de scam cripto (sem timeout, pitch convincente).

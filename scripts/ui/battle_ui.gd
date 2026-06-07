@@ -4,6 +4,7 @@
 
 extends CanvasLayer
 
+@onready var _battle_area:     Node        = $BattleArea
 @onready var _lbl_enemy_name:  Label       = $BattleArea/EnemyPanel/LabelEnemyName
 @onready var _lbl_enemy_hp:    Label       = $BattleArea/EnemyPanel/LabelEnemyHP
 @onready var _bar_enemy_hp:    ProgressBar = $BattleArea/EnemyPanel/BarEnemyHP
@@ -19,6 +20,8 @@ extends CanvasLayer
 @onready var _btn_run:         Button      = $ActionArea/Grid/BtnRun
 
 var _buttons_enabled: bool = false
+var _prev_enemy_hp:   int  = -1
+var _prev_player_hp:  int  = -1
 
 func _ready() -> void:
 	BattleManager.battle_started.connect(_on_battle_started)
@@ -49,6 +52,10 @@ func _on_battle_started(enemy_data: Dictionary) -> void:
 	_lbl_log.text = "Um %s apareceu!" % enemy_data.get("name", "inimigo")
 	_set_buttons_enabled(false)
 	_btn_run.disabled = is_boss
+	_prev_enemy_hp  = -1
+	_prev_player_hp = -1
+	# Entrada do inimigo com um pop.
+	Juice.pop(_rect_enemy, 1.3, 0.35)
 
 func _on_player_turn() -> void:
 	_set_buttons_enabled(true)
@@ -66,11 +73,37 @@ func _on_hp_changed(who: String, new_hp: int, max_hp: int) -> void:
 		_bar_player_hp.value     = new_hp
 		_lbl_player_hp.text      = "HP: %d/%d" % [new_hp, max_hp]
 		_bar_player_hp.modulate  = _hp_color(float(new_hp) / float(max_hp))
+		_juice_hp(_rect_player, _prev_player_hp, new_hp)
+		_prev_player_hp = new_hp
 	else:
 		_bar_enemy_hp.max_value = max_hp
 		_bar_enemy_hp.value     = new_hp
 		_lbl_enemy_hp.text      = "HP: %d" % new_hp
 		_bar_enemy_hp.modulate  = _hp_color(float(new_hp) / float(max_hp))
+		_juice_hp(_rect_enemy, _prev_enemy_hp, new_hp)
+		_prev_enemy_hp = new_hp
+
+## Dispara o feedback de impacto conforme a variação de HP de um combatente.
+## Efeitos flutuantes são ancorados na própria CanvasLayer (espaço de tela),
+## pois o BattleArea é um Container que reposiciona seus filhos.
+func _juice_hp(rect: ColorRect, prev_hp: int, new_hp: int) -> void:
+	if prev_hp < 0:
+		return   # primeira atualização (inicialização) — sem feedback
+	var delta := new_hp - prev_hp
+	if delta == 0:
+		return
+	rect.pivot_offset = rect.size * 0.5
+	var screen_center := rect.global_position + rect.size * 0.5
+	if delta < 0:   # tomou dano
+		Juice.flash(rect, Color(1, 1, 1), 0.18)
+		Juice.pop(rect, 0.82, 0.2)
+		Juice.shake_node(_battle_area, minf(8.0 + absf(delta) * 0.6, 24.0), 0.3)
+		Juice.float_text(self, screen_center, "-%d" % absf(delta), Color(1, 0.85, 0.3))
+		Juice.burst(self, screen_center, Color(1, 0.8, 0.2), 12)
+		Juice.hit_stop(0.06)
+	else:           # curou
+		Juice.flash(rect, Color(0.4, 1, 0.4), 0.2)
+		Juice.float_text(self, screen_center, "+%d" % delta, Color(0.4, 1, 0.4))
 
 func _on_battle_ended(result: String) -> void:
 	_set_buttons_enabled(false)
