@@ -29,6 +29,10 @@ var _ground_tint: Color = Color.WHITE
 var _no_path: bool = false
 var _tile_ids: Dictionary = {}
 var _last_step_msec: int = 0   # throttle do SFX de passo
+## Ambiência sonora da dungeon. Faixa base única ("dungeon"); o pitch dá o clima
+## de cada região (override em _setup_theme).
+var _music_track: String = "dungeon"
+var _music_pitch: float  = 1.0
 
 func _ready() -> void:
 	AutonomyBar.refill_all()
@@ -36,6 +40,7 @@ func _ready() -> void:
 
 	_setup_theme()
 	_paint_ground()
+	AudioManager.set_overworld_music(_music_track, _music_pitch)
 
 	_player.position = Vector2(
 		_player_start.x * TILE_SIZE + TILE_SIZE / 2,

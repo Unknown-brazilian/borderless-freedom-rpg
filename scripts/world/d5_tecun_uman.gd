@@ -77,3 +77,4 @@ func _get_boss_data() -> Dictionary:
 
 func _setup_theme() -> void:
 	_ground_tint = Color(0.85, 0.95, 1.0)
+	_music_pitch = 1.03

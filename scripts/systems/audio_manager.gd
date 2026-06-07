@@ -60,7 +60,10 @@ func _wire_signals() -> void:
 
 # ── API pública ──────────────────────────────────────────────────────────────
 
-func music(track: String) -> void:
+func music(track: String, pitch: float = 1.0) -> void:
+	# Pitch é aplicado sempre (mesmo se a faixa não mudar) — dá "clima" por região.
+	if is_instance_valid(_bgm):
+		_bgm.pitch_scale = pitch
 	if _current_bgm == track:
 		return
 	var path := MUSIC_DIR + track + ".ogg"
@@ -72,6 +75,20 @@ func music(track: String) -> void:
 		stream.loop = true
 	_bgm.stream  = stream
 	_bgm.play()
+
+# ── Música de overworld (definida por cada dungeon) ───────────────────────────
+var _overworld_track: String = "dungeon"
+var _overworld_pitch: float  = 1.0
+
+## Cada mapa declara sua ambiência ao entrar; a batalha volta a ela ao terminar.
+func set_overworld_music(track: String, pitch: float = 1.0) -> void:
+	_overworld_track = track
+	_overworld_pitch = pitch
+	music(track, pitch)
+
+## Retoma a música de overworld atual (chamado pelo BattleManager ao fim da luta).
+func play_overworld() -> void:
+	music(_overworld_track, _overworld_pitch)
 
 func stop_music() -> void:
 	_current_bgm = ""
