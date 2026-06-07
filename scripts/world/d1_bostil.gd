@@ -50,8 +50,8 @@ func _setup_fiscais() -> void:
 
 func _setup_events() -> void:
 	# 2 NPCs de scam cripto — aparecem convincentes, sem timeout
-	# Figurões cripto/financeiros BR (Bostil = Brasil), espalhados pela estrada.
-	spawn_crypto_npc(Vector2i(7, 66), "EVT-011")   # Fernando Ulrich — Tesouro Direto vs Bitcoin
+	# Figurões financeiros BR (Bostil = Brasil), espalhados pela estrada.
+	# (Fernando Ulrich aparece só em D6/Mexistão, como "vídeo do YouTube".)
 	spawn_crypto_npc(Vector2i(2, 50), "EVT-012")   # Augusto Backes — "essa small cap vai 10x"
 	spawn_crypto_npc(Vector2i(8, 22), "EVT-013")   # Empiricus — "seja a próxima Bettina"
 

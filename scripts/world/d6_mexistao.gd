@@ -20,6 +20,20 @@ func _intro_dialogue() -> void:
 	])
 	await DialogueManager.dialogue_finished
 	AutonomyBar.consume("energy", 10.0)
+	_maybe_show_ulrich_video()
+
+## CDMX — "vídeo recomendado" do Fernando Ulrich (Tesouro Direto vs Bitcoin).
+## Aparece uma vez, como uma janelinha de YouTube.
+func _maybe_show_ulrich_video() -> void:
+	if WorldManager.get_flag("ulrich_video_seen", false):
+		return
+	WorldManager.set_flag("ulrich_video_seen", true)
+	await get_tree().create_timer(1.4, true, false, true).timeout
+	DialogueManager.start(["📱  Um vídeo apareceu nos recomendados..."])
+	await DialogueManager.dialogue_finished
+	var vid := CanvasLayer.new()
+	vid.set_script(load("res://scripts/ui/ulrich_video_ui.gd"))
+	get_tree().current_scene.add_child(vid)
 
 func _setup_npcs() -> void:
 	spawn_npc(Vector2i(6, 42), "Migrante Veterano",
