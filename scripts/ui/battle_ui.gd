@@ -85,10 +85,20 @@ func _on_battle_started(enemy_data: Dictionary) -> void:
 	_btn_run.disabled = is_boss
 	_prev_enemy_hp  = -1
 	_prev_player_hp = -1
+	# Reseta transform dos sprites (reusados entre batalhas: morte/lunge anteriores).
+	_reset_battler(_enemy_tex)
+	_reset_battler(_player_tex)
 	# Entrada do inimigo com um pop.
 	if is_instance_valid(_enemy_tex):
 		_enemy_tex.pivot_offset = _enemy_tex.size * 0.5
 	Juice.pop(_enemy_tex, 1.3, 0.35)
+
+func _reset_battler(b: TextureRect) -> void:
+	if is_instance_valid(b):
+		b.position = Vector2.ZERO
+		b.scale    = Vector2.ONE
+		b.rotation = 0.0
+		b.modulate = Color.WHITE
 
 func _on_player_turn() -> void:
 	_set_buttons_enabled(true)
@@ -96,6 +106,20 @@ func _on_player_turn() -> void:
 
 func _on_enemy_turn() -> void:
 	_set_buttons_enabled(false)
+	_telegraph(_enemy_tex)
+
+## Anticipação antes do golpe inimigo: incha + tinge de vermelho, depois relaxa.
+## Roda dentro da janela de ~0.8s antes do dano (BattleManager._enemy_turn).
+func _telegraph(battler: TextureRect) -> void:
+	if not is_instance_valid(battler):
+		return
+	battler.pivot_offset = battler.size * 0.5
+	var t := battler.create_tween()
+	t.tween_property(battler, "scale", Vector2(1.18, 1.18), 0.35) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.parallel().tween_property(battler, "modulate", Color(1.5, 0.6, 0.6), 0.35)
+	t.tween_property(battler, "scale", Vector2.ONE, 0.16)
+	t.parallel().tween_property(battler, "modulate", Color.WHITE, 0.16)
 
 func _on_action_resolved(log_text: String) -> void:
 	_lbl_log.text = log_text
@@ -161,11 +185,28 @@ func _impact(host: ColorRect, battler: TextureRect, delta: int) -> void:
 	Juice.burst(self, center, Color(1, 0.8, 0.2), 12)
 	Juice.hit_stop(0.06)
 
+## Morte do inimigo: tomba (rotação) + cai + some, com poeira e shake.
+func _play_death(battler: TextureRect, host: ColorRect) -> void:
+	if not is_instance_valid(battler):
+		return
+	battler.pivot_offset = battler.size * 0.5
+	var center := host.global_position + host.size * 0.5
+	Juice.burst(self, center, Color(0.8, 0.8, 0.8), 18, 260.0)
+	Juice.shake_node(_battle_area, 16.0, 0.35)
+	var t := battler.create_tween()
+	t.set_parallel(true)
+	t.tween_property(battler, "rotation", deg_to_rad(85.0), 0.55) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	t.tween_property(battler, "position:y", battler.position.y + 70.0, 0.55) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	t.tween_property(battler, "modulate:a", 0.0, 0.7).set_delay(0.1)
+
 func _on_battle_ended(result: String) -> void:
 	_set_buttons_enabled(false)
 	match result:
 		"victory":
 			_lbl_log.text = "🏆  Vitória!"
+			_play_death(_enemy_tex, _rect_enemy)
 			await get_tree().create_timer(2.0).timeout
 		"defeat":
 			_lbl_log.text = "💀  Derrota..."
