@@ -100,14 +100,15 @@ func _apply_equipment(player: Node) -> void:
 		cap.color = CAPACETES[capacete_index]["cor"]
 		cap.z_index = 1
 		player.add_child(cap)
-	# Bike: ícone aos pés do player.
+	# Bike: desenho real aos pés do player (atrás dele).
 	if bike_index > 0:
-		var bike := Label.new()
+		var bike = preload("res://scripts/player/bike_sprite.gd").new()
 		bike.name = "BikeIcon"
-		bike.text = BIKES[bike_index]["label"]
-		bike.position = Vector2(-20, -8)
-		bike.add_theme_font_size_override("font_size", 30)
-		bike.z_index = 2
+		bike.position = Vector2(0, 2)
+		bike.z_index = -1   # player fica "em cima" da bike
+		var bike_colors := [Color(0.2,0.2,0.25), Color(0.25,0.3,0.5), Color(0.3,0.5,0.3), Color(0.5,0.45,0.15)]
+		bike.color = bike_colors[clampi(bike_index, 0, bike_colors.size()-1)]
+		bike.electric = bike_index >= 3   # "Elétrica"
 		player.add_child(bike)
 
 func _apply_skin(player: Node) -> void:

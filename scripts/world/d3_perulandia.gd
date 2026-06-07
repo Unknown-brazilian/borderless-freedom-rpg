@@ -21,6 +21,7 @@ func _intro_dialogue() -> void:
 
 func _setup_npcs() -> void:
 	spawn_pickup(Vector2i(4, 28), "", "💧", "Água! +50 hidratação", "water", 50.0)
+	spawn_campsite(Vector2i(7, 32))
 	spawn_npc(Vector2i(6, 42), "Comerciante Quechua",
 		["Bem-vindo ao altiplano.",
 		 "Os fiscais aqui confiscam tudo.",
