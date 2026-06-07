@@ -20,6 +20,7 @@ func _intro_dialogue() -> void:
 	AutonomyBar.consume("water",  10.0)
 
 func _setup_npcs() -> void:
+	spawn_pickup(Vector2i(4, 28), "", "💧", "Água! +50 hidratação", "water", 50.0)
 	spawn_npc(Vector2i(6, 42), "Comerciante Quechua",
 		["Bem-vindo ao altiplano.",
 		 "Os fiscais aqui confiscam tudo.",

@@ -22,6 +22,7 @@ func _intro_dialogue() -> void:
 func _setup_npcs() -> void:
 	# Binóculos escondidos num canto — sem eles os guardas ficam invisíveis.
 	spawn_pickup(Vector2i(20, 68), "item_binoculo", "🔭", "Binóculos! Agora você enxerga os guardas.")
+	spawn_pickup(Vector2i(3, 56), "", "💧", "Água! +50 hidratação", "water", 50.0)
 	spawn_npc(Vector2i(6, 70), "Migrante Beto",
 		["Ei! Você está começando sua jornada?",
 		 "Cuidado com os Fiscais mais à frente.",

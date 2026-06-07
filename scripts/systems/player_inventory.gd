@@ -31,6 +31,8 @@ const ITEM_DEFS: Dictionary = {
 	"item_radar_solar": {"name": "Radar Solar",      "icon": "🛰️", "desc": "Rota ótima detectada +20 comida"},
 	"item_binoculo":    {"name": "Binóculos",        "icon": "🔭", "desc": "Revela os guardas no mapa"},
 	"item_oculos_noturno": {"name": "Óculos Noturnos", "icon": "🕶️", "desc": "Ative para enxergar à noite"},
+	"item_pneu":        {"name": "Pneu",             "icon": "🛞", "desc": "Peça pra remontar a bike"},
+	"item_camara_ar":   {"name": "Câmara de Ar",     "icon": "⭕", "desc": "Peça pra remontar a bike"},
 }
 
 # ─── Estado ───────────────────────────────────────────────────────────────────
