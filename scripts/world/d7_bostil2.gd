@@ -34,9 +34,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 30), "Agente de Deportação I",   170, 28, 86, 85, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 22), "Agente de Deportação II",  180, 31, 86, 90, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(3, 14), "Agente de Deportação III", 190, 34, 130, 95, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 30), "Agente do Dino",   170, 28, 86, 85, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 22), "Agente do Lewandowski",  180, 31, 86, 90, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(3, 14), "Agente do Gilmar", 190, 34, 130, 95, "item_spray", 2)
 
 
 func _setup_events() -> void:

@@ -96,8 +96,8 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 20), "Guarda Rondante", 55, 16, 0, 60, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(7, 32), "Inspetor Correa", 60, 18, 0, 70, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(4, 20), "Guarda do Garduño", 55, 16, 0, 60, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(7, 32), "Inspetor do Encinas", 60, 18, 0, 70, "item_camera", 2)
 
 func _get_boss_id() -> String:
 	return ""

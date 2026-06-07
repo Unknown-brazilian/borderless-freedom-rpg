@@ -140,9 +140,9 @@ func _setup_fiscais() -> void:
 	pass  # Fiscais aparecem apenas se o player escolher a selva — veja _on_chose_jungle()
 
 func _spawn_jungle_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 30), "Patrulha da Selva I",  140, 22, 73, 70, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 20), "Patrulha da Selva II", 155, 25, 80, 80, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(3, 12), "Agente de Fronteira",  170, 28, 110, 90, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 30), "Patrulha do Martinelli",  140, 22, 73, 70, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 20), "Patrulha do Mulino", 155, 25, 80, 80, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(3, 12), "Agente do Cortizo",  170, 28, 110, 90, "item_spray", 2)
 
 
 func _setup_events() -> void:

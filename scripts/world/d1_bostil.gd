@@ -42,10 +42,10 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Fiscais patrulheiros — visíveis e móveis como especificado no GDD
-	spawn_patrol_enemy(Vector2i(4, 28), "Fiscal Estadual",  30, 10, 12, 18, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 20), "Fiscal Federal",   40, 14, 15, 25, "item_spray", 3)
-	spawn_patrol_enemy(Vector2i(3, 14), "Fiscal Sanitário", 35, 12, 15, 22, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(5, 10), "Fiscal IBAMA",     45, 16, 20, 30, "item_panfleto", 3)
+	spawn_patrol_enemy(Vector2i(4, 28), "Fiscal do Lula",  30, 10, 12, 18, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 20), "Fiscal do Xandão",   40, 14, 15, 25, "item_spray", 3)
+	spawn_patrol_enemy(Vector2i(3, 14), "Fiscal do Haddad", 35, 12, 15, 22, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(5, 10), "Fiscal da Marina",     45, 16, 20, 30, "item_panfleto", 3)
 
 func _setup_events() -> void:
 	# 2 NPCs de scam cripto — aparecem convincentes, sem timeout

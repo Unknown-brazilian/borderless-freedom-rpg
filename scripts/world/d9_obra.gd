@@ -70,7 +70,7 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Inspetor trabalhista pode aparecer
-	spawn_patrol_enemy(Vector2i(5, 22), "Inspetor Trabalhista EU", 80, 22, 30, 65, "item_panfleto", 2)
+	spawn_patrol_enemy(Vector2i(5, 22), "Inspetor do Charles Michel", 80, 22, 30, 65, "item_panfleto", 2)
 
 func _launch_obra() -> void:
 	if is_instance_valid(_player):

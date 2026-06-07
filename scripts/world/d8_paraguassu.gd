@@ -41,9 +41,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 34), "Guarda do Delegado I",   175, 29, 88, 87, "item_radio", 2)
-	spawn_patrol_enemy(Vector2i(5, 24), "Guarda do Delegado II",  185, 32, 88, 92, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(3, 14), "Agente Binacional",      195, 35, 115, 100, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 34), "Guarda do Peña",   175, 29, 88, 87, "item_radio", 2)
+	spawn_patrol_enemy(Vector2i(5, 24), "Guarda do Cartes",  185, 32, 88, 92, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(3, 14), "Agente do Mario Abdo",      195, 35, 115, 100, "item_spray", 2)
 
 
 func _setup_events() -> void:

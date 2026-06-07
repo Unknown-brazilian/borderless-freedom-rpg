@@ -23,15 +23,15 @@ func _setup_npcs() -> void:
 		Color(0.4, 0.65, 0.9)
 	)
 	spawn_npc(Vector2i(2, 32), "Aliado Local",
-		["Alfandegas Múltiplas à frente.",
+		["As alfândegas do Evo estão à frente.",
 		 "Cuide dos seus recursos."],
 		Color(0.969, 0.576, 0.102)
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 30), "Alfandegas Múltiplas I",   120,       18,     60, 60, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 22), "Alfandegas Múltiplas II",  130, 21, 60, 65, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(3, 14), "Alfandegas Múltiplas III", 140, 24, 90, 70, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 30), "Alfândega do Evo",   120,       18,     60, 60, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 22), "Alfândega do Arce",  130, 21, 60, 65, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(3, 14), "Alfândega do Linera", 140, 24, 90, 70, "item_spray", 2)
 
 
 func _setup_events() -> void:

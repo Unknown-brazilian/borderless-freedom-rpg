@@ -37,9 +37,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 34), "Checkpoint 1",    150, 24, 75, 72, "item_panfleto", 2)
-	spawn_patrol_enemy(Vector2i(5, 24), "Checkpoint 2",    165, 27, 80, 82, "item_panfleto", 2)
-	spawn_patrol_enemy(Vector2i(3, 16), "Checkpoint Elite",175, 30, 105, 90, "item_radio", 2)
+	spawn_patrol_enemy(Vector2i(4, 34), "Checkpoint do Ortega",    150, 24, 75, 72, "item_panfleto", 2)
+	spawn_patrol_enemy(Vector2i(5, 24), "Checkpoint da Xiomara",    165, 27, 80, 82, "item_panfleto", 2)
+	spawn_patrol_enemy(Vector2i(3, 16), "Checkpoint do Bukele",175, 30, 105, 90, "item_radio", 2)
 	spawn_patrol_enemy(Vector2i(6, 8),  "Patrulha Final",  155, 25, 80, 78, "item_spray", 2)
 
 

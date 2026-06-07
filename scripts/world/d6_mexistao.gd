@@ -52,10 +52,10 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Patrulheiros visíveis — perseguem o player ao vê-lo
-	spawn_patrol_enemy(Vector2i(4, 36), "Rodolfo da Tapachula",    155, 25, 78, 75, "item_spray", 3)
-	spawn_patrol_enemy(Vector2i(5, 28), "Inspetor de Oaxaca",      165, 28, 83, 82, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(3, 20), "Guarda do Cartel",        175, 31, 88, 90, "item_spray", 4)
-	spawn_patrol_enemy(Vector2i(6, 12), "Agente Federal Mexistão", 185, 34, 93, 95, "item_panfleto", 2)
+	spawn_patrol_enemy(Vector2i(4, 36), "Agente do AMLO",    155, 25, 78, 75, "item_spray", 3)
+	spawn_patrol_enemy(Vector2i(5, 28), "Inspetor da Sheinbaum",      165, 28, 83, 82, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(3, 20), "Guarda do Adán Augusto",        175, 31, 88, 90, "item_spray", 4)
+	spawn_patrol_enemy(Vector2i(6, 12), "Agente do Monreal", 185, 34, 93, 95, "item_panfleto", 2)
 
 func _setup_events() -> void:
 	spawn_crypto_npc(Vector2i(7, 40), "EVT-004")   # TERRAFORMA (D3-D6)

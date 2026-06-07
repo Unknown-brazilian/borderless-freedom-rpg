@@ -59,9 +59,9 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Patrulhas dos canais — mais fortes que checkpoints normais
-	spawn_patrol_enemy(Vector2i(4, 38), "Drone Fluvial A",    200, 38, 110, 999, "item_camera", 3)
-	spawn_patrol_enemy(Vector2i(6, 28), "Agente Aquático B",  210, 40, 115, 999, "item_spray",  2)
-	spawn_patrol_enemy(Vector2i(2, 18), "Rastreador Parcial", 220, 42, 120, 999, "item_camera", 3)
+	spawn_patrol_enemy(Vector2i(4, 38), "Drone da Von der Leyen",    200, 38, 110, 999, "item_camera", 3)
+	spawn_patrol_enemy(Vector2i(6, 28), "Agente do Macron",  210, 40, 115, 999, "item_spray",  2)
+	spawn_patrol_enemy(Vector2i(2, 18), "Rastreador do De Croo", 220, 42, 120, 999, "item_camera", 3)
 
 func _mia_resupply() -> void:
 	_mia_assist_count += 1
