@@ -41,6 +41,11 @@ func _ready() -> void:
 	set_collision_mask_value(3, true)    # npc (bate pra interagir)
 	set_collision_mask_value(4, false)   # NÃO bloqueia em inimigos — batalha por proximidade
 
+	# Rede de segurança: ao fim de QUALQUER batalha, libera o movimento
+	# (cobre todos os tipos de inimigo; o fluxo de boss reativa o bloqueio depois).
+	if not BattleManager.battle_ended.is_connected(_on_any_battle_ended):
+		BattleManager.battle_ended.connect(_on_any_battle_ended)
+
 	# Fallback: se a textura não veio da cena, carrega via ResourceLoader
 	# (funciona no editor E no APK; Image.load_from_file falha dentro do .pck).
 	if _sprite and _sprite.texture == null:
@@ -164,3 +169,6 @@ func set_can_move(value: bool) -> void:
 	_can_move = value
 	if not value:
 		velocity = Vector2.ZERO
+
+func _on_any_battle_ended(_result: String) -> void:
+	_can_move = true
