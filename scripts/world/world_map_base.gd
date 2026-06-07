@@ -318,11 +318,14 @@ func spawn_crypto_npc(tile: Vector2i, event_id: String) -> void:
 	add_child(c)
 
 ## Item colecionável no chão (binóculos, água, peças da bike, etc.).
-func spawn_pickup(tile: Vector2i, item_id: String, icon: String, label_text: String) -> void:
+func spawn_pickup(tile: Vector2i, item_id: String, icon: String, label_text: String,
+		effect: String = "unlock", amount: float = 40.0) -> void:
 	var pk = preload("res://scripts/world/map_pickup.gd").new()
 	pk.item_id = item_id
 	pk.icon = icon
 	pk.label_text = label_text
+	pk.effect = effect
+	pk.amount = amount
 	pk.position = _tile_to_world(tile)
 	add_child(pk)
 

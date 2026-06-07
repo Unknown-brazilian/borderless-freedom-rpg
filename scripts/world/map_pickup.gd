@@ -7,6 +7,9 @@ extends Area2D
 @export var icon:    String = "❓"     # emoji exibido no mapa
 @export var label_text: String = ""   # mensagem do toast (ex.: "Binóculos!")
 @export var pickup_color: Color = Color(1, 0.9, 0.3)
+## "unlock" (item de inventário) | "water" | "food" | "energy" | "bikepart"
+@export var effect: String = "unlock"
+@export var amount: float = 40.0      # quanto restaura (water/food/energy)
 
 var _taken: bool = false
 
@@ -42,9 +45,28 @@ func _on_body_entered(body: Node) -> void:
 	if _taken or not body.is_in_group("player"):
 		return
 	_taken = true
-	if item_id != "":
-		PlayerInventory.unlock_item(item_id)
+	match effect:
+		"water", "food", "energy":
+			AutonomyBar.restore(effect, amount)
+		"bikepart":
+			if item_id != "":
+				PlayerInventory.unlock_item(item_id)
+			_try_rebuild_bike()
+		_:
+			if item_id != "":
+				PlayerInventory.unlock_item(item_id)
 	AudioManager.sfx("coin")
 	var msg := label_text if label_text != "" else "Item obtido"
 	Juice.float_text(get_tree().current_scene, global_position, "%s %s" % [icon, msg], pickup_color, 34)
 	queue_free()
+
+## Com pneu + câmara de ar, o player remonta uma bicicleta (se estiver sem).
+func _try_rebuild_bike() -> void:
+	if PlayerCustomization.bike_index > 0:
+		return
+	if "item_pneu" in PlayerInventory.unlocked and "item_camara_ar" in PlayerInventory.unlocked:
+		PlayerCustomization.bike_index = 1   # Urbana
+		var p := get_tree().get_first_node_in_group("player")
+		if is_instance_valid(p):
+			PlayerCustomization.apply(p)
+		DialogueManager.start(["🚲  Com pneu e câmara de ar, você remontou uma bicicleta!"])

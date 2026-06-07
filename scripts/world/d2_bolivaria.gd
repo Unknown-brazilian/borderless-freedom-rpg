@@ -16,6 +16,8 @@ func _intro_dialogue() -> void:
 	])
 
 func _setup_npcs() -> void:
+	# Água escassa no altiplano: só uma garrafa, bem escondida.
+	spawn_pickup(Vector2i(20, 16), "", "💧", "Água! Rara por aqui.", "water", 50.0)
 	spawn_npc(Vector2i(6, 42), "Migrante Local",
 		["Bem-vindo à Bolivária.",
 		 "Os fiscais aqui são mais severos.",
