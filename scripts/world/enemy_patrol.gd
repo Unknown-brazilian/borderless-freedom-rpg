@@ -80,9 +80,9 @@ func _on_inv_unlocked(id: String) -> void:
 func _apply_binoculars_gate() -> void:
 	if state == State.DEFEATED:
 		return
-	var revealed := _revealed_now()
-	visible = revealed
-	set_collision_layer_value(4, revealed)
+	# Só a visibilidade depende do binóculo; a colisão/comportamento ficam ativos.
+	visible = _revealed_now()
+	set_collision_layer_value(4, true)
 
 func _clamp_pos(p: Vector2) -> Vector2:
 	return Vector2(clampf(p.x, map_min.x, map_max.x), clampf(p.y, map_min.y, map_max.y))
@@ -124,9 +124,8 @@ func _create_visuals() -> void:
 	add_child(_exclamation)
 
 func _physics_process(delta: float) -> void:
-	if not _revealed_now():
-		velocity = Vector2.ZERO
-		return
+	# Guardas SEMPRE perseguem/batalham (mesmo invisíveis sem binóculos) —
+	# o binóculo só os torna VISÍVEIS para você poder evitá-los.
 	match state:
 		State.PATROL:  _process_patrol(delta)
 		State.CHASE:   _process_chase(delta)

@@ -61,6 +61,7 @@ func _ready() -> void:
 
 	_setup_theme()
 	_paint_ground()
+	_build_boundaries()
 	_setup_post_fx()
 	AudioManager.set_overworld_music(_music_track, _music_pitch)
 
@@ -282,9 +283,11 @@ func _on_boss_result(result: String) -> void:
 		SceneTransition.go("res://scenes/ui/main_menu.tscn")
 
 func _check_exit() -> void:
-	if not _map_complete:
-		return
 	if not is_instance_valid(_player):
+		return
+	# Mapas com boss exigem derrotá-lo (_map_complete). Mapas SEM boss podem ser
+	# concluídos só chegando na saída (antes ficavam travados sem avançar).
+	if not _map_complete and not _get_boss_id().is_empty():
 		return
 	var pt: Vector2i = _player.get_tile_position()
 	if pt.distance_to(_exit_tile) < 2:
@@ -389,6 +392,29 @@ func spawn_obstacle(tile: Vector2i, _icon: String = "") -> void:
 	o.add_child(top)
 	o.position = _tile_to_world(tile)
 	add_child(o)
+
+## Paredes sólidas no perímetro — impede o player de sair do mapa.
+func _build_boundaries() -> void:
+	var w := float(_map_w * TILE_SIZE)
+	var h := float(_map_h * TILE_SIZE)
+	var t := float(TILE_SIZE)
+	var defs := [
+		[Vector2(w / 2.0, t / 2.0),     Vector2(w, t)],   # topo
+		[Vector2(w / 2.0, h - t / 2.0), Vector2(w, t)],   # base
+		[Vector2(t / 2.0, h / 2.0),     Vector2(t, h)],   # esquerda
+		[Vector2(w - t / 2.0, h / 2.0), Vector2(t, h)],   # direita
+	]
+	for d in defs:
+		var body := StaticBody2D.new()
+		body.set_collision_layer_value(1, true)
+		body.collision_mask = 0
+		body.position = d[0]
+		var shape := CollisionShape2D.new()
+		var rect := RectangleShape2D.new()
+		rect.size = d[1]
+		shape.shape = rect
+		body.add_child(shape)
+		add_child(body)
 
 func _tile_to_world(tile: Vector2i) -> Vector2:
 	# Aplica o alongamento vertical aos spawns (mesma proporção do mapa).

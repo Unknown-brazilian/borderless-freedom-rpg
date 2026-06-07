@@ -14,34 +14,34 @@ func _ready() -> void:
 
 	var shape := CollisionShape2D.new()
 	var rect := RectangleShape2D.new()
-	rect.size = Vector2(96, 80)
+	rect.size = Vector2(168, 150)
 	shape.shape = rect
-	shape.position = Vector2(0, -24)
+	shape.position = Vector2(0, -56)
 	add_child(shape)
 
-	# Corpo
+	# Corpo (casa maior)
 	var body := ColorRect.new()
-	body.size = Vector2(96, 64)
-	body.position = Vector2(-48, -64)
+	body.size = Vector2(168, 120)
+	body.position = Vector2(-84, -120)
 	body.color = body_color
 	add_child(body)
 	# Telhado
 	var roof := ColorRect.new()
-	roof.size = Vector2(108, 22)
-	roof.position = Vector2(-54, -82)
+	roof.size = Vector2(192, 44)
+	roof.position = Vector2(-96, -156)
 	roof.color = roof_color
 	add_child(roof)
 	# Porta
 	var door := ColorRect.new()
-	door.size = Vector2(28, 36)
-	door.position = Vector2(-14, -36)
+	door.size = Vector2(56, 72)
+	door.position = Vector2(-28, -72)
 	door.color = Color(0.18, 0.12, 0.08)
 	add_child(door)
 	# Placa
 	var lbl := Label.new()
 	lbl.text = building_name
-	lbl.position = Vector2(-54, -104)
-	lbl.add_theme_font_size_override("font_size", 18)
+	lbl.position = Vector2(-96, -188)
+	lbl.add_theme_font_size_override("font_size", 22)
 	lbl.add_theme_color_override("font_color", Color(1, 0.85, 0.5))
 	add_child(lbl)
 
