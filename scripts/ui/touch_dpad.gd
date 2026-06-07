@@ -44,7 +44,28 @@ func _ready() -> void:
 	for btn in [_btn_a, _btn_b, _btn_start]:
 		Juice.button_feedback(btn, true)
 
+	_add_phone_button()
 	call_deferred("_find_player")
+
+## Botão 📱 (canto superior direito) — abre o celular (notificações + mapa).
+func _add_phone_button() -> void:
+	var phone := Button.new()
+	phone.text = "📱"
+	phone.add_theme_font_size_override("font_size", 44)
+	phone.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	phone.offset_left = -116
+	phone.offset_top = 12
+	phone.offset_right = -16
+	phone.offset_bottom = 104
+	phone.pressed.connect(_on_phone)
+	add_child(phone)
+	Juice.button_feedback(phone, true)
+
+func _on_phone() -> void:
+	if Phone.is_available():
+		Phone.open()
+	else:
+		DialogueManager.start(["📱❌  Seu celular foi roubado. Recupere-o mais à frente."])
 
 func _find_player() -> void:
 	var players := get_tree().get_nodes_in_group("player")

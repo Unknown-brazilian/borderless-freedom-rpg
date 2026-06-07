@@ -33,6 +33,9 @@ var _last_step_msec: int = 0   # throttle do SFX de passo
 ## de cada região (override em _setup_theme).
 var _music_track: String = "dungeon"
 var _music_pitch: float  = 1.0
+var _post_mat: ShaderMaterial = null   # material do post-process (noite/visão noturna)
+var _thieves_enabled: bool = false     # ladrões aleatórios (só Mexistão)
+var _thief_last_ms: int = 0
 
 func _ready() -> void:
 	AutonomyBar.refill_all()
@@ -88,6 +91,22 @@ func _setup_post_fx() -> void:
 	mat.set_shader_parameter("bloom_strength", 0.45)
 	rect.material = mat
 	layer.add_child(rect)
+
+	# Noite após 18h (hora do dispositivo) + óculos de visão noturna ativados.
+	_post_mat = mat
+	var h: int = Time.get_time_dict_from_system().get("hour", 12)
+	mat.set_shader_parameter("night", 1.0 if (h >= 18 or h < 6) else 0.0)
+	_update_night_vision()
+	if not PlayerInventory.active_item_changed.is_connected(_on_active_item_changed):
+		PlayerInventory.active_item_changed.connect(_on_active_item_changed)
+
+func _on_active_item_changed(_id: String) -> void:
+	_update_night_vision()
+
+func _update_night_vision() -> void:
+	if is_instance_valid(_post_mat):
+		var on := PlayerInventory.active_item == "item_oculos_noturno"
+		_post_mat.set_shader_parameter("night_vision", 1.0 if on else 0.0)
 
 # ─── Terreno ──────────────────────────────────────────────────────────────────
 
@@ -170,6 +189,35 @@ func _on_player_moved(tile_pos: Vector2i) -> void:
 	if not _boss_triggered and not _get_boss_id().is_empty():
 		if tile_pos.distance_to(_exit_tile) < _boss_trigger_dist + 2:
 			_trigger_boss()
+	if _thieves_enabled:
+		_maybe_spawn_thief()
+
+# ─── Ladrões (encontro aleatório — habilitado só no Mexistão) ──────────────────
+func _maybe_spawn_thief() -> void:
+	if BattleManager.state != BattleManager.State.IDLE:
+		return
+	var now := Time.get_ticks_msec()
+	if now - _thief_last_ms < 15000:   # cooldown 15s
+		return
+	if randf() > 0.08:                  # 8% por passo após o cooldown
+		return
+	_thief_last_ms = now
+	if not is_instance_valid(_player):
+		return
+	var e = preload("res://scenes/world/EnemyPatrol.tscn").instantiate()
+	e.enemy_data = {
+		"name": "Ladrão", "hp": 28, "atk": 13, "reward_sats": 12,
+		"bribe_cost": 0, "weakness_item": "item_spray", "is_boss": false,
+	}
+	e.always_visible = true   # ladrão aparece mesmo sem binóculos
+	var ppos: Vector2 = _player.position + Vector2(randf_range(-60, 60), -150)
+	e.position = ppos
+	var wps: Array[Vector2] = [ppos + Vector2(48, 0), ppos + Vector2(-48, 0)]
+	e.patrol_waypoints = wps
+	e.map_min = Vector2(TILE_SIZE, TILE_SIZE)
+	e.map_max = Vector2(_map_w * TILE_SIZE, _map_h * TILE_SIZE)
+	add_child(e)
+	AudioManager.sfx("event")
 
 func _trigger_boss() -> void:
 	if _boss_triggered:
@@ -268,6 +316,15 @@ func spawn_crypto_npc(tile: Vector2i, event_id: String) -> void:
 	c.event_id = event_id
 	c.position = _tile_to_world(tile)
 	add_child(c)
+
+## Item colecionável no chão (binóculos, água, peças da bike, etc.).
+func spawn_pickup(tile: Vector2i, item_id: String, icon: String, label_text: String) -> void:
+	var pk = preload("res://scripts/world/map_pickup.gd").new()
+	pk.item_id = item_id
+	pk.icon = icon
+	pk.label_text = label_text
+	pk.position = _tile_to_world(tile)
+	add_child(pk)
 
 func _tile_to_world(tile: Vector2i) -> Vector2:
 	return Vector2(tile.x * TILE_SIZE + TILE_SIZE / 2, tile.y * TILE_SIZE + TILE_SIZE / 2)

@@ -29,6 +29,8 @@ const ITEM_DEFS: Dictionary = {
 	"item_radio":       {"name": "Rádio Cripto",     "icon": "📻", "desc": "Chama aliado +20 sats"},
 	"item_bomba_pneu":  {"name": "Bomba de Pneu",   "icon": "💣", "desc": "Burst de velocidade +30 energia +15 comida"},
 	"item_radar_solar": {"name": "Radar Solar",      "icon": "🛰️", "desc": "Rota ótima detectada +20 comida"},
+	"item_binoculo":    {"name": "Binóculos",        "icon": "🔭", "desc": "Revela os guardas no mapa"},
+	"item_oculos_noturno": {"name": "Óculos Noturnos", "icon": "🕶️", "desc": "Ative para enxergar à noite"},
 }
 
 # ─── Estado ───────────────────────────────────────────────────────────────────

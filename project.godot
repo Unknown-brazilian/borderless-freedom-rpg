@@ -28,6 +28,7 @@ SeedPhraseSystem="*res://scripts/systems/seed_phrase_system.gd"
 SceneTransition="*res://scripts/systems/scene_transition.gd"
 AudioManager="*res://scripts/systems/audio_manager.gd"
 Juice="*res://scripts/systems/juice.gd"
+Phone="*res://scripts/systems/phone.gd"
 
 [display]
 window/size/viewport_width=1080

@@ -12,6 +12,8 @@ uniform float vignette_strength = 0.4;
 uniform float bloom_strength    = 0.5;
 uniform float bloom_threshold   = 0.72;
 uniform float posterize_levels  = 24.0;   // profundidade de cor (vibe PS1); 0 = off
+uniform float night         = 0.0;   // 0 dia, 1 noite (após 18h no relógio)
+uniform float night_vision  = 0.0;   // 1 = óculos amarelos ATIVADOS no inventário
 
 vec3 sample_bloom(vec2 uv) {
 	// SCREEN_PIXEL_SIZE não existe no GL Compatibility; derivamos do tamanho da textura.
@@ -43,6 +45,17 @@ void fragment() {
 	// Saturação.
 	float l = dot(col, vec3(0.299, 0.587, 0.114));
 	col = mix(vec3(l), col, saturation);
+
+	// Noite (após 18h): escurece e puxa pro azul. Óculos amarelos ATIVADOS
+	// anulam o escuro (enxerga como de dia) com um leve tom amarelo das lentes.
+	if (night > 0.0) {
+		vec3 night_col = col * vec3(0.58, 0.62, 0.82);  // só escurece um pouco (azulado)
+		float darkness = night * (1.0 - night_vision);
+		col = mix(col, night_col, darkness);
+		if (night_vision > 0.0) {
+			col *= mix(vec3(1.0), vec3(1.08, 1.04, 0.82), night);
+		}
+	}
 
 	// Vinheta.
 	float vig = smoothstep(1.0, 0.4, distance(SCREEN_UV, vec2(0.5)));

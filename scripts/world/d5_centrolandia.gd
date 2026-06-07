@@ -17,6 +17,8 @@ func _intro_dialogue() -> void:
 	])
 
 func _setup_npcs() -> void:
+	# Óculos de lente amarela — ative no inventário para enxergar à noite.
+	spawn_pickup(Vector2i(18, 10), "item_oculos_noturno", "🕶️", "Óculos de visão noturna! Ative no inventário.")
 	spawn_npc(Vector2i(6, 42), "Migrante Hondurense",
 		["Já cruzo esta fronteira pela terceira vez.",
 		 "Cada vez mais fiscais. Cada vez mais caro.",

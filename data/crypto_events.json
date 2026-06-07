@@ -337,7 +337,7 @@
       "window_seconds": 0,
       "default_action": "ignore",
       "actor_description": "Economista de terno, fala mansa, ar professoral",
-      "pitch": "Você recebeu R$100 mil de herança? Esquece esse Bitcoin volátil.\nBitcoin a R$146.500 vai despencar. Põe tudo no Tesouro Direto —\nrenda fixa, garantida pelo governo. Seguro é seguro, jovem.",
+      "pitch": "\"Se vc recebeu de herança 100 mil reais, tá começando a sua vida\nfinanceira, tá podendo apostar, não tem filho, não tem esposa, topa\ncorrer risco, eu colocaria de cara numa renda fixa, que tá aí com\nótimos rendimentos, talvez esperar um pouquinho, aos poucos ir\nformando uma posição aí. Em renda variável...\"",
       "accept_button": "COMPRAR TESOURO DIRETO",
       "ignore_button": "Prefiro Bitcoin",
       "accept_outcome": {
