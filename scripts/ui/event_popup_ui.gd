@@ -46,6 +46,8 @@ func _check_entry_event() -> void:
 func _process(_delta: float) -> void:
 	if not visible or _is_result:
 		return
+	if not _timer_bar.visible:
+		return   # ofertas não têm mais timeout
 	var elapsed := (Time.get_ticks_msec() - _timer_start_ms) / 1000.0
 	var remaining := maxf(WINDOW_SECONDS - elapsed, 0.0)
 	_timer_bar.value = (remaining / WINDOW_SECONDS) * 100.0
@@ -77,15 +79,20 @@ func _show_offer(ev: Dictionary) -> void:
 	_lbl_urgency.text  = ev.get("urgency_text", "")
 	_lbl_fine.text     = ev.get("fine_print", "")
 	_btn_accept.text   = ev.get("accept_button", "ACEITAR")
-	_btn_ignore.text   = ev.get("ignore_button", "IGNORAR")
-	_btn_accept.add_theme_stylebox_override("normal", _sb(Color(0.7, 0.1, 0.1, 1.0)))
-	_btn_ignore.add_theme_stylebox_override("normal", _sb(Color(0.1, 0.5, 0.15, 1.0)))
+	_btn_ignore.text   = ev.get("ignore_button", "Não, obrigado")
+	# Armadilha educacional: ACEITAR (o golpe) é o botão atraente/verde — induz quem
+	# não presta atenção a errar. Recusar é discreto/cinza. SEM timeout/pressão.
+	_btn_accept.add_theme_stylebox_override("normal", _sb(Color(0.13, 0.62, 0.20, 1.0)))
+	_btn_accept.add_theme_color_override("font_color", Color(1, 1, 1))
+	_btn_ignore.add_theme_stylebox_override("normal", _sb(Color(0.22, 0.22, 0.26, 1.0)))
+	_btn_ignore.add_theme_color_override("font_color", Color(0.62, 0.62, 0.66))
 	_btn_accept.visible    = true
-	_timer_bar.visible     = true
+	_btn_accept.size_flags_horizontal = Control.SIZE_EXPAND_FILL   # CTA dominante
+	_timer_bar.visible     = false   # sem contagem regressiva
 	_lbl_urgency.visible   = not _lbl_urgency.text.is_empty()
 	_lbl_fine.visible      = not _lbl_fine.text.is_empty()
 	_prev_time_scale       = Engine.time_scale
-	Engine.time_scale      = 0.15
+	Engine.time_scale      = 0.0     # pausa total: o jogador decide sem pressa
 	show()
 
 func _show_collapse(ev: Dictionary) -> void:

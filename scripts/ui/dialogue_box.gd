@@ -20,6 +20,10 @@ var _last_tick_usec: int    = 0
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	DialogueManager.register_box(self)
+	# Conecta o toque na caixa para avançar (o sinal não vinha conectado na .tscn,
+	# então "Toque para continuar" não fazia nada e o jogo ficava travado).
+	if not _panel.gui_input.is_connected(_on_panel_gui_input):
+		_panel.gui_input.connect(_on_panel_gui_input)
 	_panel.hide()
 	_arrow.hide()
 	_lbl_speaker.hide()

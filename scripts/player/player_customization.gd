@@ -10,10 +10,10 @@ const SAVE_KEY := "player_customization"
 # ── Opções ──────────────────────────────────────────────────────────────────
 
 const SKINS := [
-	{"nome": "Padrão",    "cor": Color(0.75, 0.60, 0.45)},
-	{"nome": "Sombra",    "cor": Color(0.25, 0.22, 0.20)},
-	{"nome": "Deserto",   "cor": Color(0.85, 0.72, 0.45)},
-	{"nome": "Floresta",  "cor": Color(0.35, 0.55, 0.30)},
+	{"nome": "Padrão",    "cor": Color(1.00, 1.00, 1.00)},  # branco = sprite natural
+	{"nome": "Sombra",    "cor": Color(0.55, 0.55, 0.70)},
+	{"nome": "Deserto",   "cor": Color(1.00, 0.85, 0.55)},
+	{"nome": "Floresta",  "cor": Color(0.60, 0.95, 0.60)},
 ]
 
 const CAPACETES := [
@@ -84,20 +84,18 @@ func apply(player: Node) -> void:
 
 func _apply_skin(player: Node) -> void:
 	var skin_color: Color = SKINS[skin_index]["cor"]
+	# Player 2D: tinta o Sprite2D pela cor da skin.
+	var spr := player.get_node_or_null("Sprite")
+	if spr and spr is CanvasItem:
+		spr.modulate = skin_color
+		return
+	# Fallback player 3D (legado).
 	var mesh_i: MeshInstance3D = player.get_node_or_null("MeshInstance3D")
-	if mesh_i == null: return
+	if mesh_i == null:
+		return
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = skin_color
 	mesh_i.material_override = mat
-
-	var cap: Dictionary = CAPACETES[capacete_index]
-	var cap_node: MeshInstance3D = player.get_node_or_null("Capacete")
-	if cap_node:
-		cap_node.visible = capacete_index > 0
-		if capacete_index > 0:
-			var cap_mat := StandardMaterial3D.new()
-			cap_mat.albedo_color = cap["cor"]
-			cap_node.material_override = cap_mat
 
 func _apply_speed(player: Node) -> void:
 	var stored = player.get("_base_run_speed")
