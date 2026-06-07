@@ -168,13 +168,18 @@ func _paint_ground() -> void:
 				key = ground
 			_tilemap.set_cell(0, Vector2i(x, y), _tile_ids[key], Vector2i(0, 0))
 
-	# Trava a câmera nos limites do mapa para não exibir o vazio fora dele.
-	# Interiores (mapas pequenos) não travam — a câmera centraliza a sala.
-	if is_instance_valid(_camera) and not _is_interior:
-		_camera.limit_left   = 0
-		_camera.limit_top    = 0
-		_camera.limit_right  = _map_w * TILE_SIZE
-		_camera.limit_bottom = _map_h * TILE_SIZE
+	# Câmera segue o player: vertical SEM trava (player sempre centralizado ao
+	# subir o mapa); horizontal travado nos limites pra não mostrar vazio.
+	# Interiores não travam (sala pequena centralizada).
+	if is_instance_valid(_camera):
+		if _is_interior:
+			_camera.limit_left   = -10000000
+			_camera.limit_right  =  10000000
+		else:
+			_camera.limit_left   = 0
+			_camera.limit_right  = _map_w * TILE_SIZE
+		_camera.limit_top    = -10000000
+		_camera.limit_bottom =  10000000
 
 # ─── Overrides nos filhos ─────────────────────────────────────────────────────
 ## Override para definir paleta/clima do mapa (_ground_tint/_ground_key/_no_path

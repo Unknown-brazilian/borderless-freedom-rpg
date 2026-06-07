@@ -365,21 +365,21 @@
       "window_seconds": 0,
       "default_action": "ignore",
       "actor_description": "Analista animado com gráficos na mão",
-      "pitch": "Bitcoin? Coisa de doido. Eu te mostro a small cap certa.\nEssa aqui vai 10x, confia no meu relatório. Compra agora\nantes que suba! Renda variável de verdade é na bolsa.",
-      "accept_button": "COMPRAR A AÇÃO",
+      "pitch": "Esquece Bitcoin parado. Essa altcoin nova vai explodir!\nMeu relatório aponta 100x fácil. Entra agora na pré-venda\nantes que liste na corretora. Cripto certa é comigo.",
+      "accept_button": "COMPRAR A ALTCOIN",
       "ignore_button": "Não, obrigado",
       "accept_outcome": {
         "delay_phases": 2,
         "loss_percent": 70,
         "loss_cap_percent": 40,
-        "news_headline": "Small cap recomendada despenca 80% após pump",
-        "news_headline_2": "Investidores presos no topo; analista já recomenda outra"
+        "news_headline": "Altcoin da pré-venda despenca 95% após listar",
+        "news_headline_2": "Dev some com a liquidez; holders presos no topo"
       },
       "ignore_outcome": {
         "sat_bonus_percent": 5,
         "glossary_unlock": "dyor",
-        "message": "A ação subiu 5% e despencou 80%. Quem entrou no topo ficou preso.\nVocê teria perdido: {lost_sats} sats ({lost_pct}% do stack).",
-        "lesson": "Stock picking é loteria. Bitcoin é poupança em dinheiro forte."
+        "message": "A altcoin bombou 5% e despencou 95% (rug pull).\nVocê teria perdido: {lost_sats} sats ({lost_pct}% do stack).",
+        "lesson": "Altcoin de pré-venda é cassino. Bitcoin é o ativo escasso."
       }
     },
     {
@@ -393,21 +393,21 @@
       "window_seconds": 0,
       "default_action": "ignore",
       "actor_description": "Vendedor entusiasmado com slide de 'casos de sucesso'",
-      "pitch": "Quer ser a próxima Bettina? De R$1.500 a R$1 milhão!\nAssina nossa série premium de ações e siga as recomendações.\nÉ só R$ por mês. Quem não arrisca não fica rico!",
-      "accept_button": "ASSINAR A SÉRIE",
+      "pitch": "Bitcoin é o passado! Assine nossa carteira de CRIPTOS premium.\nSeja o próximo milionário cripto — de R$1.500 a R$1 milhão!\nDiversifique em 20 altcoins que ninguém conhece ainda.",
+      "accept_button": "ASSINAR CRIPTO PREMIUM",
       "ignore_button": "Vou guardar meus sats",
       "accept_outcome": {
         "delay_phases": 1,
         "loss_percent": 50,
         "loss_cap_percent": 30,
-        "news_headline": "Assinatura renovada automaticamente; recomendações furadas",
-        "news_headline_2": "'Bettina' era propaganda; retorno real ficou muito abaixo"
+        "news_headline": "Carteira 'premium' de altcoins perde 80% no ciclo",
+        "news_headline_2": "Maioria das 20 altcoins viram pó; só restou o Bitcoin"
       },
       "ignore_outcome": {
         "sat_bonus_percent": 5,
         "glossary_unlock": "marketing_vs_substancia",
-        "message": "A série custou caro e as dicas não bateram o CDI.\nVocê teria perdido: {lost_sats} sats ({lost_pct}% do stack).",
-        "lesson": "Se vendem o sonho com força, o produto costuma ser a propaganda."
+        "message": "A carteira de altcoins virou pó; só o Bitcoin segurou.\nVocê teria perdido: {lost_sats} sats ({lost_pct}% do stack).",
+        "lesson": "Diversificar em altcoin é diluir em lixo. Concentra no escasso."
       }
     }
   ],

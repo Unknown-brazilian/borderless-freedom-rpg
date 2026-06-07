@@ -97,16 +97,31 @@ func _update_player_dir() -> void:
 	_player.set_move_direction(dir)
 
 func _on_a_pressed() -> void:
-	if not is_instance_valid(_player):
-		return
-	_player.press_action()
-
-func _on_b_pressed() -> void:
+	# A = confirmar/interagir (NPC, loja, acampamento, porta) ou avançar diálogo.
 	if DialogueManager.is_active():
 		DialogueManager.advance()
+		return
+	if is_instance_valid(_player):
+		_player.press_action()
+
+func _on_b_pressed() -> void:
+	# B = cancelar: avança diálogo OU fecha o celular/loja aberto.
+	if DialogueManager.is_active():
+		DialogueManager.advance()
+		return
+	var scene := get_tree().current_scene
+	if scene:
+		for n in ["PhoneUI", "ShopUI"]:
+			var ui := scene.get_node_or_null(n)
+			if ui and ui.has_method("_close"):
+				ui._close()
+				return
 
 func _on_start_pressed() -> void:
-	# Abre menu de pausa
-	var menus := get_tree().get_nodes_in_group("pause_menu")
-	if not menus.is_empty():
-		menus[0].toggle()
+	# START = abre o celular (notificações da Wallet of Satoshi + mapa da jornada).
+	if DialogueManager.is_active():
+		return
+	if Phone.is_available():
+		Phone.open()
+	else:
+		DialogueManager.start(["📱❌  Seu celular foi roubado. Recupere-o mais à frente."])
