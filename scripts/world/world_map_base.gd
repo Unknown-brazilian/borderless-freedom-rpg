@@ -28,6 +28,7 @@ var _ground_tint: Color = Color.WHITE
 ## Se true, sem faixa de caminho (mapas internos/detenção).
 var _no_path: bool = false
 var _tile_ids: Dictionary = {}
+var _last_step_msec: int = 0   # throttle do SFX de passo
 
 func _ready() -> void:
 	AutonomyBar.refill_all()
@@ -133,6 +134,11 @@ func _get_boss_id() -> String: return ""
 func _on_player_moved(tile_pos: Vector2i) -> void:
 	AutonomyBar.consume("energy", 0.12)
 	GameStats.record_step()
+	# SFX de passo com throttle para não sobrepor em movimento contínuo.
+	var now := Time.get_ticks_msec()
+	if now - _last_step_msec >= 170:
+		_last_step_msec = now
+		AudioManager.sfx("step")
 	if not _boss_triggered and not _get_boss_id().is_empty():
 		if tile_pos.distance_to(_exit_tile) < _boss_trigger_dist + 2:
 			_trigger_boss()
