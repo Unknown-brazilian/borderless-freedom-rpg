@@ -8,7 +8,79 @@ func _ready() -> void:
 	_player_start = Vector2i(4, 44)
 	_exit_tile    = Vector2i(4, 2)
 	_boss_trigger_dist = 4
+	_thieves_enabled = true   # ladrões aleatórios só no Mexistão
 	super._ready()
+
+var _stolen_phone_sats: int = 0
+
+func _on_player_moved(tile_pos: Vector2i) -> void:
+	super._on_player_moved(tile_pos)
+	# Eventos da jornada (na ordem em que o player sobe o mapa).
+	if not WorldManager.get_flag("huixtla_robbery", false) and tile_pos.y <= 28:
+		_huixtla_robbery()
+	elif not WorldManager.get_flag("phone_robbery", false) and tile_pos.y <= 20:
+		_phone_robbery()
+	elif not WorldManager.get_flag("phone_recovered", false) \
+			and WorldManager.get_flag("phone_robbery", false) and tile_pos.y <= 12:
+		_coatzacoalcos_recovery()
+
+## Entre Piedras Negras e Orizaba — roubam o celular (acesso à carteira).
+func _phone_robbery() -> void:
+	WorldManager.set_flag("phone_robbery", true)
+	_player.set_can_move(false)
+	_stolen_phone_sats = int(SatEconomy.current_sats * 0.5)
+	if _stolen_phone_sats > 0:
+		SatEconomy.remove_sats(_stolen_phone_sats, "phone_robbery")
+	AudioManager.sfx("hit")
+	DialogueManager.start([
+		"📱🦹  Entre Piedras Negras e Orizaba, levaram seu celular.",
+		"Com ele, o acesso à sua Wallet of Satoshi.",
+		"Metade do seu saldo ficou preso no aparelho roubado.",
+	])
+	await DialogueManager.dialogue_finished
+	_player.set_can_move(true)
+
+## Coatzacoalcos — suporte da Wallet of Satoshi recupera o saldo + Hugo Ramos.
+func _coatzacoalcos_recovery() -> void:
+	WorldManager.set_flag("phone_recovered", true)
+	_player.set_can_move(false)
+	if _stolen_phone_sats > 0:
+		SatEconomy.add_sats(_stolen_phone_sats, "wos_support_recovery")
+	Phone.notify("Suporte Wallet of Satoshi",
+		"Saldo recuperado com sucesso. Valeu, Hugo Ramos — hash da tx recuperada! ⚡",
+		_stolen_phone_sats)
+	AudioManager.sfx("coin")
+	DialogueManager.start([
+		"📩  Em Coatzacoalcos, você mandou mensagem pro suporte da Wallet of Satoshi.",
+		"Eles ajudaram a recuperar seu saldo. ⚡",
+		"🙏  E valeu, Hugo Ramos — ele recuperou a hash de uma tx que fizemos juntos.",
+		"Saldo de volta: +%d sats." % _stolen_phone_sats,
+	])
+	await DialogueManager.dialogue_finished
+	_player.set_can_move(true)
+
+## Assalto depois de Huixtla: perde a bicicleta e os binóculos.
+func _huixtla_robbery() -> void:
+	WorldManager.set_flag("huixtla_robbery", true)
+	_player.set_can_move(false)
+	PlayerCustomization.bike_index = 0
+	var bike = _player.get_node_or_null("BikeIcon")
+	if bike:
+		bike.queue_free()
+	PlayerInventory.unlocked.erase("item_binoculo")
+	if PlayerInventory.active_item == "item_binoculo":
+		PlayerInventory.active_item = ""
+	for e in get_tree().get_nodes_in_group("enemy"):
+		if e.has_method("_apply_binoculars_gate"):
+			e._apply_binoculars_gate()
+	AudioManager.sfx("hit")
+	DialogueManager.start([
+		"🦹💥  Depois de Huixtla, você foi assaltado na estrada.",
+		"Levaram sua bicicleta e seus binóculos.",
+		"Agora é a pé — e os guardas somem até você achar outro binóculo.",
+	])
+	await DialogueManager.dialogue_finished
+	_player.set_can_move(true)
 
 func _intro_dialogue() -> void:
 	DialogueManager.start([

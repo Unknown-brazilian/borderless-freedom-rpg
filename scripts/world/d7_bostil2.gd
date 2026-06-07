@@ -18,6 +18,8 @@ func _intro_dialogue() -> void:
 	])
 
 func _setup_npcs() -> void:
+	# Binóculos novos (os antigos foram roubados no Mexistão) — escondido.
+	spawn_pickup(Vector2i(18, 8), "item_binoculo", "🔭", "Binóculos novos! Os guardas voltam a aparecer.")
 	spawn_npc(Vector2i(6, 42), "Ex-Dissidente",
 		["Fui deportado três vezes.",
 		 "Cada vez aprendi mais sobre liberdade.",

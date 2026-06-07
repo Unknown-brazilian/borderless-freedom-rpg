@@ -25,6 +25,7 @@ enum State { PATROL, CHASE, BATTLE, DEFEATED }
 @export var patrol_wait_sec: float = 1.2
 @export var sprite_color: Color = Color(0.72, 0.18, 0.18)
 @export var defeated_on_load: bool = false   # carregado do WorldManager
+@export var always_visible:  bool = false   # ladrões: visíveis sem binóculos
 
 var state: State = State.PATROL
 
@@ -63,6 +64,26 @@ func _ready() -> void:
 	for i in range(patrol_waypoints.size()):
 		patrol_waypoints[i] = _clamp_pos(patrol_waypoints[i])
 
+	# Gate dos binóculos: guardas só ficam visíveis/ativos após o item.
+	_apply_binoculars_gate()
+	if not PlayerInventory.item_unlocked.is_connected(_on_inv_unlocked):
+		PlayerInventory.item_unlocked.connect(_on_inv_unlocked)
+
+## Ladrões (always_visible=true) ignoram o gate de binóculos — sempre visíveis.
+func _revealed_now() -> bool:
+	return always_visible or ("item_binoculo" in PlayerInventory.unlocked)
+
+func _on_inv_unlocked(id: String) -> void:
+	if id == "item_binoculo":
+		_apply_binoculars_gate()
+
+func _apply_binoculars_gate() -> void:
+	if state == State.DEFEATED:
+		return
+	var revealed := _revealed_now()
+	visible = revealed
+	set_collision_layer_value(4, revealed)
+
 func _clamp_pos(p: Vector2) -> Vector2:
 	return Vector2(clampf(p.x, map_min.x, map_max.x), clampf(p.y, map_min.y, map_max.y))
 
@@ -99,6 +120,9 @@ func _create_visuals() -> void:
 	add_child(_exclamation)
 
 func _physics_process(delta: float) -> void:
+	if not _revealed_now():
+		velocity = Vector2.ZERO
+		return
 	match state:
 		State.PATROL:  _process_patrol(delta)
 		State.CHASE:   _process_chase(delta)
