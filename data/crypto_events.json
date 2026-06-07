@@ -337,7 +337,7 @@
       "window_seconds": 0,
       "default_action": "ignore",
       "actor_description": "Economista de terno, fala mansa, ar professoral",
-      "pitch": "Você recebeu R$100 mil de herança? Esquece esse Bitcoin volátil.\nBitcoin a R$88 mil vai despencar. Põe tudo no Tesouro Direto —\nrenda fixa, garantida pelo governo. Seguro é seguro, jovem.",
+      "pitch": "Você recebeu R$100 mil de herança? Esquece esse Bitcoin volátil.\nBitcoin a R$146.500 vai despencar. Põe tudo no Tesouro Direto —\nrenda fixa, garantida pelo governo. Seguro é seguro, jovem.",
       "accept_button": "COMPRAR TESOURO DIRETO",
       "ignore_button": "Prefiro Bitcoin",
       "accept_outcome": {
@@ -348,9 +348,9 @@
         "news_headline_2": "Bitcoin dispara enquanto a renda fixa perde para a inflação"
       },
       "ignore_outcome": {
-        "sat_bonus_flat": 1500,
+        "sat_bonus_flat": 146500,
         "glossary_unlock": "fix_money",
-        "message": "Você ignorou o conselho e comprou Bitcoin na queda.\nEnquanto o Tesouro Direto era corroído pela impressão de dinheiro,\nseu stack de sats valorizou. (Equivale a comprar ₿ a R$78.500.)",
+        "message": "Você ignorou o conselho e ficou com Bitcoin a R$146.500.\nEnquanto o Tesouro Direto era corroído pela impressão de dinheiro,\nseu Bitcoin valorizou muito desde então.",
         "lesson": "Renda fixa é autorização pro governo imprimir. Bitcoin é escasso."
       }
     },
