@@ -57,12 +57,27 @@ func _load_event_data() -> void:
 			return
 
 func _create_visuals() -> void:
-	# Aparência deliberadamente profissional — terno, cor neutra
-	_sprite = ColorRect.new()
-	_sprite.size = Vector2(44, 44)
-	_sprite.position = Vector2(-22, -38)
-	_sprite.color = Color(0.25, 0.45, 0.75)   # azul corporativo
-	add_child(_sprite)
+	# Aparência deliberadamente profissional — terno, azul corporativo.
+	var img := Image.load_from_file("res://assets/sprites/npc_crypto.png")
+	if img:
+		var sh := ColorRect.new()
+		sh.size = Vector2(40, 12)
+		sh.position = Vector2(-20, 0)
+		sh.color = Color(0, 0, 0, 0.25)
+		sh.z_index = -1
+		add_child(sh)
+		var spr := Sprite2D.new()
+		spr.texture  = ImageTexture.create_from_image(img)
+		spr.scale    = Vector2(2.0, 2.0)
+		spr.position = Vector2(0, -22)
+		spr.modulate = Color(0.55, 0.7, 1.0).lerp(Color.WHITE, 0.4)
+		add_child(spr)
+	else:
+		_sprite = ColorRect.new()
+		_sprite.size = Vector2(44, 44)
+		_sprite.position = Vector2(-22, -38)
+		_sprite.color = Color(0.25, 0.45, 0.75)
+		add_child(_sprite)
 
 	_name_lbl = Label.new()
 	_name_lbl.text = _event_data.get("short_name", "Investidor")

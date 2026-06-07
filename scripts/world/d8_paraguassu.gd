@@ -1,5 +1,5 @@
 ## d8_paraguassu.gd
-## Mapa D8 — Paraguassu (mineradores e Delegado Faísca).
+## Mapa D8 — Paraguassu (mineradores e Cartes, o Padrinho).
 
 extends "res://scripts/world/world_map_base.gd"
 
@@ -12,7 +12,7 @@ func _intro_dialogue() -> void:
 	DialogueManager.start([
 		"📍  %s — D8, Paraguassu" % PlayerStats.player_name,
 		"Terra de mineradores de Bitcoin.",
-		"O Delegado Faísca sequestra ASICs.",
+		"O Cartes, o Padrinho sequestra ASICs.",
 		"Recupere os equipamentos e passe para frente.",
 	])
 	await DialogueManager.dialogue_finished
@@ -23,7 +23,7 @@ func _setup_npcs() -> void:
 	spawn_npc(Vector2i(6, 42), "Minerador Aliado I",
 		["Bem-vindo ao Paraguassu.",
 		 "Aqui mineramos Bitcoin livremente — ou tentamos.",
-		 "O Delegado Faísca confiscou nossos ASICs!",
+		 "O Cartes, o Padrinho confiscou nossos ASICs!",
 		 "+20 sats de ajuda para você."],
 		Color(0.969, 0.576, 0.102)
 	)
@@ -41,9 +41,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 34), "Guarda do Delegado I",   175, 29, 88, 87, "item_radio", 2)
-	spawn_patrol_enemy(Vector2i(5, 24), "Guarda do Delegado II",  185, 32, 88, 92, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(3, 14), "Agente Binacional",      195, 35, 115, 100, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 34), "Guarda do Peña",   175, 29, 88, 87, "item_radio", 2)
+	spawn_patrol_enemy(Vector2i(5, 24), "Guarda do Cartes",  185, 32, 88, 92, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(3, 14), "Agente do Mario Abdo",      195, 35, 115, 100, "item_spray", 2)
 
 
 func _setup_events() -> void:
@@ -54,7 +54,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Delegado Faísca",
+		"name": "Cartes, o Padrinho",
 		"hp": 250,
 		"atk": 40,
 		"reward_sats": 280,
@@ -69,9 +69,12 @@ func _get_boss_data() -> Dictionary:
 			"Seu rádio é a única defesa.",
 		],
 		"victory_lines": [
-			"🏆  Delegado Faísca derrotado!",
+			"🏆  Cartes, o Padrinho derrotado!",
 			"Os ASICs foram recuperados!",
 			"A comunidade mineradora está salva.",
 			"🔑  Prove que a seed é sua...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.9, 0.86, 0.68)

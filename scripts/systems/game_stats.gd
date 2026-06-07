@@ -21,6 +21,20 @@ func get_kms_pedalados() -> int:
 func get_dias_de_viagem() -> int:
 	return maxi(1, get_kms_pedalados() / 75)
 
+## Snapshot agregado das estatísticas, usado pelas telas de final.
+func get_stats() -> Dictionary:
+	return {
+		"kms_pedalados":       get_kms_pedalados(),
+		"dias_de_viagem":      get_dias_de_viagem(),
+		"dungeons_completed":  dungeons_completed,
+		"bosses_defeated":     bosses_defeated,
+		"fiscais_subornados":  fiscais_pagos,
+		"npcs_conversations":  npcs_conversations,
+		"steps_walked":        steps_walked,
+		"battles_won":         battles_won,
+		"battles_fled":        battles_fled,
+	}
+
 func record_dungeon_complete(dungeon: int) -> void:
 	dungeons_completed += 1
 	emit_signal("stats_updated")

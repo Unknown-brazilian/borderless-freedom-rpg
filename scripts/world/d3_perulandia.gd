@@ -40,9 +40,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 32), "Guarda de Fronteira",  130, 20, 65, 65, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(5, 22), "Inspetor de Altitude", 145, 23, 70, 75, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(3, 12), "Patrulha Andina",      155, 26, 95, 80, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 32), "Guarda da Dina",  130, 20, 65, 65, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(5, 22), "Inspetor do Castillo", 145, 23, 70, 75, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(3, 12), "Patrulha da Keiko",      155, 26, 95, 80, "item_spray", 2)
 
 
 func _setup_events() -> void:
@@ -53,7 +53,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "General Tupac Fraudo",
+		"name": "Castillo, o Autogolpista",
 		"hp": 185,
 		"atk": 30,
 		"reward_sats": 195,
@@ -62,7 +62,7 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D3-FINAL",
 		"intro_lines": [
-			"🚨  General Tupac Fraudo bloqueia a passagem!",
+			"🚨  Castillo, o Autogolpista bloqueia a passagem!",
 			"\"Nenhum dissidente cruza minha fronteira.\"",
 			"Ele odeia câmeras — use isso.",
 		],
@@ -72,3 +72,8 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Prove que a seed é sua para avançar...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_key = "path"
+	_no_path = true
+	_ground_tint = Color(0.92, 0.85, 0.72)

@@ -26,14 +26,16 @@ func go(path: String) -> void:
 
 	var tw := create_tween()
 	tw.set_ignore_time_scale(true)
-	tw.tween_property(_fade, "color:a", 1.0, 0.22)
+	tw.tween_property(_fade, "color:a", 1.0, 0.28) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(_swap)
 
 func _swap() -> void:
 	get_tree().change_scene_to_file(_next)
 	var tw := create_tween()
 	tw.set_ignore_time_scale(true)
-	tw.tween_property(_fade, "color:a", 0.0, 0.28)
+	tw.tween_property(_fade, "color:a", 0.0, 0.32) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(func():
 		_transitioning     = false
 		_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE

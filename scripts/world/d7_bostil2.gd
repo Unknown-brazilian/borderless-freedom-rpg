@@ -1,5 +1,5 @@
 ## d7_bostil_retorno.gd
-## Mapa D7 — Bostil (retorno) — Deportação e Algoritmo Tirano.
+## Mapa D7 — Bostil (retorno) — Deportação e Xandão, o Tirano do Algoritmo.
 ## Boss victory → DeportationChallenge (reordena 24 palavras da seed).
 
 extends "res://scripts/world/world_map_base.gd"
@@ -26,7 +26,7 @@ func _setup_npcs() -> void:
 		Color(0.55, 0.55, 0.75)
 	)
 	spawn_npc(Vector2i(2, 30), "Advogado Soberano",
-		["O Algoritmo Tirano é o chefe aqui.",
+		["O Xandão, o Tirano do Algoritmo é o chefe aqui.",
 		 "Persuasão >= 2 pode negociar saída.",
 		 "Mas provar sua seed é a única certeza.",
 		],
@@ -34,9 +34,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 30), "Agente de Deportação I",   170, 28, 86, 85, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 22), "Agente de Deportação II",  180, 31, 86, 90, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(3, 14), "Agente de Deportação III", 190, 34, 130, 95, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 30), "Agente do Dino",   170, 28, 86, 85, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 22), "Agente do Lewandowski",  180, 31, 86, 90, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(3, 14), "Agente do Gilmar", 190, 34, 130, 95, "item_spray", 2)
 
 
 func _setup_events() -> void:
@@ -47,7 +47,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Algoritmo Tirano",
+		"name": "Xandão, o Tirano do Algoritmo",
 		"hp": 230,
 		"atk": 38,
 		"reward_sats": 260,
@@ -92,3 +92,6 @@ func _on_boss_result(result: String) -> void:
 	elif result == "defeat":
 		await get_tree().create_timer(1.5).timeout
 		SceneTransition.go("res://scenes/ui/main_menu.tscn")
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.8, 0.8, 0.86)

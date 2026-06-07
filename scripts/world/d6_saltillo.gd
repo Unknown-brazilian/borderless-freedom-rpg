@@ -186,8 +186,8 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Ocasionalmente fiscais trabalhistas aparecem
-	spawn_patrol_enemy(Vector2i(5, 22), "Fiscal Trabalhista", 65, 18, 20, 55, "item_panfleto", 3)
-	spawn_patrol_enemy(Vector2i(4, 10), "Inspetor Fiscal",    70, 20, 22, 60, "item_camera",   2)
+	spawn_patrol_enemy(Vector2i(5, 22), "Fiscal do Ebrard", 65, 18, 20, 55, "item_panfleto", 3)
+	spawn_patrol_enemy(Vector2i(4, 10), "Inspetor do Mario Delgado",    70, 20, 22, 60, "item_camera",   2)
 
 func _setup_events() -> void:
 	spawn_crypto_npc(Vector2i(9, 42), "EVT-010")   # NanoSats Protocol
@@ -227,3 +227,8 @@ func _launch_minigame(task_name: String, _base_reward: int) -> void:
 	add_child(mg)
 	var sats_earned: int = await mg.minigame_completed
 	_on_task_complete(task_name, sats_earned)
+
+func _setup_theme() -> void:
+	_ground_key = "floor"
+	_no_path = true
+	_ground_tint = Color(0.82, 0.8, 0.76)

@@ -104,9 +104,9 @@ func _setup_npcs() -> void:
 	)
 
 func _setup_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(3, 30), "Guarda Cruz A",     70, 20, 0, 75, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(6, 22), "Guarda Cruz B",     75, 22, 0, 80, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(4, 16), "Inspetor Especial", 80, 24, 0, 90, "item_panfleto", 3)
+	spawn_patrol_enemy(Vector2i(3, 30), "Guarda do Bartlett",     70, 20, 0, 75, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(6, 22), "Guarda do Cuauhtémoc Blanco",     75, 22, 0, 80, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(4, 16), "Inspetor da Layda Sansores", 80, 24, 0, 90, "item_panfleto", 3)
 
 func _setup_events() -> void:
 	spawn_crypto_npc(Vector2i(1, 38), "EVT-009")   # Carteira Hardware Pré-Configurada
@@ -116,3 +116,8 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {}
+
+func _setup_theme() -> void:
+	_ground_key = "floor"
+	_no_path = true
+	_ground_tint = Color(0.66, 0.64, 0.68)

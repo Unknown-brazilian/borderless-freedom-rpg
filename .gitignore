@@ -1,0 +1,12 @@
+# Godot 4+ — cache do editor e específicos da máquina
+.godot/
+/android/
+
+# Builds exportados
+/export/
+*.apk
+*.aab
+
+# Sistema
+.DS_Store
+*~

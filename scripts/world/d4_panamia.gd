@@ -140,9 +140,9 @@ func _setup_fiscais() -> void:
 	pass  # Fiscais aparecem apenas se o player escolher a selva — veja _on_chose_jungle()
 
 func _spawn_jungle_fiscais() -> void:
-	spawn_patrol_enemy(Vector2i(4, 30), "Patrulha da Selva I",  140, 22, 73, 70, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 20), "Patrulha da Selva II", 155, 25, 80, 80, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(3, 12), "Agente de Fronteira",  170, 28, 110, 90, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(4, 30), "Patrulha do Martinelli",  140, 22, 73, 70, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 20), "Patrulha do Mulino", 155, 25, 80, 80, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(3, 12), "Agente do Cortizo",  170, 28, 110, 90, "item_spray", 2)
 
 
 func _setup_events() -> void:
@@ -153,7 +153,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Agente Flávia",
+		"name": "Martinelli, o Foragido",
 		"hp": 200,
 		"atk": 32,
 		"reward_sats": 220,
@@ -162,13 +162,16 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D4-FINAL",
 		"intro_lines": [
-			"🚨  Agente Flávia bloqueia a saída!",
+			"🚨  Martinelli, o Foragido bloqueia a saída!",
 			"\"Nenhum indocumentado passa aqui.\"",
 			"Use o rádio para confundi-la.",
 		],
 		"victory_lines": [
-			"🏆  Agente Flávia derrotada!",
+			"🏆  Martinelli, o Foragido, derrotado!",
 			"A passagem para o norte está livre.",
 			"🔑  Prove sua identidade soberana...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.62, 0.8, 0.6)

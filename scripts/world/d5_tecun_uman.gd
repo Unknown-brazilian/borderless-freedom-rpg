@@ -62,9 +62,9 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Fiscais patrulham no meio do rio — 3 barcos patrulheiros
-	spawn_patrol_enemy(Vector2i(3, 24), "Fiscal Fluvial A", 60, 18, 30, 40, "item_spray", 3)
-	spawn_patrol_enemy(Vector2i(6, 18), "Fiscal Fluvial B", 65, 20, 32, 42, "item_spray", 3)
-	spawn_patrol_enemy(Vector2i(4, 12), "Fiscal Fluvial C", 70, 22, 35, 45, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(3, 24), "Fiscal do Giammattei", 60, 18, 30, 40, "item_spray", 3)
+	spawn_patrol_enemy(Vector2i(6, 18), "Fiscal do Arévalo", 65, 20, 32, 42, "item_spray", 3)
+	spawn_patrol_enemy(Vector2i(4, 12), "Fiscal do Jimmy Morales", 70, 22, 35, 45, "item_camera", 2)
 
 func _setup_events() -> void:
 	spawn_crypto_npc(Vector2i(9, 36), "EVT-005")   # ELONDOG COIN
@@ -74,3 +74,6 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.85, 0.95, 1.0)

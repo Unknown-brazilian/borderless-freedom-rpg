@@ -42,10 +42,10 @@ func _setup_npcs() -> void:
 
 func _setup_fiscais() -> void:
 	# Fiscais patrulheiros — visíveis e móveis como especificado no GDD
-	spawn_patrol_enemy(Vector2i(4, 28), "Fiscal Estadual",  30, 10, 12, 18, "item_spray", 2)
-	spawn_patrol_enemy(Vector2i(5, 20), "Fiscal Federal",   40, 14, 15, 25, "item_spray", 3)
-	spawn_patrol_enemy(Vector2i(3, 14), "Fiscal Sanitário", 35, 12, 15, 22, "item_camera", 2)
-	spawn_patrol_enemy(Vector2i(5, 10), "Fiscal IBAMA",     45, 16, 20, 30, "item_panfleto", 3)
+	spawn_patrol_enemy(Vector2i(4, 28), "Fiscal do Lula",  30, 10, 12, 18, "item_spray", 2)
+	spawn_patrol_enemy(Vector2i(5, 20), "Fiscal do Xandão",   40, 14, 15, 25, "item_spray", 3)
+	spawn_patrol_enemy(Vector2i(3, 14), "Fiscal do Haddad", 35, 12, 15, 22, "item_camera", 2)
+	spawn_patrol_enemy(Vector2i(5, 10), "Fiscal da Marina",     45, 16, 20, 30, "item_panfleto", 3)
 
 func _setup_events() -> void:
 	# 2 NPCs de scam cripto — aparecem convincentes, sem timeout
@@ -57,7 +57,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Coronel Corumbão",
+		"name": "Lula, o Molusco",
 		"hp": 120,
 		"atk": 20,
 		"reward_sats": 250,
@@ -66,7 +66,7 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D1-FINAL",
 		"intro_lines": [
-			"🚨  CORONEL CORUMBÃO!",
+			"🚨  LULA, O MOLUSCO!",
 			"\"Cobra em 3 moedas. Nenhuma delas válida.\"",
 			"O boss final de Bostil bloqueia a fronteira!",
 			"Use a câmera para expô-lo.",
@@ -77,3 +77,6 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Desafio da seed antes de avançar...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(1.0, 0.97, 0.82)

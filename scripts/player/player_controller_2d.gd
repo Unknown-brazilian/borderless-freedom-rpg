@@ -18,8 +18,11 @@ const GRID_STEP_SEC := 0.15    # segundos por passo em modo grid
 @export var use_grid_movement: bool = true   # true = Pokémon-style; false = contínuo
 
 # ─── Nós ──────────────────────────────────────────────────────────────────────
-@onready var _sprite: ColorRect = $Sprite
+@onready var _sprite: Sprite2D  = $Sprite
 @onready var _shadow: ColorRect = $Shadow
+
+const SPRITE_BASE_Y := -22.0
+var _anim_time: float = 0.0
 
 # ─── Estado ───────────────────────────────────────────────────────────────────
 var _move_dir: Vector2 = Vector2.ZERO
@@ -38,29 +41,33 @@ func _ready() -> void:
 	set_collision_mask_value(3, true)   # npc
 	set_collision_mask_value(4, true)   # enemy
 
-	if not _sprite:
-		_create_placeholder_sprite()
+	# Fallback: se a textura não carregou no editor, tenta do disco.
+	if _sprite and _sprite.texture == null:
+		var img := Image.load_from_file("res://assets/sprites/player.png")
+		if img:
+			_sprite.texture = ImageTexture.create_from_image(img)
 
-func _create_placeholder_sprite() -> void:
-	# Tenta carregar sprite PNG gerado; fallback para ColorRect
-	var sprite_path := "res://assets/sprites/player.png"
-	var img := Image.load_from_file(sprite_path)
-	if img:
-		var spr := Sprite2D.new()
-		spr.name = "Sprite"
-		spr.texture = ImageTexture.create_from_image(img)
-		spr.scale   = Vector2(2.2, 2.2)
-		spr.position = Vector2(0, -20)
-		add_child(spr)
-		# _sprite é ColorRect mas só usamos para compatibilidade — não faremos cast
+# ─── Animação procedural (bob de idle/caminhada) ──────────────────────────────
+func _process(delta: float) -> void:
+	if not is_instance_valid(_sprite):
+		return
+	_anim_time += delta
+	var bob := 0.0
+	if _is_moving or (not use_grid_movement and _move_dir != Vector2.ZERO):
+		bob = absf(sin(_anim_time * 14.0)) * 5.0   # passo: quique vertical
 	else:
-		var s := ColorRect.new()
-		s.name = "Sprite"
-		s.size = Vector2(48, 48)
-		s.position = Vector2(-24, -40)
-		s.color = Color(0.969, 0.576, 0.102)
-		add_child(s)
-		_sprite = s
+		bob = sin(_anim_time * 3.0) * 1.5           # idle: respiração sutil
+	_sprite.position.y = SPRITE_BASE_Y - bob
+
+## Pequeno squash & stretch ao iniciar um passo, dá peso ao movimento.
+func _step_squash() -> void:
+	if not is_instance_valid(_sprite):
+		return
+	var base := Vector2(2, 2)
+	var t := _sprite.create_tween()
+	t.tween_property(_sprite, "scale", Vector2(2.2, 1.8), 0.06)
+	t.tween_property(_sprite, "scale", base, 0.12) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 # ─── Input do D-Pad (chamado pelo TouchDPad) ──────────────────────────────────
 func set_move_direction(dir: Vector2) -> void:
@@ -102,6 +109,8 @@ func _process_grid_movement(delta: float) -> void:
 		return
 
 	_face_dir = _move_dir
+	if _move_dir.x != 0 and is_instance_valid(_sprite):
+		_sprite.flip_h = _move_dir.x < 0
 	var target := position + _move_dir * TILE_SIZE
 	# Verifica colisão antes de mover
 	var motion := _move_dir * TILE_SIZE
@@ -114,6 +123,7 @@ func _process_grid_movement(delta: float) -> void:
 	_move_to      = target
 	_move_progress = 0.0
 	_is_moving    = true
+	_step_squash()
 
 # ─── Movimento livre ──────────────────────────────────────────────────────────
 func _process_free_movement(delta: float) -> void:
