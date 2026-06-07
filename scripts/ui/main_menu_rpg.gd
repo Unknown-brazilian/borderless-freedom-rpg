@@ -27,9 +27,44 @@ func _ready() -> void:
 	_lbl_title.text = "BORDERLESS FREEDOM"
 	_lbl_sub.text   = "A Dissident Adventure — RPG"
 
+	# Feedback de toque (clique + escala + vibração) em todos os botões.
+	for b in [_btn_nova, _btn_continuar, _btn_creditos, _btn_confirm_yes, _btn_confirm_no]:
+		Juice.button_feedback(b)
+	_play_intro()
+
+## Entrada animada: título dá pop, subtítulo e botões entram em cascata;
+## depois o título ganha um pulso sutil de "respiração".
+func _play_intro() -> void:
+	var btns := [_btn_nova, _btn_continuar, _btn_creditos]
+	_lbl_title.modulate.a = 0.0
+	_lbl_sub.modulate.a   = 0.0
+	for b in btns:
+		b.modulate.a = 0.0
+	await get_tree().process_frame   # aguarda o layout para pivôs corretos
+
+	_lbl_title.pivot_offset = _lbl_title.size * 0.5
+	_lbl_title.scale = Vector2(1.15, 1.15)
+	var t := create_tween()
+	t.set_parallel(true)
+	t.tween_property(_lbl_title, "modulate:a", 1.0, 0.4)
+	t.tween_property(_lbl_title, "scale", Vector2.ONE, 0.55) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	t.tween_property(_lbl_sub, "modulate:a", 1.0, 0.4).set_delay(0.2)
+	for i in btns.size():
+		t.tween_property(btns[i], "modulate:a", 1.0, 0.3).set_delay(0.35 + i * 0.1)
+
+	await get_tree().create_timer(1.1).timeout
+	var pulse := create_tween().set_loops()
+	pulse.tween_property(_lbl_title, "scale", Vector2(1.03, 1.03), 1.3) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	pulse.tween_property(_lbl_title, "scale", Vector2.ONE, 1.3) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
 func _on_nova_jornada() -> void:
 	if SaveSystem.has_save():
+		_confirm_panel.pivot_offset = _confirm_panel.size * 0.5
 		_confirm_panel.show()
+		Juice.pop(_confirm_panel, 1.08, 0.25)
 	else:
 		_start_new_game()
 

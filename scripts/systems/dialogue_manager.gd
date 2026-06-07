@@ -57,6 +57,8 @@ func _show_current() -> void:
 	var text    := _lines[_index] if _index < _lines.size() else ""
 	var speaker := _speakers[_index] if _index < _speakers.size() else ""
 	emit_signal("line_shown", text, speaker)
+	if not text.is_empty():
+		AudioManager.sfx("dialogue")
 	if is_instance_valid(_box_node) and _box_node.has_method("show_line"):
 		_box_node.show_line(text, speaker)
 
