@@ -138,11 +138,13 @@ func burst(parent: Node, at: Vector2, color: Color = Color(1, 0.9, 0.3),
 	t.tween_callback(p.queue_free)
 
 # ─── Feedback de toque em botões (afunda + clareia + vibra) ───────────────────
-func button_feedback(btn: BaseButton) -> void:
+func button_feedback(btn: BaseButton, with_sound: bool = true) -> void:
 	if not is_instance_valid(btn):
 		return
 	btn.button_down.connect(func():
 		Input.vibrate_handheld(18)
+		if with_sound:
+			AudioManager.sfx("menu_click")
 		btn.pivot_offset = btn.size * 0.5
 		var t := btn.create_tween()
 		t.tween_property(btn, "scale", Vector2(0.9, 0.9), 0.06) \
