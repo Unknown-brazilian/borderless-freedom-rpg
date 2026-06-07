@@ -14,6 +14,11 @@ extends Area2D
 var _taken: bool = false
 
 func _ready() -> void:
+	# Cor por tipo (água=azul, comida=laranja, peça=cinza, item=dourado).
+	match effect:
+		"water":    pickup_color = Color(0.35, 0.65, 1.0)
+		"food":     pickup_color = Color(1.0, 0.65, 0.2)
+		"bikepart": pickup_color = Color(0.72, 0.72, 0.78)
 	collision_layer = 0
 	set_collision_mask_value(2, true)   # detecta o player (layer 2)
 	monitoring = true
@@ -25,15 +30,21 @@ func _ready() -> void:
 	shape.shape = circ
 	add_child(shape)
 
-	var lbl := Label.new()
-	lbl.text = icon
-	lbl.position = Vector2(-16, -22)
-	lbl.add_theme_font_size_override("font_size", 32)
-	add_child(lbl)
+	# Visual: marcador colorido (robusto, sem depender de glifo de emoji) + brilho.
+	var halo := ColorRect.new()
+	halo.size = Vector2(34, 34)
+	halo.position = Vector2(-17, -34)
+	halo.color = Color(pickup_color.r, pickup_color.g, pickup_color.b, 0.35)
+	add_child(halo)
+	var dot := ColorRect.new()
+	dot.size = Vector2(20, 20)
+	dot.position = Vector2(-10, -27)
+	dot.color = pickup_color
+	add_child(dot)
 	# pulsinho pra chamar atenção
 	var t := create_tween().set_loops()
-	t.tween_property(lbl, "position:y", -30.0, 0.6).set_trans(Tween.TRANS_SINE)
-	t.tween_property(lbl, "position:y", -22.0, 0.6).set_trans(Tween.TRANS_SINE)
+	t.tween_property(dot, "position:y", -35.0, 0.6).set_trans(Tween.TRANS_SINE)
+	t.tween_property(dot, "position:y", -27.0, 0.6).set_trans(Tween.TRANS_SINE)
 
 	# Já pegou antes? (persistente por item único)
 	if item_id != "" and item_id in PlayerInventory.unlocked:
@@ -57,7 +68,7 @@ func _on_body_entered(body: Node) -> void:
 				PlayerInventory.unlock_item(item_id)
 	AudioManager.sfx("coin")
 	var msg := label_text if label_text != "" else "Item obtido"
-	Juice.float_text(get_tree().current_scene, global_position, "%s %s" % [icon, msg], pickup_color, 34)
+	Juice.float_text(get_tree().current_scene, global_position, msg, pickup_color, 34)
 	queue_free()
 
 ## Com pneu + câmara de ar, o player remonta uma bicicleta (se estiver sem).

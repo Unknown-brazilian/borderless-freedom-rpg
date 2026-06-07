@@ -329,5 +329,34 @@ func spawn_pickup(tile: Vector2i, item_id: String, icon: String, label_text: Str
 	pk.position = _tile_to_world(tile)
 	add_child(pk)
 
+## Ponto de acampamento (descansar + salvar).
+func spawn_campsite(tile: Vector2i) -> void:
+	var c = preload("res://scripts/world/campsite.gd").new()
+	c.position = _tile_to_world(tile)
+	add_child(c)
+
+## Obstáculo sólido (bloqueia o player) — pedra/entulho (bloco colorido robusto).
+func spawn_obstacle(tile: Vector2i, _icon: String = "") -> void:
+	var o := StaticBody2D.new()
+	o.set_collision_layer_value(1, true)   # camada world
+	o.collision_mask = 0
+	var shape := CollisionShape2D.new()
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(58, 58)
+	shape.shape = rect
+	o.add_child(shape)
+	var rock := ColorRect.new()
+	rock.size = Vector2(54, 50)
+	rock.position = Vector2(-27, -34)
+	rock.color = Color(0.32, 0.28, 0.24)   # pedra/entulho marrom
+	o.add_child(rock)
+	var top := ColorRect.new()
+	top.size = Vector2(54, 8)
+	top.position = Vector2(-27, -34)
+	top.color = Color(0.42, 0.37, 0.32)    # topo mais claro
+	o.add_child(top)
+	o.position = _tile_to_world(tile)
+	add_child(o)
+
 func _tile_to_world(tile: Vector2i) -> Vector2:
 	return Vector2(tile.x * TILE_SIZE + TILE_SIZE / 2, tile.y * TILE_SIZE + TILE_SIZE / 2)

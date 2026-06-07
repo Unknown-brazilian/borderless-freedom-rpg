@@ -110,6 +110,7 @@ func _maybe_show_ulrich_video() -> void:
 func _setup_npcs() -> void:
 	# México: comida (miojo) e peças pra remontar a bike (depois do assalto).
 	spawn_pickup(Vector2i(8, 24), "", "🍜", "Miojo! +45 comida", "food", 45.0)
+	spawn_campsite(Vector2i(7, 38))
 	spawn_pickup(Vector2i(18, 18), "item_pneu", "🛞", "Pneu! (peça da bike)", "bikepart")
 	spawn_pickup(Vector2i(3, 12), "item_camara_ar", "⭕", "Câmara de ar! (peça da bike)", "bikepart")
 	spawn_npc(Vector2i(6, 42), "Migrante Veterano",
