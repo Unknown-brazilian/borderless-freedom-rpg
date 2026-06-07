@@ -79,8 +79,36 @@ func _clamp_indices() -> void:
 
 func apply(player: Node) -> void:
 	_apply_skin(player)
+	_apply_equipment(player)
 	_apply_speed(player)
 	_apply_resources()
+
+## Mostra capacete e bike no player 2D (antes não apareciam nenhum dos dois).
+func _apply_equipment(player: Node) -> void:
+	if not (player is Node2D):
+		return
+	for n in ["Helmet", "BikeIcon"]:
+		var old = player.get_node_or_null(n)
+		if old:
+			old.free()
+	# Capacete: faixa colorida sobre a cabeça.
+	if capacete_index > 0:
+		var cap := ColorRect.new()
+		cap.name = "Helmet"
+		cap.size = Vector2(34, 14)
+		cap.position = Vector2(-17, -52)
+		cap.color = CAPACETES[capacete_index]["cor"]
+		cap.z_index = 1
+		player.add_child(cap)
+	# Bike: ícone aos pés do player.
+	if bike_index > 0:
+		var bike := Label.new()
+		bike.name = "BikeIcon"
+		bike.text = BIKES[bike_index]["label"]
+		bike.position = Vector2(-20, -8)
+		bike.add_theme_font_size_override("font_size", 30)
+		bike.z_index = 2
+		player.add_child(bike)
 
 func _apply_skin(player: Node) -> void:
 	var skin_color: Color = SKINS[skin_index]["cor"]
