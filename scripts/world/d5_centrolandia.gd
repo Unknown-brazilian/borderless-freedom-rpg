@@ -30,7 +30,7 @@ func _setup_npcs() -> void:
 		Color(0.8, 0.8, 0.3)
 	)
 	spawn_npc(Vector2i(7, 20), "Dissidente Local",
-		["El Señor Técnico comanda este checkpoint.",
+		["Bukele, o Ditador Descolado comanda este checkpoint.",
 		 "Ele bloqueia qualquer sinal de rádio.",
 		 "Mas seu rádio específico pode virar isso contra ele."],
 		Color(0.969, 0.576, 0.102)
@@ -51,7 +51,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "El Señor Técnico",
+		"name": "Bukele, o Ditador Descolado",
 		"hp": 210,
 		"atk": 34,
 		"reward_sats": 230,
@@ -60,12 +60,12 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D5-FINAL",
 		"intro_lines": [
-			"📡  El Señor Técnico ativa o bloqueio de sinal!",
+			"📡  Bukele, o Ditador Descolado ativa o bloqueio de sinal!",
 			"\"Nenhuma comunicação não autorizada passa aqui.\"",
 			"Seu rádio é a chave — use-o contra ele.",
 		],
 		"victory_lines": [
-			"🏆  El Señor Técnico derrotado!",
+			"🏆  Bukele, o Ditador Descolado derrotado!",
 			"O bloqueio de sinal foi quebrado.",
 			"🔑  Prove sua identidade soberana...",
 		],

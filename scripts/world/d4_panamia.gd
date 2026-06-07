@@ -153,7 +153,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Agente Flávia",
+		"name": "Martinelli, o Foragido",
 		"hp": 200,
 		"atk": 32,
 		"reward_sats": 220,
@@ -162,12 +162,12 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D4-FINAL",
 		"intro_lines": [
-			"🚨  Agente Flávia bloqueia a saída!",
+			"🚨  Martinelli, o Foragido bloqueia a saída!",
 			"\"Nenhum indocumentado passa aqui.\"",
 			"Use o rádio para confundi-la.",
 		],
 		"victory_lines": [
-			"🏆  Agente Flávia derrotada!",
+			"🏆  Martinelli, o Foragido, derrotado!",
 			"A passagem para o norte está livre.",
 			"🔑  Prove sua identidade soberana...",
 		],

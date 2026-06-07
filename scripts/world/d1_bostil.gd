@@ -57,7 +57,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Coronel Corumbão",
+		"name": "Lula, o Molusco",
 		"hp": 120,
 		"atk": 20,
 		"reward_sats": 250,
@@ -66,7 +66,7 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D1-FINAL",
 		"intro_lines": [
-			"🚨  CORONEL CORUMBÃO!",
+			"🚨  LULA, O MOLUSCO!",
 			"\"Cobra em 3 moedas. Nenhuma delas válida.\"",
 			"O boss final de Bostil bloqueia a fronteira!",
 			"Use a câmera para expô-lo.",

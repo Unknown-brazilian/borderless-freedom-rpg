@@ -1,5 +1,5 @@
 ## d7_bostil_retorno.gd
-## Mapa D7 — Bostil (retorno) — Deportação e Algoritmo Tirano.
+## Mapa D7 — Bostil (retorno) — Deportação e Xandão, o Tirano do Algoritmo.
 ## Boss victory → DeportationChallenge (reordena 24 palavras da seed).
 
 extends "res://scripts/world/world_map_base.gd"
@@ -26,7 +26,7 @@ func _setup_npcs() -> void:
 		Color(0.55, 0.55, 0.75)
 	)
 	spawn_npc(Vector2i(2, 30), "Advogado Soberano",
-		["O Algoritmo Tirano é o chefe aqui.",
+		["O Xandão, o Tirano do Algoritmo é o chefe aqui.",
 		 "Persuasão >= 2 pode negociar saída.",
 		 "Mas provar sua seed é a única certeza.",
 		],
@@ -47,7 +47,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "Algoritmo Tirano",
+		"name": "Xandão, o Tirano do Algoritmo",
 		"hp": 230,
 		"atk": 38,
 		"reward_sats": 260,

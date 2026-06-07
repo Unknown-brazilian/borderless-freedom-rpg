@@ -37,7 +37,7 @@ func _setup_npcs() -> void:
 		Color(0.7, 0.7, 0.9)
 	)
 	spawn_npc(Vector2i(8, 24), "Jornaleiro",
-		["O Complexo está lá no fim.",
+		["AMLO, o Tlatoani está lá no fim.",
 		 "Dizem que tem 7 formas.",
 		 "Nunca vi ninguém que passou sem a seed.",
 		],
@@ -66,7 +66,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "O Complexo",
+		"name": "AMLO, o Tlatoani",
 		"hp": 350,
 		"atk": 45,
 		"reward_sats": 300,

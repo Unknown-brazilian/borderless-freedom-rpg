@@ -53,7 +53,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "General Tupac Fraudo",
+		"name": "Castillo, o Autogolpista",
 		"hp": 185,
 		"atk": 30,
 		"reward_sats": 195,
@@ -62,7 +62,7 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D3-FINAL",
 		"intro_lines": [
-			"🚨  General Tupac Fraudo bloqueia a passagem!",
+			"🚨  Castillo, o Autogolpista bloqueia a passagem!",
 			"\"Nenhum dissidente cruza minha fronteira.\"",
 			"Ele odeia câmeras — use isso.",
 		],

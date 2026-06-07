@@ -42,7 +42,7 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {
-		"name": "El Comandante Chapéu Neto",
+		"name": "Evo, o Eterno Candidato",
 		"hp": 120 + 60,
 		"atk": 18 + 10,
 		"reward_sats": 180,
@@ -51,12 +51,12 @@ func _get_boss_data() -> Dictionary:
 		"is_boss": true,
 		"boss_id": "BOSS-D2-FINAL",
 		"intro_lines": [
-			"🚨  El Comandante Chapéu Neto bloqueia o caminho!",
+			"🚨  Evo, o Eterno Candidato bloqueia o caminho!",
 			"Este é o boss de Bolivária.",
 			"Use o item certo para vencer mais fácil.",
 		],
 		"victory_lines": [
-			"🏆  El Comandante Chapéu Neto derrotado!",
+			"🏆  Evo, o Eterno Candidato derrotado!",
 			"O caminho está livre.",
 			"🔑  Mostre que a seed é sua...",
 		],

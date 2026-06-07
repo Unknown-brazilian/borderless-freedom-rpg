@@ -9,7 +9,7 @@ extends "res://scripts/world/world_map_base.gd"
 
 const ACCUSATIONS := [
 	{
-		"name": "Promotor Fiscal",
+		"name": "Promotor do Macron",
 		"charge": "\"Entrada irregular na Bélgique via rota não autorizada.\"",
 		"hp_full": 100, "hp_weak": 50, "atk": 30,
 		"defense_options": [
@@ -20,7 +20,7 @@ const ACCUSATIONS := [
 		"defense_item": "item_camera",
 	},
 	{
-		"name": "Promotor Trabalhista",
+		"name": "Promotor do Scholz",
 		"charge": "\"Trabalho informal durante período de regularização.\"",
 		"hp_full": 110, "hp_weak": 55, "atk": 32,
 		"defense_options": [
@@ -31,7 +31,7 @@ const ACCUSATIONS := [
 		"defense_item": "item_panfleto",
 	},
 	{
-		"name": "Promotor de Identidade",
+		"name": "Promotora da Metsola",
 		"charge": "\"Identidade digital não verificável nos sistemas EU.\"",
 		"hp_full": 120, "hp_weak": 60, "atk": 34,
 		"defense_options": [
@@ -42,7 +42,7 @@ const ACCUSATIONS := [
 		"defense_item": "item_chave",
 	},
 	{
-		"name": "Promotor de Ordem Pública",
+		"name": "Promotor do Borrell",
 		"charge": "\"Perturbação de fronteiras soberanas em múltiplos países.\"",
 		"hp_full": 130, "hp_weak": 65, "atk": 36,
 		"defense_options": [

@@ -1,5 +1,5 @@
 ## d9_belgique.gd
-## D9-E — Fuga pelos Canais + Boss: Agente Rastreador Final.
+## D9-E — Fuga pelos Canais + Boss: Von der Leyen, a Rastreadora-Mor.
 ## Mia reaparece 2x para reabastecer recursos.
 ## Boss tem HP reduzido se tribunal_won = true.
 ## Fim da campanha.
@@ -85,7 +85,7 @@ func _get_boss_data() -> Dictionary:
 	if mia_bom:      hp -= 50      # Mia forneceu dados sobre algoritmos
 
 	return {
-		"name": "Agente Rastreador Final",
+		"name": "Von der Leyen, a Rastreadora-Mor",
 		"hp":   hp,
 		"atk":  55,
 		"reward_sats": 350,
