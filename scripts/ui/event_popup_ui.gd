@@ -22,7 +22,7 @@ var _is_result:       bool       = false
 var _prev_time_scale: float      = 1.0
 
 func _ready() -> void:
-	layer = 10
+	layer = 60   # bem acima de HUD/batalha/diálogo, p/ receber o toque dos botões
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("event_popup_ui")
 	hide()
@@ -223,7 +223,10 @@ func _on_ignore() -> void:
 func _close() -> void:
 	_current_event = {}
 	_is_result     = false
-	Engine.time_scale = _prev_time_scale
+	# Sempre restaura o tempo normal do overworld (1.0). Restaurar _prev_time_scale
+	# era frágil: se o evento abrisse durante outro freeze, _prev era 0 e o jogo
+	# ficava travado para sempre.
+	Engine.time_scale = 1.0
 	hide()
 
 func _notification(what: int) -> void:

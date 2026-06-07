@@ -32,6 +32,7 @@ var _escape_attempts: int = 0
 func start_battle(data: Dictionary) -> void:
 	if state != State.IDLE or locked:
 		return
+	Engine.time_scale = 1.0   # batalha sempre roda em tempo normal (nunca herda freeze)
 	enemy_data      = data
 	enemy_hp        = data.get("hp", 50)
 	_is_boss        = data.get("is_boss", false)
@@ -49,7 +50,7 @@ func start_battle(data: Dictionary) -> void:
 	emit_signal("battle_started", enemy_data)
 	emit_signal("hp_changed", "player", player_hp, player_max_hp)
 	emit_signal("hp_changed", "enemy", enemy_hp, enemy_data.get("hp", 50))
-	await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(0.3, true, false, true).timeout
 	emit_signal("player_turn_started")
 
 func player_action(action: Action, item_id: String = "") -> void:
@@ -79,7 +80,7 @@ func _resolve_attack() -> void:
 	_log("⚔️  Você atacou! -%d HP do %s." % [base_dmg, enemy_data.get("name", "Inimigo")])
 	emit_signal("hp_changed", "enemy", maxi(enemy_hp, 0), enemy_data.get("hp", 50))
 	emit_signal("action_resolved", _battle_log[-1])
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().create_timer(0.6, true, false, true).timeout
 	if enemy_hp <= 0:
 		await _resolve_victory()
 	else:
@@ -89,7 +90,7 @@ func _resolve_item(item_id: String) -> void:
 	if item_id.is_empty() or not PlayerInventory.can_use_item():
 		_log("❌  Item não disponível agora.")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.4).timeout
+		await get_tree().create_timer(0.4, true, false, true).timeout
 		state = State.PLAYER_TURN
 		emit_signal("player_turn_started")
 		return
@@ -97,7 +98,7 @@ func _resolve_item(item_id: String) -> void:
 	var effect := _apply_item_effect(item_id)
 	_log(effect)
 	emit_signal("action_resolved", _battle_log[-1])
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().create_timer(0.6, true, false, true).timeout
 	if enemy_hp <= 0:
 		await _resolve_victory()
 	else:
@@ -138,12 +139,12 @@ func _resolve_stealth() -> void:
 	if randi() % 100 < chance:
 		_log("👁️  Furtividade! Você passou sem ser visto.")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.8).timeout
+		await get_tree().create_timer(0.8, true, false, true).timeout
 		await _resolve_escaped()
 	else:
 		_log("👁️  Furtividade falhou — detectado!")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.5, true, false, true).timeout
 		await _enemy_turn()
 
 func _resolve_persuade() -> void:
@@ -153,7 +154,7 @@ func _resolve_persuade() -> void:
 		SatEconomy.remove_sats(cost_sats, "persuasao_battle")
 		_log("🗣️  Persuasão! -%d sats — inimigo convencido." % cost_sats)
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.8).timeout
+		await get_tree().create_timer(0.8, true, false, true).timeout
 		await _resolve_escaped()
 	elif persuasao >= 1:
 		var dmg_reduction := 5
@@ -161,20 +162,20 @@ func _resolve_persuade() -> void:
 		enemy_data["atk"] = maxi(1, original_atk - dmg_reduction)
 		_log("🗣️  Persuasão parcial — dano reduzido em %d." % dmg_reduction)
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.5, true, false, true).timeout
 		await _enemy_turn()
 		enemy_data["atk"] = original_atk   # restaura após o turno
 	else:
 		_log("🗣️  Sem persuasão suficiente!")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.4).timeout
+		await get_tree().create_timer(0.4, true, false, true).timeout
 		await _enemy_turn()
 
 func _resolve_run() -> void:
 	if _is_boss:
 		_log("🚫  Não pode fugir de um chefe!")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.4).timeout
+		await get_tree().create_timer(0.4, true, false, true).timeout
 		state = State.PLAYER_TURN
 		emit_signal("player_turn_started")
 		return
@@ -183,12 +184,12 @@ func _resolve_run() -> void:
 	if randi() % 100 < chance:
 		_log("🏃  Fugiu com sucesso!")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true, false, true).timeout
 		await _resolve_escaped()
 	else:
 		_log("🏃  Fuga falhou!")
 		emit_signal("action_resolved", _battle_log[-1])
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.5, true, false, true).timeout
 		await _enemy_turn()
 
 # ─── Turno do inimigo ─────────────────────────────────────────────────────────
@@ -198,7 +199,7 @@ func _enemy_turn() -> void:
 		return
 	state = State.ENEMY_TURN
 	emit_signal("enemy_turn_started")
-	await get_tree().create_timer(0.8).timeout
+	await get_tree().create_timer(0.8, true, false, true).timeout
 
 	var atk: int = enemy_data.get("atk", 15) + randi() % 8
 	# Redução por furtividade passiva
@@ -211,7 +212,7 @@ func _enemy_turn() -> void:
 	emit_signal("hp_changed", "player", maxi(player_hp, 0), player_max_hp)
 	emit_signal("action_resolved", _battle_log[-1])
 
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().create_timer(0.6, true, false, true).timeout
 	if player_hp <= 0:
 		await _resolve_defeat()
 	else:
@@ -230,7 +231,7 @@ func _resolve_victory() -> void:
 	AudioManager.play_overworld()
 	_log("🏆  Vitória! +%d sats." % reward)
 	emit_signal("action_resolved", _battle_log[-1])
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.5, true, false, true).timeout
 	emit_signal("battle_ended", "victory")
 
 func _resolve_defeat() -> void:
@@ -239,7 +240,7 @@ func _resolve_defeat() -> void:
 	AudioManager.music("game_over")
 	_log("💀  Derrotado...")
 	emit_signal("action_resolved", _battle_log[-1])
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.5, true, false, true).timeout
 	emit_signal("battle_ended", "defeat")
 
 func _resolve_escaped() -> void:

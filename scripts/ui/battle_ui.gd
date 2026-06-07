@@ -170,7 +170,7 @@ func _lunge_and_hit(attacker: TextureRect, host: ColorRect, battler: TextureRect
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		t.tween_property(attacker, "position", Vector2.ZERO, 0.22) \
 			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		await get_tree().create_timer(CONTACT).timeout
+		await get_tree().create_timer(CONTACT, true, false, true).timeout
 	_impact(host, battler, delta)
 
 ## Feedback de impacto no alvo: flash, pop, shake, número e partículas.
@@ -209,15 +209,15 @@ func _on_battle_ended(result: String) -> void:
 			_lbl_log.text = "🏆  Vitória!"
 			_play_death(_enemy_tex, _rect_enemy)
 			AudioManager.sfx("victory")
-			await get_tree().create_timer(2.0).timeout
+			await get_tree().create_timer(2.0, true, false, true).timeout
 		"defeat":
 			_lbl_log.text = "💀  Derrota..."
 			AudioManager.sfx("defeat")
-			await get_tree().create_timer(2.0).timeout
+			await get_tree().create_timer(2.0, true, false, true).timeout
 		"escaped":
 			_lbl_log.text = "🏃  Fugiu!"
 			AudioManager.sfx("door")
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0, true, false, true).timeout
 	BattleManager.reset()
 	hide()
 
