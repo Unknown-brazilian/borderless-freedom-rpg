@@ -21,6 +21,9 @@ var _boss_trigger_dist: int = 3   # tiles de distância para triggar boss
 ## Dimensões do mapa em tiles. Subclasses podem sobrescrever em _ready antes de super().
 var _map_w: int = 23
 var _map_h: int = 47
+## Fator de alongamento vertical: estica o mapa E as posições de spawn na mesma
+## proporção (dungeon define em _ready antes de super, sem reposicionar conteúdo).
+var _stretch: float = 1.0
 ## Tema de chão: "grass" (default), "floor" (interior), "water" (margem).
 var _ground_key: String = "grass"
 ## Tinta aplicada à TileMap inteira — dá clima/paleta própria a cada dungeon.
@@ -43,6 +46,12 @@ var _is_interior: bool = false
 func _ready() -> void:
 	AutonomyBar.refill_all()
 	AutonomyBar.set_active(true)
+
+	# Alonga o mapa e as posições verticalmente (corredor mais longo, estilo Pokémon).
+	if _stretch != 1.0:
+		_map_h = int(round(_map_h * _stretch))
+		_player_start.y = int(round(_player_start.y * _stretch))
+		_exit_tile.y = maxi(2, int(round(_exit_tile.y * _stretch)))
 
 	# Ao voltar de um interior, reaparece na porta (não no início do mapa).
 	if not _is_interior and WorldManager.pending_return_tile != Vector2i(-1, -1):
@@ -382,4 +391,6 @@ func spawn_obstacle(tile: Vector2i, _icon: String = "") -> void:
 	add_child(o)
 
 func _tile_to_world(tile: Vector2i) -> Vector2:
-	return Vector2(tile.x * TILE_SIZE + TILE_SIZE / 2, tile.y * TILE_SIZE + TILE_SIZE / 2)
+	# Aplica o alongamento vertical aos spawns (mesma proporção do mapa).
+	var sy := int(round(tile.y * _stretch))
+	return Vector2(tile.x * TILE_SIZE + TILE_SIZE / 2, sy * TILE_SIZE + TILE_SIZE / 2)

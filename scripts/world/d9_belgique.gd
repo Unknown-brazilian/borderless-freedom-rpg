@@ -12,6 +12,7 @@ func _ready() -> void:
 	_player_start      = Vector2i(4, 44)
 	_exit_tile         = Vector2i(4, 2)
 	_boss_trigger_dist = 4
+	_stretch = 1.6
 	super._ready()
 
 func _intro_dialogue() -> void:
@@ -28,6 +29,8 @@ func _intro_dialogue() -> void:
 	AutonomyBar.consume("energy", 15.0)
 
 func _setup_npcs() -> void:
+	spawn_building(Vector2i(9, 38), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
+	spawn_campsite(Vector2i(3, 26))
 	# Mia — reaparece 2x para reabastecer
 	var mia1 := spawn_npc(Vector2i(7, 36), "Mia",
 		["Rápido. Esse canal leva para o lado leste.",

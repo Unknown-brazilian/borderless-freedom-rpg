@@ -6,6 +6,7 @@ extends "res://scripts/world/world_map_base.gd"
 func _ready() -> void:
 	_player_start = Vector2i(4, 44)
 	_exit_tile    = Vector2i(4, 2)
+	_stretch = 1.6
 	super._ready()
 
 func _intro_dialogue() -> void:
@@ -20,6 +21,8 @@ func _intro_dialogue() -> void:
 	AutonomyBar.restore("energy", 15.0)
 
 func _setup_npcs() -> void:
+	spawn_building(Vector2i(9, 38), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
+	spawn_campsite(Vector2i(3, 26))
 	spawn_npc(Vector2i(6, 42), "Minerador Aliado I",
 		["Bem-vindo ao Paraguassu.",
 		 "Aqui mineramos Bitcoin livremente — ou tentamos.",
