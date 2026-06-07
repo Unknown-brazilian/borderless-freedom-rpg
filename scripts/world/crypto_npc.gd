@@ -211,8 +211,14 @@ func _on_refused(_id: String) -> void:
 	if not lesson.is_empty():
 		lines.append("📖  " + lesson)
 
-	# Bônus discreto por recusar
-	var bonus_pct: float = float(_event_data.get("ignore_outcome", {}).get("sat_bonus_percent", 5)) / 100.0
+	# Recompensa fixa (ex.: Ulrich — recusar Tesouro Direto e ficar com Bitcoin).
+	var flat: int = int(_event_data.get("ignore_outcome", {}).get("sat_bonus_flat", 0))
+	if flat > 0:
+		SatEconomy.add_sats(flat, "crypto_refused_flat")
+		lines.append("₿  Recompensa: +%s sats!" % _fmt_sats(flat))
+
+	# Bônus percentual discreto (default 0 — só eventos que definem o campo).
+	var bonus_pct: float = float(_event_data.get("ignore_outcome", {}).get("sat_bonus_percent", 0)) / 100.0
 	if bonus_pct > 0.0:
 		var bonus: int = max(1, int(current * bonus_pct))
 		SatEconomy.add_sats(bonus, "crypto_refused_bonus")
@@ -220,6 +226,17 @@ func _on_refused(_id: String) -> void:
 	DialogueManager.start(lines)
 	await DialogueManager.dialogue_finished
 	_mark_done()
+
+func _fmt_sats(n: int) -> String:
+	var s := str(n)
+	var out := ""
+	var c := 0
+	for i in range(s.length() - 1, -1, -1):
+		if c > 0 and c % 3 == 0:
+			out = "." + out
+		out = s[i] + out
+		c += 1
+	return out
 
 func _mark_done() -> void:
 	WorldManager.set_flag("crypto_done_%s" % event_id, true)

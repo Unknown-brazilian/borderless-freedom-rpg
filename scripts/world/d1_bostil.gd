@@ -50,8 +50,10 @@ func _setup_fiscais() -> void:
 
 func _setup_events() -> void:
 	# 2 NPCs de scam cripto — aparecem convincentes, sem timeout
-	spawn_crypto_npc(Vector2i(7, 66), "EVT-002")   # LULACOIN (D1 é no range 1-2)
-	spawn_crypto_npc(Vector2i(1, 36), "EVT-003")   # segundo evento disponível
+	# Figurões cripto/financeiros BR (Bostil = Brasil), espalhados pela estrada.
+	spawn_crypto_npc(Vector2i(7, 66), "EVT-011")   # Fernando Ulrich — Tesouro Direto vs Bitcoin
+	spawn_crypto_npc(Vector2i(2, 50), "EVT-012")   # Augusto Backes — "essa small cap vai 10x"
+	spawn_crypto_npc(Vector2i(8, 22), "EVT-013")   # Empiricus — "seja a próxima Bettina"
 
 func _get_boss_id() -> String:
 	return "BOSS-D1-FINAL"
