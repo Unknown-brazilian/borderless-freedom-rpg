@@ -37,22 +37,12 @@ func _ready() -> void:
 const ORANGE := Color(0.969, 0.576, 0.102)
 
 func _style_menu() -> void:
-	# Fundo em gradiente vertical (escuro topo → quente embaixo, tom Bitcoin).
-	var grad := Gradient.new()
-	grad.offsets = PackedFloat32Array([0.0, 0.55, 1.0])
-	grad.colors  = PackedColorArray([
-		Color(0.03, 0.03, 0.05), Color(0.06, 0.05, 0.07), Color(0.14, 0.09, 0.03)
-	])
-	var gt := GradientTexture2D.new()
-	gt.gradient = grad
-	gt.width = 8
-	gt.height = 256
-	gt.fill_from = Vector2(0.5, 0.0)
-	gt.fill_to   = Vector2(0.5, 1.0)
-	var bg2 := TextureRect.new()
-	bg2.texture       = gt
+	# Fundo procedural animado via shader (gradiente + brilho + grão + vinheta).
+	var bg2 := ColorRect.new()
+	var bg_mat := ShaderMaterial.new()
+	bg_mat.shader = load("res://assets/shaders/menu_bg.gdshader")
+	bg2.material      = bg_mat
 	bg2.set_anchors_preset(Control.PRESET_FULL_RECT)
-	bg2.stretch_mode  = TextureRect.STRETCH_SCALE
 	bg2.mouse_filter  = Control.MOUSE_FILTER_IGNORE
 	add_child(bg2)
 	move_child(bg2, 1)   # acima do BG sólido, abaixo do Panel
@@ -80,6 +70,15 @@ func _style_menu() -> void:
 	footer.offset_bottom = -24
 	footer.mouse_filter  = Control.MOUSE_FILTER_IGNORE
 	add_child(footer)
+
+	# Sobreposição CRT (scanlines) por cima de tudo.
+	var scan := ColorRect.new()
+	var scan_mat := ShaderMaterial.new()
+	scan_mat.shader = load("res://assets/shaders/scanlines.gdshader")
+	scan.material      = scan_mat
+	scan.set_anchors_preset(Control.PRESET_FULL_RECT)
+	scan.mouse_filter  = Control.MOUSE_FILTER_IGNORE
+	add_child(scan)   # último filho = topo
 
 func _style_button(btn: Button, accent: Color) -> void:
 	var normal := StyleBoxFlat.new()
