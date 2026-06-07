@@ -41,11 +41,14 @@ func _ready() -> void:
 	set_collision_mask_value(3, true)   # npc
 	set_collision_mask_value(4, true)   # enemy
 
-	# Fallback: se a textura não carregou no editor, tenta do disco.
+	# Fallback: se a textura não veio da cena, carrega via ResourceLoader
+	# (funciona no editor E no APK; Image.load_from_file falha dentro do .pck).
 	if _sprite and _sprite.texture == null:
-		var img := Image.load_from_file("res://assets/sprites/player.png")
-		if img:
-			_sprite.texture = ImageTexture.create_from_image(img)
+		var p := "res://assets/sprites/player.png"
+		if ResourceLoader.exists(p):
+			_sprite.texture = load(p)
+	# Aplica a skin escolhida (tinta) ao sprite do player.
+	PlayerCustomization.apply(self)
 
 # ─── Animação procedural (bob de idle/caminhada) ──────────────────────────────
 func _process(delta: float) -> void:

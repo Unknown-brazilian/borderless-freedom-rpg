@@ -49,6 +49,7 @@ func _build_ui() -> void:
 	_name_input.placeholder_text = "Digite seu nome..."
 	_name_input.text = PlayerStats.player_name if PlayerStats.player_name != "Dissidente" else ""
 	_name_input.custom_minimum_size = Vector2(0, 80)
+	_name_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL   # ocupa a largura toda
 	_name_input.add_theme_font_size_override("font_size", 36)
 	_name_input.text_changed.connect(func(t: String):
 		PlayerStats.player_name = t.strip_edges() if t.strip_edges() != "" else "Dissidente"
@@ -57,7 +58,7 @@ func _build_ui() -> void:
 
 	# ── Preview do player ─────────────────────────────────────────────────────
 	_preview = TextureRect.new()
-	_preview.custom_minimum_size = Vector2(128, 128)
+	_preview.custom_minimum_size = Vector2(192, 192)
 	_preview.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 	_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_preview.layout_mode = 2
@@ -158,11 +159,15 @@ func _make_hrow(row: HBoxContainer, on_left: Callable, on_right: Callable) -> La
 	return lbl
 
 func _load_preview_sprite() -> void:
-	var img := Image.load_from_file("res://assets/sprites/player.png")
-	if img:
-		_preview.texture = ImageTexture.create_from_image(img)
+	var p := "res://assets/sprites/player.png"
+	if ResourceLoader.exists(p):
+		_preview.texture = load(p)
+		_preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST   # pixel-art nítido
 
 func _refresh() -> void:
+	# Reflete a skin escolhida no preview (tinta).
+	if _preview:
+		_preview.modulate = PlayerCustomization.SKINS[PlayerCustomization.skin_index]["cor"]
 	if _lbl_skin:  _lbl_skin.text  = PlayerCustomization.get_skin_name()
 	if _lbl_cap:   _lbl_cap.text   = PlayerCustomization.get_capacete_name()
 	if _lbl_moc:   _lbl_moc.text   = PlayerCustomization.get_mochila_name()

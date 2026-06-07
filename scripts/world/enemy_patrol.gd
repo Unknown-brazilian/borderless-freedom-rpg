@@ -67,12 +67,13 @@ func _clamp_pos(p: Vector2) -> Vector2:
 	return Vector2(clampf(p.x, map_min.x, map_max.x), clampf(p.y, map_min.y, map_max.y))
 
 func _create_visuals() -> void:
-	# Tentar carregar sprite PNG de fiscal
+	# Carrega o sprite via ResourceLoader (funciona no editor E no APK exportado;
+	# Image.load_from_file lê do filesystem e falha dentro do .pck).
 	var sprite_path := "res://assets/sprites/fiscal_enemy.png"
-	var img := Image.load_from_file(sprite_path)
-	if img:
+	var tex: Texture2D = load(sprite_path) if ResourceLoader.exists(sprite_path) else null
+	if tex:
 		var spr := Sprite2D.new()
-		spr.texture = ImageTexture.create_from_image(img)
+		spr.texture = tex
 		spr.scale   = Vector2(2.0, 2.0)
 		spr.position = Vector2(0, -20)
 		add_child(spr)

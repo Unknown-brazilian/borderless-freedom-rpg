@@ -25,10 +25,10 @@ func _ready() -> void:
 func _create_sprite() -> void:
 	# Tenta PNG custom; fallback para ColorRect colorido
 	if not sprite_texture_path.is_empty():
-		var img := Image.load_from_file(sprite_texture_path)
-		if img:
+		var tex: Texture2D = load(sprite_texture_path) if ResourceLoader.exists(sprite_texture_path) else null
+		if tex:
 			var spr := Sprite2D.new()
-			spr.texture = ImageTexture.create_from_image(img)
+			spr.texture = tex
 			spr.scale   = Vector2(2.0, 2.0)
 			spr.position = Vector2(0, -20)
 			add_child(spr)
@@ -42,10 +42,11 @@ func _create_sprite() -> void:
 			return
 	# Fallback: sprite humanoide padrão tingido pela cor identificadora do NPC.
 	var label_y := -70.0
-	var img := Image.load_from_file("res://assets/sprites/npc_neutral.png")
-	if img:
+	var _neutral := "res://assets/sprites/npc_neutral.png"
+	var tex: Texture2D = load(_neutral) if ResourceLoader.exists(_neutral) else null
+	if tex:
 		var spr := Sprite2D.new()
-		spr.texture  = ImageTexture.create_from_image(img)
+		spr.texture  = tex
 		spr.scale    = Vector2(2.0, 2.0)
 		spr.position = Vector2(0, -22)
 		spr.modulate = sprite_color.lerp(Color.WHITE, 0.35)   # tinta suave

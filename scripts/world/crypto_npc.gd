@@ -58,8 +58,9 @@ func _load_event_data() -> void:
 
 func _create_visuals() -> void:
 	# Aparência deliberadamente profissional — terno, azul corporativo.
-	var img := Image.load_from_file("res://assets/sprites/npc_crypto.png")
-	if img:
+	var _crypto_path := "res://assets/sprites/npc_crypto.png"
+	var tex: Texture2D = load(_crypto_path) if ResourceLoader.exists(_crypto_path) else null
+	if tex:
 		var sh := ColorRect.new()
 		sh.size = Vector2(40, 12)
 		sh.position = Vector2(-20, 0)
@@ -67,7 +68,7 @@ func _create_visuals() -> void:
 		sh.z_index = -1
 		add_child(sh)
 		var spr := Sprite2D.new()
-		spr.texture  = ImageTexture.create_from_image(img)
+		spr.texture  = tex
 		spr.scale    = Vector2(2.0, 2.0)
 		spr.position = Vector2(0, -22)
 		spr.modulate = Color(0.55, 0.7, 1.0).lerp(Color.WHITE, 0.4)
