@@ -95,3 +95,4 @@ func _on_boss_result(result: String) -> void:
 
 func _setup_theme() -> void:
 	_ground_tint = Color(0.8, 0.8, 0.86)
+	_music_pitch = 0.94

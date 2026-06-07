@@ -227,7 +227,7 @@ func _resolve_victory() -> void:
 	if _is_boss:
 		WorldManager.record_boss_defeated()
 	AutonomyBar.set_active(true)
-	AudioManager.music("dungeon")
+	AudioManager.play_overworld()
 	_log("🏆  Vitória! +%d sats." % reward)
 	emit_signal("action_resolved", _battle_log[-1])
 	await get_tree().create_timer(0.5).timeout
@@ -245,7 +245,7 @@ func _resolve_defeat() -> void:
 func _resolve_escaped() -> void:
 	state = State.ENDED
 	AutonomyBar.set_active(true)
-	AudioManager.music("dungeon")
+	AudioManager.play_overworld()
 	emit_signal("battle_ended", "escaped")
 
 func reset() -> void:

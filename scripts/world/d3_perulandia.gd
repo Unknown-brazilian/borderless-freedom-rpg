@@ -77,3 +77,4 @@ func _setup_theme() -> void:
 	_ground_key = "path"
 	_no_path = true
 	_ground_tint = Color(0.92, 0.85, 0.72)
+	_music_pitch = 0.97
