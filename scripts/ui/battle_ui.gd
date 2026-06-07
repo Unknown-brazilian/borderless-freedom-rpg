@@ -41,6 +41,7 @@ func _ready() -> void:
 
 	for btn in [_btn_attack, _btn_item, _btn_stealth, _btn_persuade, _btn_run]:
 		btn.custom_minimum_size = Vector2(0, 88)
+		Juice.button_feedback(btn)
 
 	# Sprites reais sobre os ColorRects (que viram fundo translúcido).
 	_enemy_tex  = _make_battler(_rect_enemy)

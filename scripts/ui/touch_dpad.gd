@@ -37,6 +37,10 @@ func _ready() -> void:
 	_btn_b.custom_minimum_size     = Vector2(110, 110)
 	_btn_start.custom_minimum_size = Vector2(90, 90)
 
+	# Feedback tátil/visual em todos os botões.
+	for btn in [_btn_up, _btn_down, _btn_left, _btn_right, _btn_a, _btn_b, _btn_start]:
+		Juice.button_feedback(btn)
+
 	call_deferred("_find_player")
 
 func _find_player() -> void:

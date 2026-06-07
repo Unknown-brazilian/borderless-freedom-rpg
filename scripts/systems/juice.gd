@@ -137,6 +137,25 @@ func burst(parent: Node, at: Vector2, color: Color = Color(1, 0.9, 0.3),
 	t.tween_interval(p.lifetime + 0.2)
 	t.tween_callback(p.queue_free)
 
+# ─── Feedback de toque em botões (afunda + clareia + vibra) ───────────────────
+func button_feedback(btn: BaseButton) -> void:
+	if not is_instance_valid(btn):
+		return
+	btn.button_down.connect(func():
+		Input.vibrate_handheld(18)
+		btn.pivot_offset = btn.size * 0.5
+		var t := btn.create_tween()
+		t.tween_property(btn, "scale", Vector2(0.9, 0.9), 0.06) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		btn.modulate = Color(1.5, 1.5, 1.5)
+	)
+	btn.button_up.connect(func():
+		var t := btn.create_tween()
+		t.tween_property(btn, "scale", Vector2.ONE, 0.12) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		btn.modulate = Color.WHITE
+	)
+
 # ─── Hit-stop (congelamento breve para dar peso ao impacto) ───────────────────
 func hit_stop(duration: float = 0.07, scale: float = 0.05) -> void:
 	Engine.time_scale = scale
