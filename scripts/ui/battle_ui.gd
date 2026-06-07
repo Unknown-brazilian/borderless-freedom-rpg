@@ -105,39 +105,60 @@ func _on_hp_changed(who: String, new_hp: int, max_hp: int) -> void:
 		_bar_player_hp.value     = new_hp
 		_lbl_player_hp.text      = "HP: %d/%d" % [new_hp, max_hp]
 		_bar_player_hp.modulate  = _hp_color(float(new_hp) / float(max_hp))
-		_juice_hp(_rect_player, _player_tex, _prev_player_hp, new_hp)
+		# player levou dano -> o inimigo é o atacante
+		_react(_enemy_tex, _rect_player, _player_tex, _prev_player_hp, new_hp)
 		_prev_player_hp = new_hp
 	else:
 		_bar_enemy_hp.max_value = max_hp
 		_bar_enemy_hp.value     = new_hp
 		_lbl_enemy_hp.text      = "HP: %d" % new_hp
 		_bar_enemy_hp.modulate  = _hp_color(float(new_hp) / float(max_hp))
-		_juice_hp(_rect_enemy, _enemy_tex, _prev_enemy_hp, new_hp)
+		# inimigo levou dano -> o player é o atacante
+		_react(_player_tex, _rect_enemy, _enemy_tex, _prev_enemy_hp, new_hp)
 		_prev_enemy_hp = new_hp
 
-## Dispara o feedback de impacto conforme a variação de HP de um combatente.
-## `host` dá a posição/tamanho; `battler` é o sprite que pisca e dá o pop.
-## Efeitos flutuantes são ancorados na própria CanvasLayer (espaço de tela),
-## pois o BattleArea reposiciona seus filhos.
-func _juice_hp(host: ColorRect, battler: TextureRect, prev_hp: int, new_hp: int) -> void:
+## Coordena a reação a uma mudança de HP: lunge do atacante + impacto no alvo.
+func _react(attacker: TextureRect, host: ColorRect, battler: TextureRect,
+		prev_hp: int, new_hp: int) -> void:
 	if prev_hp < 0:
 		return   # primeira atualização (inicialização) — sem feedback
 	var delta := new_hp - prev_hp
 	if delta == 0:
 		return
+	if delta < 0:
+		_lunge_and_hit(attacker, host, battler, delta)
+	else:        # cura — sem lunge
+		var center := host.global_position + host.size * 0.5
+		if is_instance_valid(battler):
+			Juice.flash(battler, Color(0.4, 1, 0.4), 0.2)
+		Juice.float_text(self, center, "+%d" % delta, Color(0.4, 1, 0.4))
+
+## O atacante avança rumo ao alvo; no contato dispara o impacto; depois recua.
+func _lunge_and_hit(attacker: TextureRect, host: ColorRect, battler: TextureRect,
+		delta: int) -> void:
+	const CONTACT := 0.10
+	if is_instance_valid(attacker):
+		attacker.pivot_offset = attacker.size * 0.5
+		var dir := (host.global_position - attacker.global_position).normalized()
+		var t := attacker.create_tween()
+		t.tween_property(attacker, "position", dir * 150.0, CONTACT) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		t.tween_property(attacker, "position", Vector2.ZERO, 0.22) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		await get_tree().create_timer(CONTACT).timeout
+	_impact(host, battler, delta)
+
+## Feedback de impacto no alvo: flash, pop, shake, número e partículas.
+func _impact(host: ColorRect, battler: TextureRect, delta: int) -> void:
+	var center := host.global_position + host.size * 0.5
 	if is_instance_valid(battler):
 		battler.pivot_offset = battler.size * 0.5
-	var screen_center := host.global_position + host.size * 0.5
-	if delta < 0:   # tomou dano
 		Juice.flash(battler, Color(1, 1, 1), 0.18)
 		Juice.pop(battler, 0.82, 0.2)
-		Juice.shake_node(_battle_area, minf(8.0 + absf(delta) * 0.6, 24.0), 0.3)
-		Juice.float_text(self, screen_center, "-%d" % absf(delta), Color(1, 0.85, 0.3))
-		Juice.burst(self, screen_center, Color(1, 0.8, 0.2), 12)
-		Juice.hit_stop(0.06)
-	else:           # curou
-		Juice.flash(battler, Color(0.4, 1, 0.4), 0.2)
-		Juice.float_text(self, screen_center, "+%d" % delta, Color(0.4, 1, 0.4))
+	Juice.shake_node(_battle_area, minf(8.0 + absf(delta) * 0.6, 24.0), 0.3)
+	Juice.float_text(self, center, "-%d" % absf(delta), Color(1, 0.85, 0.3))
+	Juice.burst(self, center, Color(1, 0.8, 0.2), 12)
+	Juice.hit_stop(0.06)
 
 func _on_battle_ended(result: String) -> void:
 	_set_buttons_enabled(false)
