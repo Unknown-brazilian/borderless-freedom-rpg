@@ -37,9 +37,18 @@ var _post_mat: ShaderMaterial = null   # material do post-process (noite/visão 
 var _thieves_enabled: bool = false     # ladrões aleatórios (só Mexistão)
 var _thief_last_ms: int = 0
 
+## Interiores (lojas) sobrescrevem para não consumir o retorno nem avançar dungeon.
+var _is_interior: bool = false
+
 func _ready() -> void:
 	AutonomyBar.refill_all()
 	AutonomyBar.set_active(true)
+
+	# Ao voltar de um interior, reaparece na porta (não no início do mapa).
+	if not _is_interior and WorldManager.pending_return_tile != Vector2i(-1, -1):
+		_player_start = WorldManager.pending_return_tile
+		WorldManager.pending_return_tile = Vector2i(-1, -1)
+		WorldManager.pending_return_scene = ""
 
 	_setup_theme()
 	_paint_ground()
@@ -57,8 +66,8 @@ func _ready() -> void:
 	_setup_fiscais()
 	_setup_events()
 
-	# Instancia EventPopupUI para eventos crypto desta região
-	if get_tree().get_nodes_in_group("event_popup_ui").is_empty():
+	# Instancia EventPopupUI para eventos crypto (não em interiores/lojas).
+	if not _is_interior and get_tree().get_nodes_in_group("event_popup_ui").is_empty():
 		var popup := preload("res://scenes/ui/EventPopupUI.tscn").instantiate()
 		add_child(popup)
 
@@ -160,7 +169,8 @@ func _paint_ground() -> void:
 			_tilemap.set_cell(0, Vector2i(x, y), _tile_ids[key], Vector2i(0, 0))
 
 	# Trava a câmera nos limites do mapa para não exibir o vazio fora dele.
-	if is_instance_valid(_camera):
+	# Interiores (mapas pequenos) não travam — a câmera centraliza a sala.
+	if is_instance_valid(_camera) and not _is_interior:
 		_camera.limit_left   = 0
 		_camera.limit_top    = 0
 		_camera.limit_right  = _map_w * TILE_SIZE
@@ -328,6 +338,14 @@ func spawn_pickup(tile: Vector2i, item_id: String, icon: String, label_text: Str
 	pk.amount = amount
 	pk.position = _tile_to_world(tile)
 	add_child(pk)
+
+## Casa/loja (estilo Pokémon) que leva a um interior.
+func spawn_building(tile: Vector2i, interior_scene: String, building_name: String = "Loja") -> void:
+	var b = preload("res://scripts/world/building.gd").new()
+	b.interior_scene = interior_scene
+	b.building_name = building_name
+	b.position = _tile_to_world(tile)
+	add_child(b)
 
 ## Ponto de acampamento (descansar + salvar).
 func spawn_campsite(tile: Vector2i) -> void:

@@ -23,17 +23,17 @@ func go(path: String) -> void:
 	_transitioning      = true
 	_next               = path
 	_fade.mouse_filter  = Control.MOUSE_FILTER_STOP
+	Engine.time_scale   = 1.0   # transição sempre roda em tempo normal
 
 	var tw := create_tween()
-	tw.set_ignore_time_scale(true)
 	tw.tween_property(_fade, "color:a", 1.0, 0.28) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(_swap)
 
 func _swap() -> void:
 	get_tree().change_scene_to_file(_next)
+	Engine.time_scale = 1.0
 	var tw := create_tween()
-	tw.set_ignore_time_scale(true)
 	tw.tween_property(_fade, "color:a", 0.0, 0.32) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(func():

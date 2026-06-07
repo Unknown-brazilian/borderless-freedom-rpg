@@ -37,6 +37,9 @@ var sequence_index:    int = 0
 var bosses_defeated_in_dungeon: int = 0
 var _advancing: bool = false
 var dungeon_flags: Dictionary = {}
+# Retorno de interiores (lojas): cena e tile da porta para reaparecer.
+var pending_return_scene: String = ""
+var pending_return_tile:  Vector2i = Vector2i(-1, -1)
 
 # ─── API pública ──────────────────────────────────────────────────────────────
 
