@@ -10,6 +10,7 @@ var _lbl_moc:    Label
 var _lbl_bike:   Label
 var _lbl_bonus:  Label
 var _preview:    TextureRect
+var _btn_confirmar: Button
 
 func _ready() -> void:
 	AutonomyBar.set_active(false)
@@ -52,7 +53,9 @@ func _build_ui() -> void:
 	_name_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL   # ocupa a largura toda
 	_name_input.add_theme_font_size_override("font_size", 36)
 	_name_input.text_changed.connect(func(t: String):
-		PlayerStats.player_name = t.strip_edges() if t.strip_edges() != "" else "Dissidente"
+		var nome := t.strip_edges()
+		PlayerStats.player_name = nome if nome != "" else "Dissidente"
+		_validate_name()
 	)
 	name_section.add_child(_name_input)
 
@@ -105,14 +108,15 @@ func _build_ui() -> void:
 	vbox.add_child(_lbl_bonus)
 
 	# ── Botões ────────────────────────────────────────────────────────────────
-	var btn_confirmar := Button.new()
-	btn_confirmar.text = "Confirmar →"
-	btn_confirmar.custom_minimum_size = Vector2(0, 88)
-	btn_confirmar.add_theme_font_size_override("font_size", 36)
-	btn_confirmar.add_theme_color_override("font_color", Color(0.969, 0.576, 0.102))
-	btn_confirmar.pressed.connect(_on_confirmar)
-	btn_confirmar.layout_mode = 2
-	vbox.add_child(btn_confirmar)
+	_btn_confirmar = Button.new()
+	_btn_confirmar.text = "Confirmar →"
+	_btn_confirmar.custom_minimum_size = Vector2(0, 88)
+	_btn_confirmar.add_theme_font_size_override("font_size", 36)
+	_btn_confirmar.add_theme_color_override("font_color", Color(0.969, 0.576, 0.102))
+	_btn_confirmar.pressed.connect(_on_confirmar)
+	_btn_confirmar.layout_mode = 2
+	vbox.add_child(_btn_confirmar)
+	_validate_name()   # estado inicial (desabilitado se sem nome)
 
 	var btn_voltar := Button.new()
 	btn_voltar.text = "← Voltar"
@@ -187,7 +191,17 @@ func _refresh() -> void:
 	if _lbl_bonus:
 		_lbl_bonus.text = "Bônus: " + (", ".join(parts) if parts.size() > 0 else "nenhum")
 
+## Exige um nome antes de começar: desabilita o Confirmar se estiver vazio.
+func _validate_name() -> void:
+	if not is_instance_valid(_btn_confirmar):
+		return
+	var ok := _name_input.text.strip_edges() != ""
+	_btn_confirmar.disabled = not ok
+	_btn_confirmar.text = "Confirmar →" if ok else "Digite um nome para começar"
+
 func _on_confirmar() -> void:
+	if _name_input.text.strip_edges() == "":
+		return   # trava: não dá pra começar sem nome
 	PlayerCustomization.save_customization()
 	# Gerar seed ANTES de mostrar a tela de seed
 	SeedPhraseSystem.generate_seed()
