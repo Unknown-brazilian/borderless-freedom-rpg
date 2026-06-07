@@ -23,12 +23,17 @@ var _map_w: int = 23
 var _map_h: int = 47
 ## Tema de chão: "grass" (default), "floor" (interior), "water" (margem).
 var _ground_key: String = "grass"
+## Tinta aplicada à TileMap inteira — dá clima/paleta própria a cada dungeon.
+var _ground_tint: Color = Color.WHITE
+## Se true, sem faixa de caminho (mapas internos/detenção).
+var _no_path: bool = false
 var _tile_ids: Dictionary = {}
 
 func _ready() -> void:
 	AutonomyBar.refill_all()
 	AutonomyBar.set_active(true)
 
+	_setup_theme()
 	_paint_ground()
 
 	_player.position = Vector2(
@@ -88,6 +93,7 @@ func _paint_ground() -> void:
 	_tilemap.tile_set = _build_tileset()
 	_tilemap.scale = Vector2(2, 2)
 	_tilemap.z_index = -10
+	_tilemap.modulate = _ground_tint
 	_tilemap.clear()
 
 	var ground: String = _ground_key if _tile_ids.has(_ground_key) else "grass"
@@ -99,7 +105,7 @@ func _paint_ground() -> void:
 			var key := ground
 			if x == 0 or y == 0 or x == _map_w - 1 or y == _map_h - 1:
 				key = "wall"
-			elif x >= path_min and x <= path_max:
+			elif not _no_path and x >= path_min and x <= path_max:
 				key = "path"
 			if not _tile_ids.has(key):
 				key = ground
@@ -113,6 +119,9 @@ func _paint_ground() -> void:
 		_camera.limit_bottom = _map_h * TILE_SIZE
 
 # ─── Overrides nos filhos ─────────────────────────────────────────────────────
+## Override para definir paleta/clima do mapa (_ground_tint/_ground_key/_no_path
+## /_map_w/_map_h). Chamado no início de _ready, antes de pintar o terreno.
+func _setup_theme() -> void:  pass
 func _setup_npcs() -> void:   pass
 func _setup_fiscais() -> void: pass
 func _setup_events() -> void:  pass

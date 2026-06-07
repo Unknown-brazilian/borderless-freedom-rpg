@@ -92,3 +92,6 @@ func _on_boss_result(result: String) -> void:
 	elif result == "defeat":
 		await get_tree().create_timer(1.5).timeout
 		SceneTransition.go("res://scenes/ui/main_menu.tscn")
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.8, 0.8, 0.86)

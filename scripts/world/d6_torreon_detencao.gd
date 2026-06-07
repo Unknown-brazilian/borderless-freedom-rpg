@@ -116,3 +116,8 @@ func _get_boss_id() -> String:
 
 func _get_boss_data() -> Dictionary:
 	return {}
+
+func _setup_theme() -> void:
+	_ground_key = "floor"
+	_no_path = true
+	_ground_tint = Color(0.66, 0.64, 0.68)

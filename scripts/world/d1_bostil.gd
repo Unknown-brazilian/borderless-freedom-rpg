@@ -77,3 +77,6 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Desafio da seed antes de avançar...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(1.0, 0.97, 0.82)

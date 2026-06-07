@@ -72,3 +72,8 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Prove que a seed é sua para avançar...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_key = "path"
+	_no_path = true
+	_ground_tint = Color(0.92, 0.85, 0.72)

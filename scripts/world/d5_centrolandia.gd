@@ -70,3 +70,6 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Prove sua identidade soberana...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(1.0, 0.9, 0.68)

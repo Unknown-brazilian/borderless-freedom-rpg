@@ -227,3 +227,8 @@ func _launch_minigame(task_name: String, _base_reward: int) -> void:
 	add_child(mg)
 	var sats_earned: int = await mg.minigame_completed
 	_on_task_complete(task_name, sats_earned)
+
+func _setup_theme() -> void:
+	_ground_key = "floor"
+	_no_path = true
+	_ground_tint = Color(0.82, 0.8, 0.76)

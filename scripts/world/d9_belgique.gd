@@ -108,3 +108,6 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Uma última prova de soberania...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.78, 0.84, 0.95)

@@ -75,3 +75,6 @@ func _get_boss_data() -> Dictionary:
 			"🔑  Prove que a seed é sua...",
 		],
 	}
+
+func _setup_theme() -> void:
+	_ground_tint = Color(0.9, 0.86, 0.68)
