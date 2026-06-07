@@ -64,14 +64,14 @@ func _init_map() -> void:
 
 func _build_ui() -> void:
 	var bg := make_bg()
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.add_child(center)
 	var vbox := VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
 	vbox.add_theme_constant_override("separation", 16)
-	vbox.position = Vector2(30, 60)
-	vbox.size     = Vector2(1020, 1800)
-	bg.add_child(vbox)
+	center.add_child(vbox)
 
-	make_header("🧹  Limpeza do Frigorífico", vbox)
+	make_header("Limpeza do Frigorífico", vbox)
 
 	_progress_lbl = make_label("Limpos: 0 / %d" % _dirty_total, 30, Color.WHITE, vbox)
 	_progress_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -88,11 +88,13 @@ func _build_ui() -> void:
 	sp.layout_mode = 2
 	vbox.add_child(sp)
 
-	# Map grid
+	# Map grid (centralizado)
+	var grid_center := CenterContainer.new()
+	grid_center.layout_mode = 2
+	vbox.add_child(grid_center)
 	var map_holder := Control.new()
 	map_holder.custom_minimum_size = Vector2(COLS * CELL_SIZE, ROWS * CELL_SIZE)
-	map_holder.layout_mode = 2
-	vbox.add_child(map_holder)
+	grid_center.add_child(map_holder)
 
 	_cell_rects = []
 	for r in range(ROWS):
@@ -103,14 +105,6 @@ func _build_ui() -> void:
 			rect.position = Vector2(c * CELL_SIZE + 1, r * CELL_SIZE + 1)
 			rect.color    = _cell_color(r, c)
 			map_holder.add_child(rect)
-
-			var lbl := Label.new()
-			lbl.text = _cell_icon(r, c)
-			lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			lbl.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
-			lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
-			lbl.add_theme_font_size_override("font_size", 48)
-			rect.add_child(lbl)
 			row_arr.append(rect)
 		_cell_rects.append(row_arr)
 
@@ -178,8 +172,6 @@ func _refresh_visuals() -> void:
 		for c in range(COLS):
 			var rect: ColorRect = _cell_rects[r][c]
 			rect.color = _cell_color(r, c)
-			var lbl: Label = rect.get_child(0)
-			lbl.text = _cell_icon(r, c)
 
 func _cell_color(r: int, c: int) -> Color:
 	if Vector2i(c, r) == _player_pos:

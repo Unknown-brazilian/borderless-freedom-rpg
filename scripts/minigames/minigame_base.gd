@@ -25,12 +25,16 @@ const C_CLEAN     := Color(0.55, 0.50, 0.45)
 const C_DELIVERY  := Color(0.85, 0.25, 0.25)
 
 func _ready() -> void:
-	layer = 20
+	layer = 60
 	BattleManager.locked = true
 	AutonomyBar.set_active(false)
 	_player_ref = get_tree().get_first_node_in_group("player")
 	if is_instance_valid(_player_ref):
 		_player_ref.set_can_move(false)
+	# Esconde os controles do mundo (D-Pad/A/B) — o minigame tem os seus.
+	var td := get_tree().current_scene.get_node_or_null("TouchDPad")
+	if td:
+		td.visible = false
 
 func _finish(sats: int) -> void:
 	BattleManager.locked = false
@@ -106,3 +110,8 @@ func _exit_tree() -> void:
 	AutonomyBar.set_active(true)
 	if is_instance_valid(_player_ref) and _player_ref.has_method("set_can_move"):
 		_player_ref.set_can_move(true)
+	var tree := get_tree()
+	if tree and tree.current_scene:
+		var td := tree.current_scene.get_node_or_null("TouchDPad")
+		if td:
+			td.visible = true

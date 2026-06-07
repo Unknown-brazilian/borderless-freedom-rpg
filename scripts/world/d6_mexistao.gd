@@ -9,6 +9,7 @@ func _ready() -> void:
 	_exit_tile    = Vector2i(4, 2)
 	_boss_trigger_dist = 4
 	_thieves_enabled = true   # ladrões aleatórios só no Mexistão
+	_stretch = 1.6            # mapa mais longo
 	super._ready()
 
 var _stolen_phone_sats: int = 0
@@ -16,12 +17,12 @@ var _stolen_phone_sats: int = 0
 func _on_player_moved(tile_pos: Vector2i) -> void:
 	super._on_player_moved(tile_pos)
 	# Eventos da jornada (na ordem em que o player sobe o mapa).
-	if not WorldManager.get_flag("huixtla_robbery", false) and tile_pos.y <= 28:
+	if not WorldManager.get_flag("huixtla_robbery", false) and tile_pos.y <= int(28 * _stretch):
 		_huixtla_robbery()
-	elif not WorldManager.get_flag("phone_robbery", false) and tile_pos.y <= 20:
+	elif not WorldManager.get_flag("phone_robbery", false) and tile_pos.y <= int(20 * _stretch):
 		_phone_robbery()
 	elif not WorldManager.get_flag("phone_recovered", false) \
-			and WorldManager.get_flag("phone_robbery", false) and tile_pos.y <= 12:
+			and WorldManager.get_flag("phone_robbery", false) and tile_pos.y <= int(12 * _stretch):
 		_coatzacoalcos_recovery()
 
 ## Entre Piedras Negras e Orizaba — roubam o celular (acesso à carteira).
@@ -111,6 +112,7 @@ func _setup_npcs() -> void:
 	# México: comida (miojo) e peças pra remontar a bike (depois do assalto).
 	spawn_pickup(Vector2i(8, 24), "", "🍜", "Miojo! +45 comida", "food", 45.0)
 	spawn_campsite(Vector2i(7, 38))
+	spawn_building(Vector2i(9, 40), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
 	spawn_pickup(Vector2i(18, 18), "item_pneu", "🛞", "Pneu! (peça da bike)", "bikepart")
 	spawn_pickup(Vector2i(3, 12), "item_camara_ar", "⭕", "Câmara de ar! (peça da bike)", "bikepart")
 	spawn_npc(Vector2i(6, 42), "Migrante Veterano",

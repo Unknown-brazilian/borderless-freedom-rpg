@@ -13,6 +13,7 @@ var _choice_panel: CanvasLayer = null
 func _ready() -> void:
 	_player_start = Vector2i(4, 44)
 	_exit_tile    = Vector2i(4, 2)
+	_stretch = 1.5
 	super._ready()
 
 func _intro_dialogue() -> void:
@@ -121,6 +122,8 @@ func _apply_jungle_drain() -> void:
 	AutonomyBar.consume("food",   15.0)
 
 func _setup_npcs() -> void:
+	spawn_building(Vector2i(9, 36), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
+	spawn_campsite(Vector2i(3, 24))
 	spawn_npc(Vector2i(6, 42), "Migrante Experiente",
 		["Bem-vindo à Panamia.",
 		 "Se tiver sats, pague pelo vôo.",

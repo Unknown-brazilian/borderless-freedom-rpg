@@ -6,6 +6,7 @@ extends "res://scripts/world/world_map_base.gd"
 func _ready() -> void:
 	_player_start = Vector2i(4, 44)
 	_exit_tile    = Vector2i(4, 2)
+	_stretch = 1.6
 	super._ready()
 
 func _intro_dialogue() -> void:
@@ -16,6 +17,8 @@ func _intro_dialogue() -> void:
 	])
 
 func _setup_npcs() -> void:
+	spawn_building(Vector2i(9, 38), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
+	spawn_campsite(Vector2i(3, 26))
 	# Água escassa no altiplano: só uma garrafa, bem escondida.
 	spawn_pickup(Vector2i(20, 16), "", "💧", "Água! Rara por aqui.", "water", 50.0)
 	spawn_npc(Vector2i(6, 42), "Migrante Local",

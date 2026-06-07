@@ -13,6 +13,7 @@ func _ready() -> void:
 	_player_start      = Vector2i(2, 44)    # margem guatemalteca (sul)
 	_exit_tile         = Vector2i(8, 2)     # margem mexicana (norte)
 	_boss_trigger_dist = 0                  # sem boss — cruzar é o objetivo
+	_stretch = 1.5
 	super._ready()
 
 func _intro_dialogue() -> void:
@@ -41,6 +42,8 @@ func _intro_dialogue() -> void:
 	await DialogueManager.dialogue_finished
 
 func _setup_npcs() -> void:
+	spawn_building(Vector2i(9, 36), "res://scenes/world/loja_interior.tscn", "Loja & Empregos")
+	spawn_campsite(Vector2i(3, 24))
 	spawn_npc(Vector2i(0, 44), "Atravessador",
 		["Cinquenta sats ou não passa.",
 		 "Essa é a taxa de travessia.",
