@@ -1,0 +1,29 @@
+CRÉDITOS DE ÁUDIO — Borderless Freedom RPG
+==========================================
+
+MÚSICA
+------
+"16-Bit Music Pack 1"
+  Autor:   Retro Indie Josh
+  Fonte:   https://retroindiejosh.itch.io/  (via OpenGameArt.org)
+  Licença: Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
+           https://creativecommons.org/licenses/by-sa/4.0/
+  Arquivos: audio/music/menu.ogg, dungeon.ogg, battle.ogg, boss.ogg,
+            ending.ogg, ending_sovereign.ogg, game_over.ogg, transition.ogg
+  (Faixas originais: First Story, Underground Town, Battleground, Sword Metal,
+   Not in Vain, Will, Unprepared, Sky Factory Zone.)
+
+  >> CC BY-SA exige atribuição: o crédito acima também aparece na tela de
+     Créditos do jogo e no README. Não remover enquanto estas faixas forem usadas.
+
+EFEITOS SONOROS (SFX)
+---------------------
+audio/sfx/ — hit, coin, defeat, victory, dialogue, door, event, menu_click,
+             step, upgrade (.ogg). Parte do projeto desde o início.
+  Se algum SFX vier de pacote externo (ex.: Kenney CC0), registrar aqui:
+    <arquivo> — <fonte/URL> — <autor> — <licença>
+
+NOTAS
+-----
+- CC0 (domínio público): não exige atribuição.
+- CC-BY / CC-BY-SA: exige atribuição (este arquivo + tela de Créditos).

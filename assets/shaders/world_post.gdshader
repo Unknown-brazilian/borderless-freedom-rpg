@@ -11,6 +11,7 @@ uniform float brightness = 1.0;
 uniform float vignette_strength = 0.4;
 uniform float bloom_strength    = 0.5;
 uniform float bloom_threshold   = 0.72;
+uniform float posterize_levels  = 24.0;   // profundidade de cor (vibe PS1); 0 = off
 
 vec3 sample_bloom(vec2 uv) {
 	// SCREEN_PIXEL_SIZE não existe no GL Compatibility; derivamos do tamanho da textura.
@@ -46,6 +47,11 @@ void fragment() {
 	// Vinheta.
 	float vig = smoothstep(1.0, 0.4, distance(SCREEN_UV, vec2(0.5)));
 	col *= mix(1.0 - vignette_strength, 1.0, vig);
+
+	// Posterização (reduz a profundidade de cor — vibe PS1).
+	if (posterize_levels > 1.0) {
+		col = floor(col * posterize_levels + 0.5) / posterize_levels;
+	}
 
 	COLOR = vec4(clamp(col, 0.0, 1.0), 1.0);
 }
