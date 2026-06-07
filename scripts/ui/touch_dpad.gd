@@ -45,7 +45,50 @@ func _ready() -> void:
 		Juice.button_feedback(btn, true)
 
 	_add_phone_button()
+	_add_tap_catcher()
+	# Relabel: A = bicicleta, START = mochila/inventário (pausa).
+	_btn_a.text = "🚲"
+	_btn_start.text = "🎒"
 	call_deferred("_find_player")
+
+## Toca na área do mapa = interagir (NPC/loja/porta) ou avançar diálogo.
+func _add_tap_catcher() -> void:
+	var tap := Control.new()
+	tap.name = "TapCatch"
+	tap.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	tap.offset_top = 130
+	tap.offset_bottom = 1180
+	tap.mouse_filter = Control.MOUSE_FILTER_STOP
+	tap.gui_input.connect(_on_tap_input)
+	add_child(tap)
+	move_child(tap, 0)   # atrás dos botões (não rouba o toque deles)
+
+func _on_tap_input(ev: InputEvent) -> void:
+	if (ev is InputEventScreenTouch or ev is InputEventMouseButton) and not ev.pressed:
+		_do_interact()
+
+## Interage com o interagível mais próximo do player (ou avança diálogo).
+func _do_interact() -> void:
+	if DialogueManager.is_active():
+		DialogueManager.advance()
+		return
+	if not is_instance_valid(_player):
+		_find_player()
+		if not is_instance_valid(_player):
+			return
+	var best: Node = null
+	var best_d := 130.0
+	for grp in ["npc", "building", "campsite", "exit_door"]:
+		for n in get_tree().get_nodes_in_group(grp):
+			if n.has_method("on_interact"):
+				var d: float = n.global_position.distance_to(_player.global_position)
+				if d < best_d:
+					best_d = d
+					best = n
+	if best:
+		best.on_interact(_player)
+	else:
+		_player.press_action()
 
 ## Botão 📱 (canto superior direito) — abre o celular (notificações + mapa).
 func _add_phone_button() -> void:
@@ -97,31 +140,31 @@ func _update_player_dir() -> void:
 	_player.set_move_direction(dir)
 
 func _on_a_pressed() -> void:
-	# A = confirmar/interagir (NPC, loja, acampamento, porta) ou avançar diálogo.
+	# A = 🚲 monta/desmonta a bicicleta (ou avança diálogo se ativo).
 	if DialogueManager.is_active():
 		DialogueManager.advance()
 		return
-	if is_instance_valid(_player):
-		_player.press_action()
+	if is_instance_valid(_player) and _player.has_method("toggle_bike"):
+		_player.toggle_bike()
 
 func _on_b_pressed() -> void:
-	# B = cancelar: avança diálogo OU fecha o celular/loja aberto.
-	if DialogueManager.is_active():
-		DialogueManager.advance()
-		return
+	# B = interagir/confirmar (NPC/loja/porta) ou fechar UI aberta.
 	var scene := get_tree().current_scene
 	if scene:
-		for n in ["PhoneUI", "ShopUI"]:
+		for n in ["PhoneUI", "ShopUI", "InventoryUI"]:
 			var ui := scene.get_node_or_null(n)
 			if ui and ui.has_method("_close"):
 				ui._close()
 				return
+	_do_interact()
 
 func _on_start_pressed() -> void:
-	# START = abre o celular (notificações da Wallet of Satoshi + mapa da jornada).
+	# 🎒 abre a mochila/inventário (também serve de menu de pausa).
 	if DialogueManager.is_active():
 		return
-	if Phone.is_available():
-		Phone.open()
-	else:
-		DialogueManager.start(["📱❌  Seu celular foi roubado. Recupere-o mais à frente."])
+	var scene := get_tree().current_scene
+	if scene and scene.get_node_or_null("InventoryUI") == null:
+		var ui := CanvasLayer.new()
+		ui.name = "InventoryUI"
+		ui.set_script(load("res://scripts/ui/inventory_ui.gd"))
+		scene.add_child(ui)

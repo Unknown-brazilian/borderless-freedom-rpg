@@ -81,8 +81,20 @@ func _ready() -> void:
 		var popup := preload("res://scenes/ui/EventPopupUI.tscn").instantiate()
 		add_child(popup)
 
+	# Autosave ao entrar no mapa (progresso persiste se o app for fechado).
+	if not _is_interior:
+		SaveSystem.save_game()
+
 	await get_tree().create_timer(0.5).timeout
 	_intro_dialogue()
+
+## Salva ao perder foco/pausar/voltar (Android mata o app ao trocar de app).
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED \
+			or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT \
+			or what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		if not _is_interior:
+			SaveSystem.save_game()
 
 func _process(delta: float) -> void:
 	if is_instance_valid(_player):

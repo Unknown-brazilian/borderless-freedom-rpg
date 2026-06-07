@@ -114,7 +114,8 @@ func _physics_process(delta: float) -> void:
 # ─── Movimento em grid (Pokémon-style) ────────────────────────────────────────
 func _process_grid_movement(delta: float) -> void:
 	if _is_moving:
-		_move_progress += delta / GRID_STEP_SEC
+		var step := 0.12 if (_on_bike and PlayerCustomization.bike_index > 0) else 0.20
+		_move_progress += delta / step
 		if _move_progress >= 1.0:
 			_move_progress = 1.0
 			position = _move_to
@@ -184,3 +185,19 @@ func set_can_move(value: bool) -> void:
 
 func _on_any_battle_ended(_result: String) -> void:
 	_can_move = true
+
+var _on_bike: bool = true
+
+## Monta/desmonta a bicicleta (botão 🚲). Na bike = mais rápido.
+func toggle_bike() -> void:
+	if PlayerCustomization.bike_index == 0:
+		DialogueManager.start(["🚲  Você não tem uma bicicleta agora."])
+		return
+	_on_bike = not _on_bike
+	var b := get_node_or_null("BikeIcon")
+	if b:
+		b.visible = _on_bike
+	AudioManager.sfx("step")
+	Juice.float_text(get_parent(), position + Vector2(0, -90),
+		"🚲 Na bike" if _on_bike else "🚶 A pé",
+		Color(0.4, 0.9, 0.5) if _on_bike else Color(0.8, 0.8, 0.5), 28)

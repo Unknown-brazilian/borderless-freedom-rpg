@@ -33,6 +33,7 @@ const ITEM_DEFS: Dictionary = {
 	"item_oculos_noturno": {"name": "Óculos Noturnos", "icon": "🕶️", "desc": "Ative para enxergar à noite"},
 	"item_pneu":        {"name": "Pneu",             "icon": "🛞", "desc": "Peça pra remontar a bike"},
 	"item_camara_ar":   {"name": "Câmara de Ar",     "icon": "⭕", "desc": "Peça pra remontar a bike"},
+	"item_barraca":     {"name": "Barraca",          "icon": "⛺", "desc": "Acampe para descansar e salvar"},
 }
 
 # ─── Estado ───────────────────────────────────────────────────────────────────
@@ -45,6 +46,7 @@ var _use_cooldown: float = 0.0
 # ─── Inicialização ────────────────────────────────────────────────────────────
 func _ready() -> void:
 	unlock_item("item_spray")
+	unlock_item("item_barraca")   # barraca de acampamento (desde o começo)
 
 func _process(delta: float) -> void:
 	if _use_cooldown > 0.0:
