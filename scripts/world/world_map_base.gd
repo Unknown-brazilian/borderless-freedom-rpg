@@ -40,6 +40,7 @@ func _ready() -> void:
 
 	_setup_theme()
 	_paint_ground()
+	_setup_post_fx()
 	AudioManager.set_overworld_music(_music_track, _music_pitch)
 
 	_player.position = Vector2(
@@ -65,6 +66,28 @@ func _process(delta: float) -> void:
 	if is_instance_valid(_player):
 		_camera.position = _camera.position.lerp(_player.position, delta * 6.0)
 	_check_exit()
+
+# ─── Post-process (color grade + vinheta + bloom por dungeon) ─────────────────
+func _setup_post_fx() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 1   # acima do mundo (layer 0), abaixo da HUD (layer 2)
+	add_child(layer)
+	var rect := ColorRect.new()
+	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://assets/shaders/world_post.gdshader")
+	# Grade derivado do tema da dungeon: tom da região (suavizado),
+	# interiores/detenções mais dessaturados e com vinheta mais forte.
+	var tint := _ground_tint.lerp(Color.WHITE, 0.5)
+	mat.set_shader_parameter("grade_tint", Vector3(tint.r, tint.g, tint.b))
+	mat.set_shader_parameter("saturation", 0.75 if _no_path else 1.12)
+	mat.set_shader_parameter("contrast", 1.06)
+	mat.set_shader_parameter("brightness", 1.0)
+	mat.set_shader_parameter("vignette_strength", 0.5 if _no_path else 0.38)
+	mat.set_shader_parameter("bloom_strength", 0.45)
+	rect.material = mat
+	layer.add_child(rect)
 
 # ─── Terreno ──────────────────────────────────────────────────────────────────
 
