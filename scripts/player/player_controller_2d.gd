@@ -55,6 +55,18 @@ func _ready() -> void:
 	# Aplica a skin escolhida (tinta) ao sprite do player.
 	PlayerCustomization.apply(self)
 
+	# Corpo LPC (32-bit JRPG) animado por direção, no lugar do sprite estático.
+	if get_node_or_null("LPCBody") == null:
+		var lpc = preload("res://scripts/world/lpc_character.gd").new()
+		lpc.name = "LPCBody"
+		lpc.z_index = 1
+		add_child(lpc)
+	if is_instance_valid(_sprite):
+		_sprite.visible = false
+	var helm := get_node_or_null("Helmet")
+	if helm:
+		helm.visible = false
+
 # ─── Animação procedural (bob de idle/caminhada) ──────────────────────────────
 func _process(delta: float) -> void:
 	if not is_instance_valid(_sprite):

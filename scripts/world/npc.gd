@@ -41,15 +41,25 @@ func _create_sprite() -> void:
 			add_child(lbl)
 			return
 	# Fallback: sprite humanoide padrão tingido pela cor identificadora do NPC.
-	var label_y := -70.0
+	var label_y := -56.0
+	var lpc_sheet := "res://assets/lpc/player_walk.png"
 	var _neutral := "res://assets/sprites/npc_neutral.png"
-	var tex: Texture2D = load(_neutral) if ResourceLoader.exists(_neutral) else null
-	if tex:
+	if ResourceLoader.exists(lpc_sheet):
+		var lpc = preload("res://scripts/world/lpc_character.gd").new()
+		lpc.modulate = sprite_color.lerp(Color.WHITE, 0.5)   # tinta suave de identidade
+		match face_direction:
+			Vector2.UP:    lpc.face_row = 0
+			Vector2.LEFT:  lpc.face_row = 1
+			Vector2.RIGHT: lpc.face_row = 3
+			_:             lpc.face_row = 2
+		add_child(lpc)
+		_add_shadow()
+	elif ResourceLoader.exists(_neutral):
 		var spr := Sprite2D.new()
-		spr.texture  = tex
+		spr.texture  = load(_neutral)
 		spr.scale    = Vector2(2.0, 2.0)
 		spr.position = Vector2(0, -22)
-		spr.modulate = sprite_color.lerp(Color.WHITE, 0.35)   # tinta suave
+		spr.modulate = sprite_color.lerp(Color.WHITE, 0.35)
 		add_child(spr)
 		_add_shadow()
 		label_y = -52.0

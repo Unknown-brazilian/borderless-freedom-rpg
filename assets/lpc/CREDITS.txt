@@ -1,0 +1,17 @@
+=== Personagens (sprites) — Liberated Pixel Cup (LPC) ===
+Licença: CC-BY-SA 3.0 e GPLv3 (dual). Atribuição obrigatória.
+
+O sprite de personagem (assets/lpc/player_walk.png) foi composto a partir das
+camadas do Universal LPC Spritesheet Character Generator:
+  https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator
+
+Camadas usadas (walkcycle, male):
+  - body/bodies/male           - legs/pants
+  - torso/clothes/longsleeve   - feet/shoes/basic
+  - hair/flat_top_fade
+
+Autoria coletiva do projeto Liberated Pixel Cup (2012+), patrocinado por
+Creative Commons, Mozilla e Free Software Foundation. Créditos completos por
+asset: ver CREDITS/ no repositório do gerador acima.
+
+Por ser CC-BY-SA, todo o conjunto de arte derivada permanece sob CC-BY-SA.

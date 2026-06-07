@@ -90,11 +90,15 @@ func _clamp_pos(p: Vector2) -> Vector2:
 func _create_visuals() -> void:
 	# Carrega o sprite via ResourceLoader (funciona no editor E no APK exportado;
 	# Image.load_from_file lê do filesystem e falha dentro do .pck).
+	var lpc_sheet := "res://assets/lpc/player_walk.png"
 	var sprite_path := "res://assets/sprites/fiscal_enemy.png"
-	var tex: Texture2D = load(sprite_path) if ResourceLoader.exists(sprite_path) else null
-	if tex:
+	if ResourceLoader.exists(lpc_sheet):
+		var lpc = preload("res://scripts/world/lpc_character.gd").new()
+		lpc.modulate = Color(0.95, 0.45, 0.45)   # fiscal = avermelhado (autoridade)
+		add_child(lpc)
+	elif ResourceLoader.exists(sprite_path):
 		var spr := Sprite2D.new()
-		spr.texture = tex
+		spr.texture = load(sprite_path)
 		spr.scale   = Vector2(2.0, 2.0)
 		spr.position = Vector2(0, -20)
 		add_child(spr)
