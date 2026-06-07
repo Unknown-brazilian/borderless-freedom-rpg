@@ -30,7 +30,79 @@ func _ready() -> void:
 	# Feedback de toque (clique + escala + vibração) em todos os botões.
 	for b in [_btn_nova, _btn_continuar, _btn_creditos, _btn_confirm_yes, _btn_confirm_no]:
 		Juice.button_feedback(b)
+	_style_menu()
 	_play_intro()
+
+# ─── Tema visual do menu (gradiente + botões + contorno + rodapé) ─────────────
+const ORANGE := Color(0.969, 0.576, 0.102)
+
+func _style_menu() -> void:
+	# Fundo procedural animado via shader (gradiente + brilho + grão + vinheta).
+	var bg2 := ColorRect.new()
+	var bg_mat := ShaderMaterial.new()
+	bg_mat.shader = load("res://assets/shaders/menu_bg.gdshader")
+	bg2.material      = bg_mat
+	bg2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg2.mouse_filter  = Control.MOUSE_FILTER_IGNORE
+	add_child(bg2)
+	move_child(bg2, 1)   # acima do BG sólido, abaixo do Panel
+
+	# Título com contorno + leve sombra (mais "logo").
+	_lbl_title.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	_lbl_title.add_theme_constant_override("outline_size", 10)
+
+	# Botões estilizados.
+	_style_button(_btn_nova, ORANGE)
+	_style_button(_btn_continuar, Color(0.45, 0.55, 0.75))
+	_style_button(_btn_creditos, Color(0.45, 0.45, 0.5))
+	_style_button(_btn_confirm_yes, Color(0.85, 0.3, 0.25))
+	_style_button(_btn_confirm_no, Color(0.45, 0.45, 0.5))
+
+	# Rodapé com versão.
+	var ver: String = ProjectSettings.get_setting("application/config/version", "")
+	var footer := Label.new()
+	footer.text = "v%s   ·   ⚡ bitfood.app" % ver
+	footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	footer.add_theme_font_size_override("font_size", 24)
+	footer.add_theme_color_override("font_color", Color(0.5, 0.5, 0.56))
+	footer.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	footer.offset_top    = -64
+	footer.offset_bottom = -24
+	footer.mouse_filter  = Control.MOUSE_FILTER_IGNORE
+	add_child(footer)
+
+	# Sobreposição CRT (scanlines) por cima de tudo.
+	var scan := ColorRect.new()
+	var scan_mat := ShaderMaterial.new()
+	scan_mat.shader = load("res://assets/shaders/scanlines.gdshader")
+	scan.material      = scan_mat
+	scan.set_anchors_preset(Control.PRESET_FULL_RECT)
+	scan.mouse_filter  = Control.MOUSE_FILTER_IGNORE
+	add_child(scan)   # último filho = topo
+
+func _style_button(btn: Button, accent: Color) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0.11, 0.11, 0.14, 0.95)
+	normal.set_corner_radius_all(16)
+	normal.border_width_left = 7
+	normal.border_color = accent
+	normal.set_content_margin_all(16)
+	btn.add_theme_stylebox_override("normal", normal)
+
+	var hover := normal.duplicate()
+	hover.bg_color = Color(0.17, 0.17, 0.21, 0.98)
+	btn.add_theme_stylebox_override("hover", hover)
+
+	var pressed := normal.duplicate()
+	pressed.bg_color = Color(0.20, 0.14, 0.05, 1.0)
+	btn.add_theme_stylebox_override("pressed", pressed)
+
+	var disabled := normal.duplicate()
+	disabled.bg_color = Color(0.07, 0.07, 0.09, 0.9)
+	disabled.border_color = Color(0.3, 0.3, 0.34)
+	btn.add_theme_stylebox_override("disabled", disabled)
+
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 0.85, 0.4))
 
 ## Entrada animada: título dá pop, subtítulo e botões entram em cascata;
 ## depois o título ganha um pulso sutil de "respiração".
