@@ -46,10 +46,25 @@ func _ready() -> void:
 	# Sprites reais sobre os ColorRects (que viram fundo translúcido).
 	_enemy_tex  = _make_battler(_rect_enemy)
 	_player_tex = _make_battler(_rect_player)
-	_set_texture(_player_tex, "res://assets/sprites/player.png")
+	# Player na batalha: personagem LPC virado pra direita (encara o inimigo).
+	var pf := _lpc_frame(3)
+	if pf != null:
+		_player_tex.texture = pf
+	else:
+		_set_texture(_player_tex, "res://assets/sprites/player.png")
 	_rect_player.color = Color(0.969, 0.576, 0.102, 0.16)
 
 	hide()
+
+## Retorna um frame (idle) do sheet LPC para a batalha (row: 0=cima,1=esq,2=baixo,3=dir).
+func _lpc_frame(row: int) -> Texture2D:
+	var sheet := "res://assets/lpc/player_walk.png"
+	if not ResourceLoader.exists(sheet):
+		return null
+	var at := AtlasTexture.new()
+	at.atlas = load(sheet)
+	at.region = Rect2(0, row * 64, 64, 64)
+	return at
 
 ## Cria um TextureRect pixel-art centralizado dentro do ColorRect host.
 func _make_battler(host: ColorRect) -> TextureRect:
@@ -72,11 +87,17 @@ func _on_battle_started(enemy_data: Dictionary) -> void:
 	show()
 	_lbl_enemy_name.text = enemy_data.get("name", "???")
 	var is_boss: bool = enemy_data.get("is_boss", false)
-	# Sprite do inimigo: usa "sprite" do enemy_data, senão boss/fiscal genérico.
+	# Sprite do inimigo: explícito > boss.png (chefe) > personagem LPC (fiscais).
 	var spr_path: String = enemy_data.get("sprite", "")
-	if spr_path.is_empty():
-		spr_path = "res://assets/sprites/boss.png" if is_boss else "res://assets/sprites/fiscal_enemy.png"
-	_set_texture(_enemy_tex, spr_path)
+	var lpc_enemy := _lpc_frame(1)   # virado pra esquerda (encara o player)
+	if not spr_path.is_empty():
+		_set_texture(_enemy_tex, spr_path)
+	elif is_boss:
+		_set_texture(_enemy_tex, "res://assets/sprites/boss.png")
+	elif lpc_enemy != null:
+		_enemy_tex.texture = lpc_enemy   # halo vermelho do host já o distingue
+	else:
+		_set_texture(_enemy_tex, "res://assets/sprites/fiscal_enemy.png")
 	# ColorRect vira um halo translúcido atrás do sprite.
 	var glow := Color(0.85, 0.15, 0.15, 0.20) if is_boss else Color(0.72, 0.18, 0.18, 0.16)
 	_rect_enemy.color = glow
