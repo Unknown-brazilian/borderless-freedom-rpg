@@ -12,6 +12,7 @@ const SAT_TO_BRL := 0.001465   # 1 BTC ≈ R$146.500 (referência do jogo)
 var _content: Control
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	layer = 70
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Engine.time_scale = 0.0

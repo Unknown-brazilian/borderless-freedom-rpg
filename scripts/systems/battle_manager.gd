@@ -11,10 +11,18 @@ signal player_turn_started
 signal enemy_turn_started
 signal action_resolved(log_text: String)
 signal hp_changed(who: String, new_hp: int, max_hp: int)
+signal atb_changed(player_pct: float, enemy_pct: float)   # ATB por velocidade
 
 # ─── Enums ────────────────────────────────────────────────────────────────────
-enum State { IDLE, PLAYER_TURN, ENEMY_TURN, RESOLVING, ENDED }
+enum State { IDLE, PLAYER_TURN, ENEMY_TURN, RESOLVING, ENDED, CHARGING }
 enum Action { ATTACK, ITEM, STEALTH, PERSUADE, RUN }
+
+# ─── ATB (Active Time Battle por velocidade) ──────────────────────────────────
+const ATB_MAX := 100.0
+var player_atb:   float = 0.0
+var enemy_atb:    float = 0.0
+var player_speed: float = 55.0
+var enemy_speed:  float = 50.0
 
 # ─── Estado da batalha ────────────────────────────────────────────────────────
 var state:   State = State.IDLE
@@ -43,15 +51,45 @@ func start_battle(data: Dictionary) -> void:
 	player_max_hp = 80 + vitality * 10
 	player_hp     = player_max_hp
 
+	# Velocidades ATB: agilidade do player (furtividade) vs velocidade do inimigo.
+	player_speed = 45.0 + PlayerStats.get_stat("furtividade") * 8.0
+	enemy_speed  = float(data.get("speed", 48))
+	player_atb = 0.0
+	enemy_atb  = 0.0
+
 	_battle_log.clear()
-	state = State.PLAYER_TURN
 	AutonomyBar.set_active(false)
 	AudioManager.music("boss" if _is_boss else "battle")
 	emit_signal("battle_started", enemy_data)
 	emit_signal("hp_changed", "player", player_hp, player_max_hp)
 	emit_signal("hp_changed", "enemy", enemy_hp, enemy_data.get("hp", 50))
+	emit_signal("atb_changed", 0.0, 0.0)
 	await get_tree().create_timer(0.3, true, false, true).timeout
+	state = State.CHARGING   # gauges enchem; quem encher primeiro age
+
+## Loop ATB: enche os medidores; quem encher primeiro age.
+func _process(delta: float) -> void:
+	if state != State.CHARGING:
+		return
+	player_atb = minf(player_atb + player_speed * delta, ATB_MAX)
+	enemy_atb  = minf(enemy_atb + enemy_speed * delta, ATB_MAX)
+	emit_signal("atb_changed", player_atb / ATB_MAX, enemy_atb / ATB_MAX)
+	if player_atb >= ATB_MAX and player_atb >= enemy_atb:
+		_start_player_turn()
+	elif enemy_atb >= ATB_MAX:
+		_do_enemy_turn()
+
+func _start_player_turn() -> void:
+	state = State.PLAYER_TURN
 	emit_signal("player_turn_started")
+
+## Após uma ação VÁLIDA do player: zera o medidor dele e volta a carregar.
+func _end_player_action() -> void:
+	if state == State.ENDED:
+		return
+	player_atb = 0.0
+	emit_signal("atb_changed", player_atb / ATB_MAX, enemy_atb / ATB_MAX)
+	state = State.CHARGING
 
 func player_action(action: Action, item_id: String = "") -> void:
 	if state != State.PLAYER_TURN:
@@ -84,7 +122,7 @@ func _resolve_attack() -> void:
 	if enemy_hp <= 0:
 		await _resolve_victory()
 	else:
-		await _enemy_turn()
+		_end_player_action()
 
 func _resolve_item(item_id: String) -> void:
 	if item_id.is_empty() or not PlayerInventory.can_use_item():
@@ -102,7 +140,7 @@ func _resolve_item(item_id: String) -> void:
 	if enemy_hp <= 0:
 		await _resolve_victory()
 	else:
-		await _enemy_turn()
+		_end_player_action()
 
 func _apply_item_effect(item_id: String) -> String:
 	match item_id:
@@ -145,7 +183,7 @@ func _resolve_stealth() -> void:
 		_log("👁️  Furtividade falhou — detectado!")
 		emit_signal("action_resolved", _battle_log[-1])
 		await get_tree().create_timer(0.5, true, false, true).timeout
-		await _enemy_turn()
+		_end_player_action()
 
 func _resolve_persuade() -> void:
 	var persuasao: int = PlayerStats.get_stat("persuasao")
@@ -160,16 +198,15 @@ func _resolve_persuade() -> void:
 		var dmg_reduction := 5
 		var original_atk: int = enemy_data.get("atk", 15) as int
 		enemy_data["atk"] = maxi(1, original_atk - dmg_reduction)
-		_log("🗣️  Persuasão parcial — dano reduzido em %d." % dmg_reduction)
+		_log("🗣️  Persuasão parcial — ataque do inimigo enfraquecido.")
 		emit_signal("action_resolved", _battle_log[-1])
 		await get_tree().create_timer(0.5, true, false, true).timeout
-		await _enemy_turn()
-		enemy_data["atk"] = original_atk   # restaura após o turno
+		_end_player_action()
 	else:
 		_log("🗣️  Sem persuasão suficiente!")
 		emit_signal("action_resolved", _battle_log[-1])
 		await get_tree().create_timer(0.4, true, false, true).timeout
-		await _enemy_turn()
+		_end_player_action()
 
 func _resolve_run() -> void:
 	if _is_boss:
@@ -190,11 +227,11 @@ func _resolve_run() -> void:
 		_log("🏃  Fuga falhou!")
 		emit_signal("action_resolved", _battle_log[-1])
 		await get_tree().create_timer(0.5, true, false, true).timeout
-		await _enemy_turn()
+		_end_player_action()
 
 # ─── Turno do inimigo ─────────────────────────────────────────────────────────
 
-func _enemy_turn() -> void:
+func _do_enemy_turn() -> void:
 	if state == State.ENDED:
 		return
 	state = State.ENEMY_TURN
@@ -216,8 +253,10 @@ func _enemy_turn() -> void:
 	if player_hp <= 0:
 		await _resolve_defeat()
 	else:
-		state = State.PLAYER_TURN
-		emit_signal("player_turn_started")
+		# ATB: zera o medidor do inimigo e volta a carregar (não força turno do player).
+		enemy_atb = 0.0
+		emit_signal("atb_changed", player_atb / ATB_MAX, enemy_atb / ATB_MAX)
+		state = State.CHARGING
 
 # ─── Resultados ───────────────────────────────────────────────────────────────
 
@@ -253,6 +292,8 @@ func reset() -> void:
 	state = State.IDLE
 	enemy_data = {}
 	enemy_hp = 0
+	player_atb = 0.0
+	enemy_atb = 0.0
 	_battle_log.clear()
 	_escape_attempts = 0
 

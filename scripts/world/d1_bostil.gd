@@ -65,7 +65,7 @@ func _setup_events() -> void:
 	spawn_crypto_npc(Vector2i(8, 22), "EVT-013")   # Empiricus — "seja a próxima Bettina"
 
 func _get_boss_id() -> String:
-	return "BOSS-D1-FINAL"
+	return ""   # Bostil agora tem 3 fases; o chefe está na Fronteira (d1c).
 
 func _get_boss_data() -> Dictionary:
 	return {

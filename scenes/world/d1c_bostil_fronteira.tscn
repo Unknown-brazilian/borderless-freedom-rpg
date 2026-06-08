@@ -1,0 +1,320 @@
+[gd_scene load_steps=8 format=3 uid="uid://d1c_bostil_fronteira"]
+
+[ext_resource type="Script"     path="res://scripts/world/d1c_bostil_fronteira.gd"        id="1"]
+[ext_resource type="Script"     path="res://scripts/ui/hud_rpg.gd"              id="2"]
+[ext_resource type="Script"     path="res://scripts/ui/touch_dpad.gd"           id="3"]
+[ext_resource type="Script"     path="res://scripts/ui/dialogue_box.gd"         id="4"]
+[ext_resource type="Script"     path="res://scripts/ui/battle_ui.gd"            id="5"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player2D.tscn"       id="6"]
+
+[sub_resource type="TileSet" id="1"]
+tile_size = Vector2i(64, 64)
+
+[node name="D1cFronteira" type="Node2D"]
+script = ExtResource("1")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("1")
+format = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.75, 0.75)
+limit_left   = 0
+limit_top    = 0
+limit_right  = 2048
+limit_bottom = 3072
+
+[node name="Player" parent="." instance=ExtResource("6")]
+position = Vector2(288, 2880)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("2")
+layer  = 2
+
+[node name="TopBar" type="HBoxContainer" parent="HUD"]
+anchor_right  = 1.0
+offset_bottom = 72.0
+theme_override_constants/separation = 24
+
+[node name="LabelSats" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+text = "₿ 0 sats"
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="LabelRegion" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+text = "Bostil"
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1.0)
+
+[node name="LabelItem" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+text = ""
+theme_override_font_sizes/font_size = 28
+
+[node name="ResourceBars" type="VBoxContainer" parent="HUD"]
+anchor_right  = 0.0
+anchor_bottom = 0.0
+offset_left   = 16.0
+offset_top    = 80.0
+offset_right  = 200.0
+offset_bottom = 170.0
+theme_override_constants/separation = 4
+
+[node name="BarWater" type="ProgressBar" parent="HUD/ResourceBars"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 20)
+value = 100.0
+
+[node name="BarFood" type="ProgressBar" parent="HUD/ResourceBars"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 20)
+value = 100.0
+
+[node name="BarEnergy" type="ProgressBar" parent="HUD/ResourceBars"]
+layout_mode = 2
+custom_minimum_size = Vector2(180, 20)
+value = 100.0
+
+[node name="TouchDPad" type="CanvasLayer" parent="."]
+script = ExtResource("3")
+layer  = 5
+
+[node name="DPad" type="Control" parent="TouchDPad"]
+anchor_left   = 0.0
+anchor_top    = 1.0
+anchor_right  = 0.0
+anchor_bottom = 1.0
+offset_left   = 40.0
+offset_top    = -400.0
+offset_right  = 400.0
+offset_bottom = -40.0
+
+[node name="BtnUp" type="Button" parent="TouchDPad/DPad"]
+offset_left   = 120.0
+offset_top    = 0.0
+offset_right  = 240.0
+offset_bottom = 120.0
+text = "▲"
+theme_override_font_sizes/font_size = 44
+
+[node name="BtnDown" type="Button" parent="TouchDPad/DPad"]
+offset_left   = 120.0
+offset_top    = 240.0
+offset_right  = 240.0
+offset_bottom = 360.0
+text = "▼"
+theme_override_font_sizes/font_size = 44
+
+[node name="BtnLeft" type="Button" parent="TouchDPad/DPad"]
+offset_left   = 0.0
+offset_top    = 120.0
+offset_right  = 120.0
+offset_bottom = 240.0
+text = "◀"
+theme_override_font_sizes/font_size = 44
+
+[node name="BtnRight" type="Button" parent="TouchDPad/DPad"]
+offset_left   = 240.0
+offset_top    = 120.0
+offset_right  = 360.0
+offset_bottom = 240.0
+text = "▶"
+theme_override_font_sizes/font_size = 44
+
+[node name="ActionButtons" type="Control" parent="TouchDPad"]
+anchor_left   = 1.0
+anchor_top    = 1.0
+anchor_right  = 1.0
+anchor_bottom = 1.0
+offset_left   = -380.0
+offset_top    = -380.0
+offset_right  = -40.0
+offset_bottom = -40.0
+
+[node name="BtnA" type="Button" parent="TouchDPad/ActionButtons"]
+offset_left   = 200.0
+offset_top    = 100.0
+offset_right  = 340.0
+offset_bottom = 240.0
+text = "A"
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(0.2, 0.8, 0.3, 1.0)
+
+[node name="BtnB" type="Button" parent="TouchDPad/ActionButtons"]
+offset_left   = 60.0
+offset_top    = 180.0
+offset_right  = 190.0
+offset_bottom = 300.0
+text = "B"
+theme_override_font_sizes/font_size = 44
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1.0)
+
+[node name="BtnStart" type="Button" parent="TouchDPad/ActionButtons"]
+offset_left   = 100.0
+offset_top    = 0.0
+offset_right  = 240.0
+offset_bottom = 80.0
+text = "START"
+theme_override_font_sizes/font_size = 30
+
+[node name="DialogueBox" type="CanvasLayer" parent="."]
+script = ExtResource("4")
+layer  = 10
+
+[node name="Panel" type="PanelContainer" parent="DialogueBox"]
+anchor_left   = 0.0
+anchor_top    = 1.0
+anchor_right  = 1.0
+anchor_bottom = 1.0
+offset_left   = 24.0
+offset_top    = -460.0
+offset_right  = -24.0
+offset_bottom = -24.0
+
+[node name="VBox" type="VBoxContainer" parent="DialogueBox/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LabelSpeaker" type="Label" parent="DialogueBox/Panel/VBox"]
+layout_mode = 2
+text = ""
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="LabelText" type="Label" parent="DialogueBox/Panel/VBox"]
+layout_mode = 2
+text = ""
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 32
+custom_minimum_size = Vector2(0, 180)
+
+[node name="Arrow" type="Label" parent="DialogueBox/Panel/VBox"]
+layout_mode = 2
+text = "▼  Toque para continuar"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1.0)
+
+[node name="BattleUI" type="CanvasLayer" parent="."]
+script = ExtResource("5")
+layer  = 8
+
+[node name="BattleArea" type="Control" parent="BattleUI"]
+anchor_right  = 1.0
+anchor_bottom = 0.6
+custom_minimum_size = Vector2(0, 900)
+
+[node name="EnemyPanel" type="VBoxContainer" parent="BattleUI/BattleArea"]
+anchor_left   = 0.5
+anchor_right  = 1.0
+anchor_bottom = 0.45
+offset_left   = 20.0
+offset_right  = -20.0
+
+[node name="LabelEnemyName" type="Label" parent="BattleUI/BattleArea/EnemyPanel"]
+layout_mode = 2
+text = "Inimigo"
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1.0)
+
+[node name="BarEnemyHP" type="ProgressBar" parent="BattleUI/BattleArea/EnemyPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 28)
+value = 100.0
+
+[node name="LabelEnemyHP" type="Label" parent="BattleUI/BattleArea/EnemyPanel"]
+layout_mode = 2
+text = "HP: 100"
+theme_override_font_sizes/font_size = 28
+
+[node name="EnemySprite" type="ColorRect" parent="BattleUI/BattleArea"]
+anchor_left   = 0.5
+anchor_top    = 0.05
+anchor_right  = 0.9
+anchor_bottom = 0.45
+color = Color(0.72, 0.18, 0.18, 1.0)
+
+[node name="PlayerSprite" type="ColorRect" parent="BattleUI/BattleArea"]
+anchor_left   = 0.08
+anchor_top    = 0.5
+anchor_right  = 0.5
+anchor_bottom = 0.88
+color = Color(0.969, 0.576, 0.102, 1.0)
+
+[node name="PlayerPanel" type="VBoxContainer" parent="BattleUI/BattleArea"]
+anchor_left   = 0.0
+anchor_right  = 0.45
+anchor_top    = 0.55
+anchor_bottom = 0.95
+offset_left   = 20.0
+offset_right  = -10.0
+
+[node name="BarPlayerHP" type="ProgressBar" parent="BattleUI/BattleArea/PlayerPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 28)
+value = 100.0
+
+[node name="LabelPlayerHP" type="Label" parent="BattleUI/BattleArea/PlayerPanel"]
+layout_mode = 2
+text = "HP: 100/100"
+theme_override_font_sizes/font_size = 28
+
+[node name="ActionArea" type="VBoxContainer" parent="BattleUI"]
+anchor_left   = 0.0
+anchor_top    = 0.6
+anchor_right  = 1.0
+anchor_bottom = 1.0
+offset_left   = 24.0
+offset_right  = -24.0
+offset_bottom = -24.0
+theme_override_constants/separation = 16
+
+[node name="LabelLog" type="Label" parent="BattleUI/ActionArea"]
+layout_mode = 2
+text = ""
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 34
+custom_minimum_size = Vector2(0, 100)
+
+[node name="Grid" type="GridContainer" parent="BattleUI/ActionArea"]
+layout_mode = 2
+columns = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="BtnAttack" type="Button" parent="BattleUI/ActionArea/Grid"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "⚔️  Atacar"
+theme_override_font_sizes/font_size = 30
+
+[node name="BtnItem" type="Button" parent="BattleUI/ActionArea/Grid"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "🎒  Item"
+theme_override_font_sizes/font_size = 30
+
+[node name="BtnStealth" type="Button" parent="BattleUI/ActionArea/Grid"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "👁️  Furtiv."
+theme_override_font_sizes/font_size = 30
+
+[node name="BtnPersuade" type="Button" parent="BattleUI/ActionArea/Grid"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "🗣️  Persuas."
+theme_override_font_sizes/font_size = 30
+
+[node name="BtnRun" type="Button" parent="BattleUI/ActionArea/Grid"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "🏃  Fugir"
+theme_override_font_sizes/font_size = 30

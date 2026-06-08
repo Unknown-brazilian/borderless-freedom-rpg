@@ -11,6 +11,8 @@ signal game_completed
 # "dungeon" indica o número lógico do dungeon (1-9) para salvar/exibir
 const SCENE_SEQUENCE: Array = [
 	{"dungeon": 1, "name": "Bostil",                   "scene": "res://scenes/world/d1_bostil.tscn",               "unlock_item": "item_spray"},
+	{"dungeon": 1, "name": "Bostil — Estrada",          "scene": "res://scenes/world/d1b_bostil_estrada.tscn",      "unlock_item": ""},
+	{"dungeon": 1, "name": "Bostil — Fronteira",        "scene": "res://scenes/world/d1c_bostil_fronteira.tscn",    "unlock_item": ""},
 	{"dungeon": 2, "name": "Bolivária",                 "scene": "res://scenes/world/d2_bolivaria.tscn",            "unlock_item": "item_panfleto"},
 	{"dungeon": 3, "name": "Perulândia",                "scene": "res://scenes/world/d3_perulandia.tscn",           "unlock_item": ""},
 	{"dungeon": 4, "name": "Panamia",                   "scene": "res://scenes/world/d4_panamia.tscn",              "unlock_item": "item_chave"},

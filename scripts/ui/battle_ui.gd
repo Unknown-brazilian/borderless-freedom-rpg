@@ -26,7 +26,8 @@ var _enemy_tex:  TextureRect = null
 var _player_tex: TextureRect = null
 # Barra ATB (ordem de turno, estilo tático).
 var _atb_panel: PanelContainer = null
-var _atb_gauge: ProgressBar = null
+var _atb_pbar: ProgressBar = null   # medidor ATB do player
+var _atb_ebar: ProgressBar = null   # medidor ATB do inimigo
 var _atb_p: Label = null
 var _atb_e: Label = null
 var _atb_label: Label = null
@@ -38,6 +39,7 @@ func _ready() -> void:
 	BattleManager.enemy_turn_started.connect(_on_enemy_turn)
 	BattleManager.action_resolved.connect(_on_action_resolved)
 	BattleManager.hp_changed.connect(_on_hp_changed)
+	BattleManager.atb_changed.connect(_on_atb_changed)
 
 	_btn_attack.pressed.connect(func(): _player_act(BattleManager.Action.ATTACK))
 	_btn_item.pressed.connect(func(): _player_act(BattleManager.Action.ITEM))
@@ -103,18 +105,31 @@ func _build_atb() -> void:
 	_atb_p.text = "🧍 Você"
 	_atb_p.add_theme_font_size_override("font_size", 22)
 	h.add_child(_atb_p)
-	_atb_gauge = ProgressBar.new()
-	_atb_gauge.show_percentage = false
-	_atb_gauge.custom_minimum_size = Vector2(0, 16)
-	_atb_gauge.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_atb_gauge.max_value = 100
-	_atb_gauge.value = 0
-	h.add_child(_atb_gauge)
+	_atb_pbar = _make_atb_bar(Color(1, 0.85, 0.3))
+	h.add_child(_atb_pbar)
+	_atb_ebar = _make_atb_bar(Color(0.95, 0.5, 0.5))
+	h.add_child(_atb_ebar)
 	_atb_e = Label.new()
 	_atb_e.text = "Fiscal 👮"
 	_atb_e.add_theme_font_size_override("font_size", 22)
 	h.add_child(_atb_e)
 	_atb_panel.visible = false
+
+func _make_atb_bar(col: Color) -> ProgressBar:
+	var b := ProgressBar.new()
+	b.show_percentage = false
+	b.custom_minimum_size = Vector2(0, 16)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.max_value = 100
+	b.value = 0
+	b.modulate = col
+	return b
+
+func _on_atb_changed(player_pct: float, enemy_pct: float) -> void:
+	if is_instance_valid(_atb_pbar):
+		_atb_pbar.value = player_pct * 100.0
+	if is_instance_valid(_atb_ebar):
+		_atb_ebar.value = enemy_pct * 100.0
 
 func _atb_set_turn(who: String) -> void:
 	if not is_instance_valid(_atb_panel):
@@ -126,15 +141,9 @@ func _atb_set_turn(who: String) -> void:
 	if who == "player":
 		_atb_label.text = "▶  SUA VEZ"
 		_atb_label.add_theme_color_override("font_color", active)
-		_atb_gauge.modulate = active
-		_atb_gauge.value = 100
 	else:
 		_atb_label.text = "TURNO INIMIGO…"
 		_atb_label.add_theme_color_override("font_color", Color(0.95, 0.5, 0.5))
-		_atb_gauge.modulate = Color(0.95, 0.5, 0.5)
-		_atb_gauge.value = 0
-		var tw := _atb_gauge.create_tween()
-		tw.tween_property(_atb_gauge, "value", 100.0, 0.7).set_trans(Tween.TRANS_SINE)
 
 ## Cria um TextureRect pixel-art centralizado dentro do ColorRect host.
 func _make_battler(host: ColorRect) -> TextureRect:

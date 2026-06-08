@@ -13,6 +13,7 @@ var _list: VBoxContainer
 var _sats_lbl: Label
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	layer = 65
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Engine.time_scale = 0.0

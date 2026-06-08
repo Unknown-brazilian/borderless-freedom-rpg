@@ -6,6 +6,7 @@ const GOLD := Color(0.96, 0.69, 0.13)
 const CARD := Color(0.13, 0.13, 0.17)
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	layer = 68
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Engine.time_scale = 0.0

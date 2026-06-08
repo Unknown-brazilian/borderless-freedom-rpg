@@ -15,6 +15,7 @@ var _event: Dictionary = {}
 var _resolved: bool = false
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	layer = 60
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_event = _load_event()

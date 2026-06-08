@@ -100,6 +100,22 @@ func _process(delta: float) -> void:
 	if is_instance_valid(_player):
 		_camera.position = _camera.position.lerp(_player.position, delta * 6.0)
 	_check_exit()
+	# Watchdog anti-freeze: se o tempo está parado mas NADA legítimo está pausando
+	# o jogo (diálogo/batalha/modal), destrava. Salva-vidas contra travamentos.
+	if Engine.time_scale == 0.0 and not _pauses_active():
+		Engine.time_scale = 1.0
+		if is_instance_valid(_player) and _player.has_method("set_can_move"):
+			_player.set_can_move(true)
+
+func _pauses_active() -> bool:
+	if DialogueManager.is_active():
+		return true
+	if BattleManager.state != BattleManager.State.IDLE or BattleManager.locked:
+		return true
+	for n in get_tree().get_nodes_in_group("pauses_game"):
+		if "visible" in n and n.visible:
+			return true
+	return false
 
 # ─── Post-process (color grade + vinheta + bloom por dungeon) ─────────────────
 func _setup_post_fx() -> void:

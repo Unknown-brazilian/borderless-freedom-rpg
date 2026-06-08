@@ -22,6 +22,7 @@ var _is_result:       bool       = false
 var _prev_time_scale: float      = 1.0
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	layer = 60   # bem acima de HUD/batalha/diálogo, p/ receber o toque dos botões
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("event_popup_ui")
