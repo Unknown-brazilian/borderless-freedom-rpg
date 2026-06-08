@@ -32,9 +32,16 @@ func start_with_speakers(lines: Array[String], speakers: Array[String]) -> void:
 	_show_current()
 
 ## Avança para a próxima linha (chamado pelo DialogueBox ao tocar/apertar A).
+var _last_advance_ms: int = 0
+
 func advance() -> void:
 	if not _is_active:
 		return
+	# Debounce: um único toque pode disparar press+release (caixa + tap-catcher).
+	var now := Time.get_ticks_msec()
+	if now - _last_advance_ms < 130:
+		return
+	_last_advance_ms = now
 	_index += 1
 	if _index >= _lines.size():
 		_finish()

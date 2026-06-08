@@ -26,6 +26,7 @@ var _all_entry_ids: Array[String] = []
 var _prev_time_scale: float = 1.0
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	hide()
 	btn_close.pressed.connect(_on_close)
 	item_list.item_selected.connect(_on_entry_selected)

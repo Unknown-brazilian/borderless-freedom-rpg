@@ -33,6 +33,7 @@ var _word_buttons: Array     = []
 
 # ─── Inicialização ────────────────────────────────────────────────────────────
 func _ready() -> void:
+	add_to_group("pauses_game")
 	_btn_skip.pressed.connect(_on_skip)
 	_lbl_result.hide()
 	hide()

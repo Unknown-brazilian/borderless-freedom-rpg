@@ -96,16 +96,31 @@ func _notification(what: int) -> void:
 		if not _is_interior:
 			SaveSystem.save_game()
 
+var _stuck_since_ms: int = 0
+
 func _process(delta: float) -> void:
 	if is_instance_valid(_player):
 		_camera.position = _camera.position.lerp(_player.position, delta * 6.0)
 	_check_exit()
-	# Watchdog anti-freeze: se o tempo está parado mas NADA legítimo está pausando
-	# o jogo (diálogo/batalha/modal), destrava. Salva-vidas contra travamentos.
-	if Engine.time_scale == 0.0 and not _pauses_active():
-		Engine.time_scale = 1.0
-		if is_instance_valid(_player) and _player.has_method("set_can_move"):
-			_player.set_can_move(true)
+	_anti_freeze_watchdog()
+
+## Salva-vidas: se o jogo fica "travado" (tempo parado OU player sem se mover)
+## por >0.7s SEM nada legítimo pausando (diálogo/batalha/modal), destrava.
+## Usa ticks reais (delta vira 0 quando time_scale=0).
+func _anti_freeze_watchdog() -> void:
+	var pmove: bool = bool(_player.get("_can_move")) if is_instance_valid(_player) else true
+	var stuck: bool = (Engine.time_scale == 0.0) or (not pmove)
+	if stuck and not _pauses_active():
+		if _stuck_since_ms == 0:
+			_stuck_since_ms = Time.get_ticks_msec()
+		elif Time.get_ticks_msec() - _stuck_since_ms > 700:
+			Engine.time_scale = 1.0
+			if is_instance_valid(_player) and _player.has_method("set_can_move"):
+				_player.set_can_move(true)
+			AutonomyBar.set_active(true)
+			_stuck_since_ms = 0
+	else:
+		_stuck_since_ms = 0
 
 func _pauses_active() -> bool:
 	if DialogueManager.is_active():

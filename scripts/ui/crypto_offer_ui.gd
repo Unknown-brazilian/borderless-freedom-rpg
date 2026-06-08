@@ -15,6 +15,7 @@ var _accept_btn:     Button
 var _refuse_btn:     Button
 
 func _ready() -> void:
+	add_to_group("pauses_game")
 	layer = 10
 	_build_ui()
 	hide()

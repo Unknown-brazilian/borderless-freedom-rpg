@@ -30,6 +30,7 @@ var _attempts:         int           = 0
 
 # ─── Inicialização ────────────────────────────────────────────────────────────
 func _ready() -> void:
+	add_to_group("pauses_game")
 	_btn_confirm.pressed.connect(_on_confirm)
 	_btn_undo.pressed.connect(_on_undo)
 	_lbl_result.hide()
