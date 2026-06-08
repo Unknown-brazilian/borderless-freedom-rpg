@@ -66,12 +66,14 @@ func music(track: String, pitch: float = 1.0) -> void:
 		_bgm.pitch_scale = pitch
 	if _current_bgm == track:
 		return
-	var path := MUSIC_DIR + track + ".ogg"
-	var stream := _load(path)
+	# Aceita .ogg ou .mp3 (faixas CC0 muitas vezes só têm mp3).
+	var stream := _load(MUSIC_DIR + track + ".ogg")
+	if stream == null:
+		stream = _load(MUSIC_DIR + track + ".mp3")
 	if stream == null:
 		return
 	_current_bgm = track
-	if stream is AudioStreamOggVorbis:
+	if stream is AudioStreamOggVorbis or stream is AudioStreamMP3:
 		stream.loop = true
 	_bgm.stream  = stream
 	_bgm.play()

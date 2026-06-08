@@ -27,3 +27,11 @@ NOTAS
 -----
 - CC0 (domínio público): não exige atribuição.
 - CC-BY / CC-BY-SA: exige atribuição (este arquivo + tela de Créditos).
+
+=== Faixas CC0 (domínio público) — adicionadas no upgrade JRPG ===
+- dungeon (overworld): "Town Theme RPG" por cynicmusic (cynicmusic.com / pixelsphere.org) — CC0
+- battle: "Battle Theme A" — CC0 (OpenGameArt)
+- boss: "Battle RPG Theme" por CleytonRX — CC0 (OpenGameArt)
+(CC0 não exige atribuição, mas mantemos por cortesia.)
+As demais faixas (menu, ending, transition, game_over) seguem do 16-Bit Music
+Pack 1 de Retro Indie Josh — CC BY-SA 4.0 (atribuição OBRIGATÓRIA enquanto usadas).
