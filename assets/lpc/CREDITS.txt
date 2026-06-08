@@ -15,3 +15,7 @@ Creative Commons, Mozilla e Free Software Foundation. Créditos completos por
 asset: ver CREDITS/ no repositório do gerador acima.
 
 Por ser CC-BY-SA, todo o conjunto de arte derivada permanece sob CC-BY-SA.
+
+=== Tiles de terreno (grass/path/water) — LPC base assets ===
+base_assets/grass.png, dirt.png, water.png (extraído o tile central).
+Autores LPC base (Lanea Zimmerman "Sharm", Daniel Eddeland, et al.). CC-BY-SA 3.0 / GPLv3.
