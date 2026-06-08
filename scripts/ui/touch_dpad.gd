@@ -49,7 +49,31 @@ func _ready() -> void:
 	# Relabel: A = bicicleta, START = mochila/inventário (pausa).
 	_btn_a.text = "🚲"
 	_btn_start.text = "🎒"
+	# Visual mais polido nos botões.
+	for btn in [_btn_up, _btn_down, _btn_left, _btn_right]:
+		_style_button(btn, Color(0.85, 0.85, 0.9), 16)
+	_style_button(_btn_a, Color(0.45, 0.9, 0.55), 999)   # círculo verde (bike)
+	_style_button(_btn_b, Color(0.95, 0.5, 0.5), 999)    # círculo vermelho
+	_style_button(_btn_start, Color(0.96, 0.78, 0.3), 20)
 	call_deferred("_find_player")
+
+## Estiliza um botão de controle (fundo translúcido arredondado + borda do acento).
+func _style_button(btn: Button, accent: Color, radius: int) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0.10, 0.10, 0.14, 0.78)
+	normal.set_corner_radius_all(radius)
+	normal.set_border_width_all(3)
+	normal.border_color = Color(accent.r, accent.g, accent.b, 0.55)
+	normal.shadow_color = Color(0, 0, 0, 0.4)
+	normal.shadow_size = 6
+	var pressed := normal.duplicate()
+	pressed.bg_color = Color(accent.r, accent.g, accent.b, 0.35)
+	pressed.border_color = accent
+	for s in ["normal", "hover", "focus"]:
+		btn.add_theme_stylebox_override(s, normal)
+	btn.add_theme_stylebox_override("pressed", pressed)
+	btn.add_theme_color_override("font_color", accent)
+	btn.add_theme_color_override("font_pressed_color", Color.WHITE)
 
 ## Toca na área do mapa = interagir (NPC/loja/porta) ou avançar diálogo.
 func _add_tap_catcher() -> void:
@@ -102,6 +126,7 @@ func _add_phone_button() -> void:
 	phone.offset_bottom = 104
 	phone.pressed.connect(_on_phone)
 	add_child(phone)
+	_style_button(phone, Color(0.55, 0.8, 1.0), 18)
 	Juice.button_feedback(phone, true)
 
 func _on_phone() -> void:

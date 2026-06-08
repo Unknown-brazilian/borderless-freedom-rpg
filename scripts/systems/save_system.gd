@@ -12,8 +12,16 @@ func has_save() -> bool:
 
 func save_game() -> void:
 	PlayerCustomization.save_customization()   # populates _store["player_customization"]
+	# Posição exata do player (restaura onde salvou, não no início do mapa).
+	var ptile := [-1, -1]
+	var pl := get_tree().get_first_node_in_group("player") if get_tree() else null
+	if pl and pl.has_method("get_tile_position"):
+		var t: Vector2i = pl.get_tile_position()
+		ptile = [t.x, t.y]
 	var data := {
 		"version":        1,
+		"player_tile":    ptile,
+		"player_seq":     WorldManager.sequence_index,
 		"sat_economy":    SatEconomy.save(),
 		"random_events":  RandomEventsSystem.get_stats(),
 		"world_manager":  WorldManager.save(),
@@ -52,6 +60,11 @@ func load_game() -> bool:
 	PlayerCustomization.load_customization()
 	SeedPhraseSystem.load_from(data.get("seed_phrase", {}))
 	AutonomyBar.load_save_data(data.get("autonomy_bar", {}))
+	# Restaura a posição exata salva, se o mapa carregado for o mesmo do save.
+	var pt: Array = data.get("player_tile", [-1, -1])
+	var pseq: int = int(data.get("player_seq", -1))
+	if pt.size() == 2 and int(pt[0]) >= 0 and pseq == WorldManager.sequence_index:
+		WorldManager.pending_return_tile = Vector2i(int(pt[0]), int(pt[1]))
 	return true
 
 func delete_save() -> void:

@@ -200,6 +200,11 @@ func _process_chase(delta: float) -> void:
 func _initiate_battle() -> void:
 	if _battle_started:
 		return
+	# Não inicia se já há batalha/diálogo/minigame em andamento — evita batalhas
+	# sobrepostas (vários guardas convergindo) que travavam o player.
+	if BattleManager.state != BattleManager.State.IDLE \
+			or BattleManager.locked or DialogueManager.is_active():
+		return
 	_battle_started = true
 	state = State.BATTLE
 	velocity = Vector2.ZERO
